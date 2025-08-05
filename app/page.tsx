@@ -1,7 +1,7 @@
 import './page.css';
 import Image from 'next/image';
 import {
-  GalleryItem,
+  type GalleryItem,
   galleryItems,
 } from '@app/model/gallery/fitness-instructor';
 import ScrollIntoView from '@app/components/ScrollIntoView/ScrollIntoView';
