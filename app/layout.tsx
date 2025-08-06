@@ -24,8 +24,11 @@ export default function RootLayout(layoutProps: any) {
         <link rel="icon" href="https://www.wix.com/favicon.ico" />
       </head>
       {wixSession.wixClient ? (
-        <body className="parallax-background">
-          <Header />
+        <body
+          className="parallax-background"
+          style={{ backgroundColor: '#F5F5F5' }}
+        >
+          {/* <Header /> */}
           <main className="bg-transparent min-h-[600px]">{children}</main>
           <Footer />
         </body>
