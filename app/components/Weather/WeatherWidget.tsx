@@ -27,24 +27,20 @@ export const WeatherWidget = ({
 
   if (error) {
     return (
-      <div className="bg-gradient-to-br from-red-50 to-pink-100 rounded-2xl p-6 shadow-lg border border-red-200">
-        <div className="flex items-center">
-          <svg
-            className="w-6 h-6 text-red-500 mr-2"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-          <span className="text-red-600 font-medium font-outfit">
-            Weather data unavailable
-          </span>
+      <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-2xl p-6 shadow-lg border border-orange-200">
+        <div className="flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-2xl mb-2">🌤️</div>
+            <h3 className="text-lg font-semibold text-gray-900 font-outfit mb-1">
+              Winnipeg
+            </h3>
+            <p className="text-sm text-gray-600 font-outfit">
+              Weather widget temporarily unavailable
+            </p>
+            <p className="text-xs text-gray-500 font-outfit mt-2">
+              Please check back later
+            </p>
+          </div>
         </div>
       </div>
     );
