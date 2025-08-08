@@ -18,9 +18,15 @@ export default function RootLayout(layoutProps: any) {
   return (
     <html lang="en">
       <head>
-        <title>IcanMovers | Winnipegs Finest Movers</title>
-        <meta name="description" content="IcanDo Movers, Winnipegs Finest" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>IcanMovers | Winnipeg most trusted Movers</title>
+        <meta
+          name="description"
+          content="IcanDo Movers  Winnipeg trusted Movers"
+        />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+        />
         <link rel="icon" href="/custom/favicon.png" />
       </head>
       {wixSession.wixClient ? (

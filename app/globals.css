@@ -87,7 +87,7 @@
   .font-outfit-black { font-family: 'Outfit', sans-serif; font-weight: 900; }
 
   /* Ashley Demo Color System */
-  .mil-accent { color: rgb(255, 152, 0); }
+  .mil-accent { color: rgb(250 92 51 / var(--tw-text-opacity, 1)); }
   .mil-light { color: rgb(255, 255, 255) !important; }
   .mil-muted { color: rgba(255, 255, 255, 0.9); }
   .mil-dark { color: rgb(0, 0, 0); }
@@ -271,7 +271,7 @@ a:hover {
   z-index: 4;
   position: absolute;
   height: 100%;
-  background-color: rgb(255, 152, 0);
+  background-color: rgb(250 92 51 / var(--tw-text-opacity, 1));
   left: 0;
   top: 0;
   transition: width 0.6s ease;
@@ -353,7 +353,7 @@ a:hover {
 
 .progress-bar {
   height: 4px;
-  background: linear-gradient(90deg, rgb(255, 152, 0), rgb(255, 140, 66));
+  background: linear-gradient(90deg, rgb(250 92 51 / var(--tw-text-opacity, 1)), rgb(250 92 51 / var(--tw-text-opacity, 1)));
   border-radius: 2px;
   transition: width 0.3s ease;
 }
@@ -383,6 +383,23 @@ a:hover {
     margin-right: 0;
     margin-bottom: 10px;
   }
+}
+
+/* Form Input Focus Styles - Override browser defaults */
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border-color: rgb(250 92 51 / var(--tw-text-opacity, 1)) !important;
+}
+
+/* Remove default focus ring */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 /* Scroll Animations */
