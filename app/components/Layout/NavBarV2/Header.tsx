@@ -16,6 +16,7 @@ const Header = () => {
     { name: 'Home', href: '#' },
     { name: 'About', href: '#' },
     { name: 'Services', href: '#' },
+    { name: 'Pricing', href: '#' },
     { name: 'Relocation Hub', href: '#' },
     { name: 'Contact Us', href: '#' },
   ];
@@ -83,10 +84,10 @@ const Header = () => {
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                   <a
-                    href="#"
+                    href="#quote"
                     className="text-sm/6 font-light text-gray-900 font-outfit"
                   >
-                    Log in <span aria-hidden="true">&rarr;</span>
+                    Request Qoutation <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
               </div>

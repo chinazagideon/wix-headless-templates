@@ -2,10 +2,14 @@ const Lines = ({
   linesColor,
   strokeWidth,
   className,
+  height = '70vh',
+  width = '100vw',
 }: {
   linesColor: string;
   strokeWidth: number;
   className?: string;
+  height?: string;
+  width?: string;
 }) => {
   return (
     <>
@@ -40,7 +44,7 @@ const Lines = ({
             left: '50%',
             transform: 'translate(-50%, -50%)',
             width: '100vw',
-            height: '70vh',
+            height: height,
             opacity: 0.3,
           }}
         >

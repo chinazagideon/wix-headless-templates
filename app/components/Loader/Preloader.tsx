@@ -85,7 +85,7 @@ const Preloader = () => {
               marginRight: '15px',
             }}
           >
-            Pioneering
+            Trusted
           </p>
           <p
             className="mil-h3 mil-muted"
@@ -95,7 +95,7 @@ const Preloader = () => {
               marginRight: '15px',
             }}
           >
-            Creative
+            Reliable
           </p>
           <p
             className="mil-h3 mil-muted mil-thin"
@@ -105,7 +105,7 @@ const Preloader = () => {
               marginRight: '15px',
             }}
           >
-            Excellence
+            Movers
           </p>
         </div>
 
