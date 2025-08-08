@@ -1,2 +1,8 @@
 # Since each browser version might render a bit differently local run results are not stored in git
 /local
+/yarn.lock
+/env.local
+/package-lock.json
+.env
+DS_Store
+/*.DS_Store

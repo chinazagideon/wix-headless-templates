@@ -30,7 +30,7 @@ export default function RootLayout(layoutProps: any) {
         >
           {/* <Header /> */}
           <main className="bg-transparent min-h-[600px]">{children}</main>
-          <Footer />
+          {/* <Footer /> */}
         </body>
       ) : (
         <body className="">

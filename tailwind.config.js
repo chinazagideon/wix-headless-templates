@@ -33,6 +33,10 @@ module.exports = {
         },
       },
       fontFamily: {
+        'outfit': [
+          'Outfit',
+          ...defaultTheme.fontFamily.sans,
+        ],
         'open-sans-condensed': [
           'Open Sans Condensed',
           ...defaultTheme.fontFamily.sans,
@@ -54,7 +58,8 @@ module.exports = {
       colors: {
         'gray-c1': 'rgb(37,33,40)',
         'gray-c2': 'rgb(47,43,50)',
-        highlight: 'rgb(257, 97, 72)',
+        'theme-orange': '#FA5C33',
+        highlight: '#FA5C33', // Keep for backward compatibility
       },
       gridTemplateColumns: {
         'auto-sm': 'repeat(auto-fill,minmax(120px,1fr))',
