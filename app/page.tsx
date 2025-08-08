@@ -1,286 +1,256 @@
-import './page.css';
-import Image from 'next/image';
+'use client';
+
+import { useState, useEffect } from 'react';
+import { Dialog, DialogPanel } from '@headlessui/react';
 import {
-  type GalleryItem,
-  galleryItems,
-} from '@app/model/gallery/fitness-instructor';
-import ScrollIntoView from '@app/components/ScrollIntoView/ScrollIntoView';
-import testIds from '@app/utils/test-ids';
+  ArrowRightIcon,
+  Bars3Icon,
+  EnvelopeIcon,
+  MapPinIcon,
+  PhoneIcon,
+  XMarkIcon,
+} from '@heroicons/react/24/outline';
+import Image from 'next/image';
 
-const TrainingOptionSelection = ({
-  text,
-  className,
-  bgImageSrc,
-  href,
-}: {
-  text: string;
-  bgImageSrc: string;
-  href: string;
-  className?: string;
-}) => (
-  <a
-    className={`flex-1 aspect-[4/3] relative flex justify-center ${className}`}
-    href={href}
-  >
-    <div className={`absolute-full bg-cover ${bgImageSrc}`}></div>
-    <div className="absolute-full h-full opacity-0 hover:opacity-50 bg-highlight"></div>
-    <div className="flex align-middle justify-center flex-col gap-5 h-full w-full max-w-[490px]">
-      <h3 className="z-10 uppercase text-3xl tracking-[.3em]">{text}</h3>
-      <div className="mx-auto">
-        <Image
-          className="hover:brightness-0 hover:invert rotate-270"
-          width={50}
-          height={50}
-          alt={`select ${text}`}
-          src="/common/arrow-circle.png"
-        />
-      </div>
-    </div>
-  </a>
-);
+import { WeatherWidget, useWeather } from '@app/components/Weather';
+import TestimonialComponent from '@app/components/Testimonials/TestimonialComponent';
+import Lines from '@app/components/Design/Lines';
 
-const AchievementItem = ({
-  title,
-  tagline,
-}: {
-  title: string;
-  tagline: string;
-}) => (
-  <li>
-    <h4 className="title mb-5">{title}</h4>
-    <div className="mb-5 bg-black h-px w-28"></div>
-    <p className="text-xl sm:text-2xl">{tagline}</p>
-  </li>
-);
+export default function Page() {
+  const { weatherData, loading, error } = useWeather();
 
-const GalleryItem = ({
-  item: { title, tagline, imgSrc, id },
-}: {
-  item: GalleryItem;
-}) => (
-  <li className="aspect-video relative">
-    <Image src={imgSrc} alt={title} fill />
-    <div className="absolute-full opacity-0 hover:opacity-70 bg-white p-8 flex flex-col justify-between text-black">
-      <div className="text-center">
-        <h4 className="text-2xl pt-4 pb-2">{title}</h4>
-        <p className="font-open-sans-condensed">{tagline}</p>
-      </div>
-      <div className="flex justify-between">
-        <a href="/#" className="cursor-pointer">
-          <Image
-            src="/common/like.svg"
-            height={24}
-            width={24}
-            alt="like image"
-          />
-        </a>
-        <a href="/#" className="cursor-pointer">
-          <Image
-            src="/common/share.svg"
-            height={24}
-            width={24}
-            alt="share image"
-          />
-        </a>
-      </div>
-    </div>
-  </li>
-);
-
-export default async function Home() {
   return (
-    <div>
-      <div
-        className="text-center min-h-screen bg-[url('/home/fitness-background-1.jpg')] parallax-background"
-        data-testid={testIds.HOME_PAGE.HEADER}
-      >
-        <section className="py-[355px]">
-          <h1 className="tracking-widest">Joey Dixon</h1>
-          <div className="pt-7">
-            <div className="tracking-[.4em] text-3xl uppercase">
-              Training with a World Champion
+    <>
+      <div className="bg-white w-full">
+        <div className="relative flex flex-col items-center justify-center min-h-screen isolate bg-black transition-all duration-300">
+          {/* Video Background with Enhanced UX */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden ">
+            {/* Loading State */}
+            <div className="absolute inset-0 bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 animate-pulse"></div>
+
+            {/* Video with Loading Handler */}
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              className="w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+              onLoadedData={(e) => {
+                const video = e.target as HTMLVideoElement;
+                video.classList.remove('opacity-0');
+                video.classList.add('opacity-100');
+              }}
+              onError={(e) => {
+                // Fallback to static background on error
+                const video = e.target as HTMLVideoElement;
+                video.style.display = 'none';
+              }}
+            >
+              <source src="/custom/moving-video.mp4" type="video/mp4" />
+              <source src="/custom/moving-video.webm" type="video/webm" />
+            </video>
+
+            {/* Dark Overlay with Gradient */}
+            <div
+              className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60 overlay"
+              style={{
+                backgroundImage: 'url(/custom/truck-move-2.jpg)',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundBlendMode: 'overlay',
+              }}
+            ></div>
+
+            {/* Gray Overlay */}
+            <div className="absolute inset-0 bg-black/80"></div>
+          </div>
+
+          {/* Content */}
+          <div className="relative z-10 w-[90%] mx-auto flex flex-col lg:flex-row items-center justify-center min-h-[80vh] px-5 lg:pt-0 pt-10">
+            {/* Left: Hero Text - More Width */}
+            <div className="flex-[2] flex flex-col justify-center items-center lg:items-start text-center lg:text-left py-24 lg:py-0 lg:pr-12">
+              <div className="space-y-6 mt-0 gap-4">
+                <h3 className="text-white text-6xl sm:text-7xl font-outfit font-thin drop-shadow-lg">
+                  Your Move{' '}
+                  <span className="font-din-neu font-outfit font-bold">
+                    Mastered
+                  </span>
+                </h3>
+                <p className="font-outfit font-light text-pretty text-gray-200 sm:text-xl/8 mb-2 drop-shadow-md">
+                  Live in Winnipeg? We are moving experts. <br />
+                  {weatherData?.main && (
+                    <span className="font-outfit font-bold text-gray-200 text-sm">
+                      Weather now in the city: ~{weatherData?.main?.temp}°
+                      <span className="text-base">C</span>,{' '}
+                      {weatherData?.weather?.[0]?.description?.toUpperCase()}
+                    </span>
+                  )}
+                </p>
+              </div>
+              {/* Desktop Button */}
+              <div className="hidden lg:flex relative top-40 sm:flex-row items-center lg:items-start gap-4 w-full lg:pt-[5%]">
+                <div className="flex-row gap-4 flex">
+                  <div className="flex items-center gap-2">
+                    <a
+                      href="#"
+                      className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
+                    >
+                      What We Do
+                      <ArrowRightIcon className="w-10 h-10 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                    </a>
+                  </div>
+                  <a
+                    href="#"
+                    className="flex flex-col py-5 font-outfit font-bold text-white hover:text-gray-200 transition-colors duration-200"
+                  >
+                    Learn More
+                  </a>
+                </div>
+              </div>
+
+              {/* Mobile Button */}
+              <div className="lg:hidden flex flex-col items-center justify-between gap-4 w-full mt-6">
+                {/* <div className="flex-row gap-4 flex"> */}
+                <div className="flex items-center gap-2">
+                  <a
+                    href="#"
+                    className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
+                  >
+                    What We Do
+                    <ArrowRightIcon className="w-10 h-10 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                  </a>
+                </div>
+                <a
+                  href="#"
+                  className="flex flex-col py-5 font-outfit font-bold text-white hover:text-gray-200 transition-colors duration-200"
+                >
+                  Learn More
+                </a>
+              </div>
+            </div>
+            {/* Right: Weather Widget - Less Width */}
+            <div className="hidden lg:flex flex-1 items-center justify-end h-full relative lg:pt-[15%]">
+              <div className="sticky top-32 right-0 z-20 w-[300px] max-w-xs">
+                <WeatherWidget
+                  weatherData={weatherData}
+                  loading={loading}
+                  error={error}
+                />
+              </div>
             </div>
           </div>
-          <div className="pt-14 flex gap-8 justify-center">
-            <a
-              className="btn-secondary text-lg px-7"
-              href="/classes-schedule"
-              data-testid={testIds.HOME_PAGE.BOOK_CLASS_CTA}
-            >
-              Book Now
-            </a>
-            <a
-              className="btn-main text-lg px-7"
-              href="/plans"
-              data-testid={testIds.HOME_PAGE.BOOK_PLAN_CTA}
-            >
-              Membership
-            </a>
-          </div>
-        </section>
-        <section className="flex flex-col sm:flex-row pt-1 pb-7 bg-gray-c1 cursor-pointer">
-          <TrainingOptionSelection
-            href="/training"
-            text="Beginners"
-            className="sm:justify-end"
-            bgImageSrc="bg-[url('/home/beginners.jpg')]"
-          />
-          <TrainingOptionSelection
-            href="/training"
-            text="Professionals"
-            className="sm:justify-start"
-            bgImageSrc="bg-[url('/home/professionals.jpg')]"
-          />
-        </section>
-      </div>
-      <ScrollIntoView hashName="#about" offset="-90px" />
-      <div className="min-h-screen bg-[url('/home/fitness-background-2.jpg')] parallax-background">
-        <div className="max-w-full-content mx-auto box-content pt-2">
-          <div className="max-w-[400px] pt-10 pb-2">
-            <h2 className="uppercase text-7xl leading-tight py-7">
-              Meet The Coach
-            </h2>
-            <section className="font-open-sans-condensed text-base text-stone-300 tracking-wider">
-              <p className="py-3">
-                {`Hi, I’m Joey Dixon and I’m a boxing coach with 15 years of boxing experience and 9 intercontinental cruiserweight titles. 
-                I’ve trained many successful boxers at national and international levels. I love teaching people how to box like a pro,
-                whether they are beginners or advanced fighters.
-                `}
-              </p>
-              <p className="py-3">
-                {`To me, boxing is not only a sport, but also a way of life.
-                It teaches you discipline, resilience, confidence, and self-defense. It also keeps you fit, healthy, and mentally sharp.
-                That’s why I created this business to share my knowledge and skills with you.`}
-              </p>
-              <p className="py-3">
-                {`I have a friendly and supportive approach that will make you feel comfortable and motivated.
-                I also have a wealth of experience and expertise that will make you learn faster and better.
-                No matter what your age, level, or background, I can help you become the best boxer you can be.`}
-              </p>
-              <p className="py-3">
-                {`If you are interested in working with me or learning more about me, please feel free to contact me or browse through my website.
-                I look forward to hearing from you and helping you on your boxing journey.`}
-              </p>
-            </section>
-            <section className="mt-5">
-              <ul
-                aria-label="Social Bar"
-                className="flex gap-2 invert -ml-3 items-center"
-              >
-                <li>
-                  <a
-                    href="http://www.facebook.com/wix"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Image
-                      width={43}
-                      height={43}
-                      alt="Facebook"
-                      src="https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png"
-                    />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.x.com/wix"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Image
-                      width={28}
-                      height={28}
-                      src="https://static.wixstatic.com/media/2be684_ea277e5149dc4b86ab826475d4d64c41~mv2.png"
-                      alt="X"
-                    />
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://instagram.com/wix/"
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <Image
-                      width={43}
-                      height={43}
-                      src="https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png"
-                      alt="Instagram"
-                    />
-                  </a>
-                </li>
-              </ul>
-            </section>
-          </div>
-        </div>
-        <section className="bg-[url('/home/coacher-achievements-background.jpg')] bg-center bg-cover">
-          <div className="max-w-full-content px-4 mx-auto text-black">
-            <h2 className="title pt-24 pb-20 tracking-[.3em] text-center">
-              My Experience
-            </h2>
-            <ul className="grid grid-cols-2 lg:grid-cols-4 gap-16 pb-20 px-2">
-              <AchievementItem
-                title="15"
-                tagline="15 YEARS OF BOXING EXPERIENCE"
-              />
-              <AchievementItem
-                title="3"
-                tagline="3 TIMES WBA INTERCONTINENTAL CRUISERWEIGHT"
-              />
-              <AchievementItem
-                title="4"
-                tagline="4 TIMES WBC INTERCONTINENTAL CRUISERWEIGHT"
-              />
-              <AchievementItem
-                title="2"
-                tagline="2 TIMES IBF INTERCONTINENTAL CRUISERWEIGHT"
-              />
-            </ul>
-          </div>
-        </section>
-        <section className="bg-gray-c2">
-          <div className="max-w-full-content px-4 mx-auto py-20 flex flex-col gap-10 items-center">
-            <h3 className="text-3xl uppercase tracking-[.4em] pt-7">
-              Start Training Today
-            </h3>
-            <a
-              className="btn-secondary px-10 text-lg px-7"
-              href="/classes-schedule"
-            >
-              Book a Session
-            </a>
-          </div>
-        </section>
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {galleryItems.map((item) => (
-            <GalleryItem item={item} key={item.id} />
-          ))}
-        </section>
-      </div>
-      <ScrollIntoView hashName="#studio" offset="-90px" />
-      <div className="text-center py-24 bg-[url('/home/fitness-background-3.jpg')] parallax-background">
-        <div className="mx-auto max-w-md px-2">
-          <h2 className="title tracking-widest">THE STUDIO</h2>
-          <div className="pt-7 font-open-sans-condensed text-lg text-stone-300">
-            {`We train in a modern and spacious facility, conveniently located in the heart of San Francisco.
-            We have the equipment, facilities and expertise to take on clients of all ages and experience levels. Come by and check us out!`}
-          </div>
-          <section className="text-center uppercase pt-24 text-stone-200">
-            <h4 className="text-3xl tracking-[.4em]">Address</h4>
-            <div className="pt-6">
-              <div className="text-2xl">500 Terry A Francois Blvd</div>
-              <div className="text-lg">San Francisco, CA 94158, USA</div>
-            </div>
-          </section>
-          <section className="text-center uppercase pt-20 text-stone-200">
-            <h4 className="text-3xl tracking-[.4em]">Hours</h4>
-            <div className="text-2xl pt-6">
-              <div>Monday - Friday</div>
-              <div>6:30AM - 7:00PM</div>
-            </div>
-          </section>
+          {/* Lines SVG Effect - Background */}
+          {/* <Lines linesColor="red" strokeWidth={4} /> */}
         </div>
       </div>
-    </div>
+
+      <div className="w-full h-full bg-white dark:bg-black py-10 rounded-lg relative transition-all duration-300">
+        <div className="w-[90%] mx-auto flex flex-col justify-center items-center ">
+          <Lines
+            linesColor="black"
+            strokeWidth={1}
+            className="lg:mr-60 lg:ml-0 ml-20"
+          />
+
+          <div className="w-full h-full dark:bg-white sm:flex-row flex-col flex justify-between items-center gap-4 lg:grid lg:grid-cols-2">
+            <div className="flex flex-col gap-4 lg:px-12 px-0">
+              <h1 className="text-black dark:text-white text-2xl font-outfit font-thin normal-case">
+                Why <span className=" font-outfit font-bold">Movers?</span>
+              </h1>
+              <p className="text-black dark:text-white text-base font-outfit font-light">
+                Moving can often feel overwhelming, especially when relocating
+                to a different city or province.
+              </p>
+              <p className="text-black dark:text-white text-base font-outfit font-light">
+                We offer a variety of moving services designed to make the
+                process smoother and less stressful.
+              </p>
+              <div className="flex flex-row gap-4">
+                <a
+                  href="#"
+                  className="rounded-lg bg-theme-orange px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white  hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
+                >
+                  About Us
+                  <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                </a>
+              </div>
+            </div>
+            <div className="flex flex-col">
+              <Image
+                src="/custom/moving-elevator.jpg"
+                className="w-full h-full rounded-lg"
+                alt="Movers"
+                width={500}
+                height={500}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="w-full h-full bg-black py-10 mt-10">
+        <div className="w-full lg:w-[70%] mx-auto flex flex-col justify-center items-center gap-3">
+          <h1 className="text-white dark:text-white text-2xl font-outfit font-light mb-4 normal-case">
+            <span className="font-bold">Our</span> Services
+          </h1>
+          <div className="flex lg:flex-row flex-col w-full gap-8 lg:grid lg:grid-cols-3 px-4">
+            <div className="flex flex-col rounded-lg bg-[#D9D9D9] dark:bg-black p-4 items-center justify-center gap-4 w-full">
+              <Image
+                src="/custom/city.svg"
+                alt="Movers"
+                className="w-15 h-15"
+                width={100}
+                height={100}
+              />
+
+              <h2 className="text-black dark:text-white text-base font-outfit font-light">
+                Commercial Moving
+              </h2>
+              <p className="text-black dark:text-white text-sm font-outfit font-thin text-center">
+                We offer a variety of commercial moving services designed to
+                make the process smoother and less stressful.
+              </p>
+            </div>
+            <div className="flex flex-col rounded-lg bg-[#D9D9D9] dark:bg-black p-4 items-center justify-center gap-4">
+              <Image
+                src="/custom/palm.svg"
+                alt="Movers"
+                className="w-15 h-15"
+                width={100}
+                height={100}
+              />
+
+              <h2 className="text-black dark:text-white text-base font-outfit font-light">
+                Residential Moving
+              </h2>
+              <p className="text-black dark:text-white text-sm font-outfit font-thin text-center">
+                We offer a variety of commercial moving services designed to
+                make the process smoother and less stressful.
+              </p>
+            </div>
+            <div className="flex flex-col rounded-lg bg-[#D9D9D9] dark:bg-black p-4 items-center justify-center gap-4">
+              <Image
+                src="/custom/surbway.svg"
+                alt="Movers"
+                className="w-15 h-15"
+                width={100}
+                height={100}
+              />
+
+              <h2 className="text-black dark:text-white text-base font-outfit font-light">
+                Storage
+              </h2>
+              <p className="text-black dark:text-white text-sm font-outfit font-thin text-center">
+                We offer a variety of commercial moving services designed to
+                make the process smoother and less stressful.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Testimonial Slider */}
+      <TestimonialComponent />
+    </>
   );
 }

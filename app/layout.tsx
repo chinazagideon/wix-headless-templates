@@ -1,17 +1,20 @@
 import '@app/globals.css';
-import Footer from '@app/components/Layout/Footer';
-import Header from '@app/components/Layout/Header';
+// import Footer from '@app/components/Layout/NavBarV2/Footer';
 import { useServerAuthSession } from '@app/hooks/useServerAuthSession';
+import PreloaderWrapper from '@app/components/Loader/PreloaderWrapper';
+import React from 'react';
 
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.
  * If you prefer having it reflected only after redeploy (not recommended) please remove it
  * **/
+
 export const revalidate = 0;
 
 export default function RootLayout(layoutProps: any) {
   const { children } = layoutProps;
   const wixSession = useServerAuthSession();
+
   return (
     <html lang="en">
       <head>
@@ -28,8 +31,7 @@ export default function RootLayout(layoutProps: any) {
           className="parallax-background"
           style={{ backgroundColor: '#F5F5F5' }}
         >
-          {/* <Header /> */}
-          <main className="bg-transparent min-h-[600px]">{children}</main>
+          <PreloaderWrapper>{children}</PreloaderWrapper>
           {/* <Footer /> */}
         </body>
       ) : (

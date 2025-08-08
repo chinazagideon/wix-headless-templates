@@ -7,9 +7,9 @@ export async function GET() {
 
     // In production without env var, return mock data
     if (isProduction && !process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY) {
-      console.log(
-        'Production environment without API key, returning mock data'
-      );
+      // console.log(
+      //   'Production environment without API key, returning mock data'
+      // );
       return NextResponse.json(weatherConfig.mockData);
     }
 
