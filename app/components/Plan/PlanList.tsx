@@ -23,14 +23,18 @@ const durationPeriodFormatter = (
 };
 
 const formatOneTimePlanDuration = (duration: plans.Duration) => {
-  const periodFormat = durationPeriodFormatter(duration.unit);
+  const periodFormat = durationPeriodFormatter(
+    duration.unit as plans.PeriodUnit
+  );
   return `${duration.count ?? 0} ${
     duration.count === 1 ? periodFormat.singular : periodFormat.plural
   }`;
 };
 
 const formatRecurringPlanDuration = (recurrence: plans.Recurrence) => {
-  const periodFormat = durationPeriodFormatter(recurrence?.cycleDuration?.unit);
+  const periodFormat = durationPeriodFormatter(
+    recurrence?.cycleDuration?.unit as plans.PeriodUnit
+  );
   return recurrence?.cycleDuration?.count === 1
     ? periodFormat.singular
     : `${recurrence?.cycleDuration?.count ?? 0} ${periodFormat.plural}`;
