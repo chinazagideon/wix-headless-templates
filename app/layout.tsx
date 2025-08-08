@@ -19,10 +19,7 @@ export default function RootLayout(layoutProps: any) {
     <html lang="en">
       <head>
         <title>IcanMovers | Winnipegs Finest Movers</title>
-        <meta
-          name="description"
-          content="IcanDo Movers, Winnipegs Finest"
-        />
+        <meta name="description" content="IcanDo Movers, Winnipegs Finest" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/custom/favicon.png" />
       </head>
