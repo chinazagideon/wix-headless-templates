@@ -2,7 +2,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import routes from '@app/components/Layout/NavBarV2/routes';
 
 const HeroWidget = ({ className }: { className?: string }) => {
-  const quotation_url = routes.pricing;
+  const quotation_url = routes.quotation;
   return (
     <>
       <div
