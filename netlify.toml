@@ -2,11 +2,6 @@
   command = "yarn build"
   publish = ".next"
 
-# Environment variables will be set in Netlify dashboard
-# [build.environment]
-#   NEXT_PUBLIC_WIX_CLIENT_ID = "your_wix_client_id_here"
-#   NEXT_PUBLIC_SITE_URL = "https://comfy-clafoutis-b5d0d3.netlify.app"
-
 [[headers]]
   for = "/*"
   [headers.values]
