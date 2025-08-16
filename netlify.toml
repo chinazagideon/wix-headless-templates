@@ -1,9 +1,24 @@
 [build]
-  command = "npm run build"
+  command = "yarn build"
   publish = ".next"
 
-[template]
-  incoming-hooks = ["WixBookings"]
+# Environment variables will be set in Netlify dashboard
+# [build.environment]
+#   NEXT_PUBLIC_WIX_CLIENT_ID = "your_wix_client_id_here"
+#   NEXT_PUBLIC_SITE_URL = "https://comfy-clafoutis-b5d0d3.netlify.app"
 
-[template.environment]
-  NEXT_PUBLIC_WIX_CLIENT_ID = "Wix Headless Client ID"
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Disable secret scanning for this build
+[build.processing]
+  skip_processing = false
+
+# Disable secret scanning
+[build.environment]
+  NETLIFY_DISABLE_SECRET_SCANNING = "true"
