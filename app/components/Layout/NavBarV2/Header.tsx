@@ -9,18 +9,19 @@ import {
 
 import { useState } from 'react';
 import NavLink from './NavLink';
+import routes from './routes';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigation = [
-    { name: 'Home', href: '/' },
-    { name: 'About', href: '/about' },
-    { name: 'Services', href: '/services' },
-    { name: 'Pricing', href: '#' },
-    { name: 'Relocation Hub', href: '/relocation-hub' },
-    { name: 'Contact Us', href: '#' },
+    { name: 'Home', href: routes.home },
+    { name: 'About', href: routes.about },
+    { name: 'Services', href: routes.services },
+    { name: 'Pricing', href: routes.pricing },
+    { name: 'Relocation Hub', href: routes.relocation_hub },
+    { name: 'Contact Us', href: routes.contact },
   ];
-  const quotation_url = '/quotation';
+  const quotation_url = routes.quotation;
 
   return (
     <>

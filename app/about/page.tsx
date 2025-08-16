@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import HeroWidget from '../components/Widget/HeroWdget';
+import routes from '@app/components/Layout/NavBarV2/routes';
 
 const Page = () => {
   return (
@@ -44,7 +45,7 @@ const Page = () => {
           <div className="flex flex-row justify-start pt-4">
             <div className="items-center justify-start gap-2 animate-slide-in-left">
               <a
-                href="#"
+                href={routes.services}
                 className="z-50 text-sm rounded-full bg-theme-orange px-3 w-fit py-2 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
               >
                 Our Services

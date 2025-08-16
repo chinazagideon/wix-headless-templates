@@ -7,6 +7,7 @@ import { WeatherWidget, useWeather } from '@app/components/Weather';
 import TestimonialComponent from '@app/components/Testimonials/TestimonialComponent';
 import QuoteComponent from '@app/components/Quote/QouteComponent';
 import Lines from '@app/components/Design/Lines';
+import routes from '@app/components/Layout/NavBarV2/routes';
 
 export default function Page() {
   const { weatherData, loading, error } = useWeather();
@@ -79,7 +80,7 @@ export default function Page() {
                 <div className="flex-row gap-4 flex">
                   <div className="flex items-center gap-2 animate-slide-in-left">
                     <a
-                      href="#"
+                      href={routes.services}
                       className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
                     >
                       What We Do
@@ -87,7 +88,7 @@ export default function Page() {
                     </a>
                   </div>
                   <a
-                    href="#"
+                    href={routes.about}
                     className="flex flex-col py-5 font-outfit font-bold text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
                   >
                     Learn More
@@ -100,7 +101,7 @@ export default function Page() {
                 {/* <div className="flex-row gap-4 flex"> */}
                 <div className="flex items-center gap-2 animate-slide-in-left">
                   <a
-                    href="#"
+                    href={routes.services}
                     className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
                   >
                     What We Do
@@ -108,7 +109,7 @@ export default function Page() {
                   </a>
                 </div>
                 <a
-                  href="#"
+                  href={routes.about}
                   className="flex flex-col py-5 font-outfit font-bold text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
                 >
                   Learn More
@@ -154,7 +155,7 @@ export default function Page() {
               </p>
               <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
                 <a
-                  href="#"
+                  href={routes.about}
                   className="rounded-lg bg-theme-orange px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white  hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
                 >
                   About Us
@@ -259,7 +260,7 @@ export default function Page() {
               </p>
               <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
                 <a
-                  href="#"
+                  href={routes.services}
                   className="rounded-lg px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
                 >
                   <Image
@@ -271,7 +272,7 @@ export default function Page() {
                   />
                 </a>
                 <a
-                  href="#"
+                  href={routes.services}
                   className="rounded-lg px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
                 >
                   <Image

@@ -1,6 +1,8 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import routes from '@app/components/Layout/NavBarV2/routes';
 
 const HeroWidget = ({ className }: { className?: string }) => {
+  const quotation_url = routes.pricing;
   return (
     <>
       <div
@@ -29,7 +31,7 @@ const HeroWidget = ({ className }: { className?: string }) => {
           <div className="flex flex-col lg:flex-row  items-center justify-center gap-4 w-full pt-10 lg:pt-[5%] animate-fade-in-delay">
             <div className="flex items-center gap-2 animate-slide-in-left">
               <a
-                href="#"
+                href={quotation_url}
                 className="z-50 text-sm rounded-full bg-theme-orange px-3 w-fit py-2 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
               >
                 Book a Move
@@ -37,7 +39,7 @@ const HeroWidget = ({ className }: { className?: string }) => {
               </a>
             </div>
             <a
-              href="#"
+              href={routes.relocation_hub}
               className="flex underline flex-col text-md py-5 font-outfit font-light text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
             >
               Visit Winnipeg Hub
