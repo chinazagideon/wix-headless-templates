@@ -12,7 +12,7 @@ export const formatServicePrice = ({
   userFormattedPrice: string;
   priceType: ServicePaymentDto['priceType'];
 } => {
-  const priceType = servicePayment.priceType;
+  const priceType = servicePayment?.priceType;
   let userFormattedPrice = '';
   switch (priceType) {
     case 'dynamic':

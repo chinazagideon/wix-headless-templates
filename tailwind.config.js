@@ -1,6 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 const widthExtension = {
-  'full-content': '980px',
+  'full-content': '100%',
+  'full-content-sm': '640px',
+  'full-content-md': '768px',
+  'full-content-lg': '1024px',
+  'full-content-xl': '1280px',
 };
 const defaultTheme = require('tailwindcss/defaultTheme');
 

@@ -31,7 +31,7 @@ export default function RootLayout(layoutProps: any) {
       </head>
       {wixSession.wixClient ? (
         <body
-          className="parallax-background"
+          className="parallax-background overflow-x-hidden w-full min-h-screen mobile-no-scroll"
           style={{ backgroundColor: '#F5F5F5' }}
         >
           <PreloaderWrapper>{children}</PreloaderWrapper>
@@ -39,7 +39,7 @@ export default function RootLayout(layoutProps: any) {
         </body>
       ) : (
         <body className="">
-          <main className="max-w-full-content mx-auto bg-gray-c2 pt-32">
+          <main className="w-full bg-gray-c2 pt-32 px-4 sm:px-6 lg:px-8">
             <h1>
               Page not available. Please add an environment variable called
               NEXT_PUBLIC_WIX_CLIENT_ID, containing the client ID, to your

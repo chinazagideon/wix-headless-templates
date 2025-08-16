@@ -11,10 +11,12 @@ export default function ImageGallery({
     <ImageGalleryClient
       width={600}
       height={400}
-      items={mediaItems.map((item) => ({
-        src: getImageUrlForMedia(item, 600, 400),
-        alt: '',
-      }))}
+      items={mediaItems
+        .map((item) => {
+          const src = getImageUrlForMedia(item, 600, 400);
+          return src ? { src, alt: '' } : null;
+        })
+        .filter((item): item is { src: string; alt: string } => item !== null)}
     />
   );
 }

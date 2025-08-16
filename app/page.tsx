@@ -6,7 +6,6 @@ import Image from 'next/image';
 import { WeatherWidget, useWeather } from '@app/components/Weather';
 import TestimonialComponent from '@app/components/Testimonials/TestimonialComponent';
 import QuoteComponent from '@app/components/Quote/QouteComponent';
-
 import Lines from '@app/components/Design/Lines';
 
 export default function Page() {
@@ -58,10 +57,10 @@ export default function Page() {
             {/* Left: Hero Text - More Width */}
             <div className="flex-[2] flex flex-col justify-center items-center lg:items-start text-center lg:text-left py-24 lg:py-0 lg:pr-12 lg:mt-0 mt-10">
               <div className="space-y-6 mt-0 gap-4 animate-fade-in-up">
-                <h3 className="text-white text-6xl sm:text-7xl font-outfit font-thin drop-shadow-lg animate-slide-in-left">
-                  Your Move{' '}
+                <h3 className="text-white text-4xl lg:text-6xl sm:text-7xl font-outfit font-thin drop-shadow-lg animate-slide-in-left">
+                  Redefining the{' '}
                   <span className="font-din-neu font-outfit font-bold animate-slide-in-right">
-                    Mastered
+                    Neighborhood Moving Services
                   </span>
                 </h3>
                 <p className="font-outfit font-light text-pretty text-gray-200 sm:text-xl/8 mb-2 drop-shadow-md animate-fade-in-delay">
@@ -76,7 +75,7 @@ export default function Page() {
                 </p>
               </div>
               {/* Desktop Button */}
-              <div className="hidden lg:flex relative top-40 sm:flex-row items-center lg:items-start gap-4 w-full lg:pt-[5%] animate-fade-in-delay">
+              <div className="hidden lg:flex relative top-10 sm:flex-row items-center lg:items-start gap-4 w-full lg:pt-[5%] animate-fade-in-delay">
                 <div className="flex-row gap-4 flex">
                   <div className="flex items-center gap-2 animate-slide-in-left">
                     <a
@@ -117,8 +116,8 @@ export default function Page() {
               </div>
             </div>
             {/* Right: Weather Widget - Less Width */}
-            <div className="hidden lg:flex flex-1 items-center justify-end h-full relative lg:pt-[15%]">
-              <div className="sticky top-32 right-0 z-20 w-[300px] max-w-xs animate-fade-in-delay-2">
+            <div className="hidden lg:flex flex-1 items-center justify-end h-full relative lg:pt-[1%]">
+              <div className="sticky top-12 right-0 z-20 w-[300px] max-w-xs animate-fade-in-delay-2">
                 <WeatherWidget
                   weatherData={weatherData}
                   loading={loading}
@@ -163,10 +162,10 @@ export default function Page() {
                 </a>
               </div>
             </div>
-            <div className="flex flex-col ">
+            <div className="flex flex-col items-center justify-center w-full">
               <Image
-                src="/custom/moving-tshirt-logo.jpg"
-                className="w-full h-full rounded-lg "
+                src="/custom/moving-elevator.jpg"
+                className="w-full h-full rounded-lg w-full lg:w-[calc(100%-100px)]"
                 alt="Movers"
                 width={500}
                 height={500}
@@ -231,6 +230,59 @@ export default function Page() {
                 We offer a variety of commercial moving services designed to
                 make the process smoother and less stressful.
               </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="w-full h-full bg-white dark:bg-black py-10 rounded-lg relative transition-all duration-300">
+        <div className="w-[90%] mx-auto flex flex-col justify-center items-center ">
+          <div className="w-full h-full dark:bg-white sm:flex-row flex-col flex justify-between items-center gap-4 lg:grid lg:grid-cols-2">
+            <div className="flex flex-col items-center justify-center">
+              <Image
+                src="/custom/mobile-prototype.png"
+                className="w-[50%] rounded-lg "
+                alt="Movers"
+                width={500}
+                height={500}
+              />
+            </div>
+            <div className="flex flex-col gap-4 lg:px-12 px-0 text-center lg:text-left">
+              <span className="text-black dark:text-white text-base font-outfit font-light">
+                Coming Soon
+              </span>
+              <h1 className="text-black dark:text-white text-2xl font-outfit font-thin normal-case">
+                Download the{' '}
+                <span className=" font-outfit font-bold">Our Mobile App</span>
+              </h1>
+              <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
+                Download the Movers mobile app to get started with your move.
+              </p>
+              <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
+                <a
+                  href="#"
+                  className="rounded-lg px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
+                >
+                  <Image
+                    src="/custom/download-apple-store.svg"
+                    alt="Movers"
+                    className="w-40 h-40"
+                    width={400}
+                    height={400}
+                  />
+                </a>
+                <a
+                  href="#"
+                  className="rounded-lg px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
+                >
+                  <Image
+                    src="/custom/download-google-store.svg"
+                    alt="Movers"
+                    className="w-40 h-40"
+                    width={400}
+                    height={400}
+                  />
+                </a>
+              </div>
             </div>
           </div>
         </div>

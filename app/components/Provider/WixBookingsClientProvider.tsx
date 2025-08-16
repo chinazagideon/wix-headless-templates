@@ -27,7 +27,7 @@ const theme: CustomFlowbiteTheme = {
 export const WixBookingsClientProvider = ({
   children,
 }: PropsWithChildren<{}>) => (
-  <Flowbite theme={{ theme, dark: true }}>
+  <Flowbite theme={{ theme, dark: false }}>
     <WixSessionContext.Provider value={{ wixClient: getBrowserWixClient() }}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WixSessionContext.Provider>

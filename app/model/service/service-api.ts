@@ -38,9 +38,11 @@ export const getServices = (
     queryBuilder = queryBuilder.in('type', types);
   }
   return queryBuilder.find().then((result) => {
+    const mappedServices =
+      (result.items?.map(mapServiceInfo) as ServiceInfoViewModel[]) ?? [];
+
     return {
-      services:
-        (result.items?.map(mapServiceInfo) as ServiceInfoViewModel[]) ?? [],
+      services: mappedServices,
     };
   });
 };

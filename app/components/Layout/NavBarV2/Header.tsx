@@ -13,13 +13,15 @@ import NavLink from './NavLink';
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigation = [
-    { name: 'Home', href: '#' },
-    { name: 'About', href: '#' },
-    { name: 'Services', href: '#' },
+    { name: 'Home', href: '/' },
+    { name: 'About', href: '/about' },
+    { name: 'Services', href: '/services' },
     { name: 'Pricing', href: '#' },
-    { name: 'Relocation Hub', href: '#' },
+    { name: 'Relocation Hub', href: '/relocation-hub' },
     { name: 'Contact Us', href: '#' },
   ];
+  const quotation_url = '/quotation';
+
   return (
     <>
       <header className="absolute inset-x-0 mx-auto top-0 z-50">
@@ -41,12 +43,18 @@ const Header = () => {
                   </span>
                 </p>
                 <p className="text-sm font-light text-gray-900 font-outfit flex flex-row items-center justify-end gap-2">
+                  <span className="hidden sm:block font-outfit font-thin text-sm text-white">
+                    Need help moving? Call us today!
+                  </span>
                   <PhoneIcon
                     className="size-4 text-theme-orange"
                     height={6}
                     width={6}
                   />
-                  <span className="font-outfit font-thin text-sm text-white">
+                  <span
+                    className="font-outfit font-thin text-sm text-white cursor-pointer"
+                    onClick={() => window.open('tel:+112042295871', '_blank')}
+                  >
                     +1 (120) 422-95871
                   </span>
                 </p>
@@ -56,7 +64,7 @@ const Header = () => {
               <div className="flex flex-row justify-between items-center w-full">
                 <div className="flex lg:flex-1">
                   <a href="#" className="-m-1.5 p-1.5">
-                    <span className="sr-only">Your Company</span>
+                    <span className="sr-only">IcanDo Movers</span>
                     <img alt="" src="/custom/logo.svg" className="h-8 w-auto" />
                   </a>
                 </div>
@@ -76,7 +84,7 @@ const Header = () => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className="text-sm/6 font-light text-gray-900 font-outfit"
+                      className="text-sm/6 font-light text-gray-900 dark:text-white font-outfit"
                     >
                       {item.name}
                     </a>
@@ -84,10 +92,10 @@ const Header = () => {
                 </div>
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                   <a
-                    href="#quote"
-                    className="text-sm/6 font-light text-gray-900 font-outfit"
+                    href={quotation_url}
+                    className="text-sm/6 font-light text-gray-900 dark:text-white font-outfit"
                   >
-                    Request Qoutation <span aria-hidden="true">&rarr;</span>
+                    Request Quotation <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
               </div>
