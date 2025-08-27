@@ -137,7 +137,9 @@ const Preloader = () => {
                 zIndex: 3,
               }}
             >
-              <span className="text-theme-orange font-outfit font-bold">{constants.websiteUrl}</span>
+              <span className="text-theme-orange font-outfit font-bold">
+                {constants.websiteUrl}
+              </span>
             </p>
           </div>
         </div>

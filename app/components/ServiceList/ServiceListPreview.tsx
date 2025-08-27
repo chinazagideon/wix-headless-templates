@@ -19,18 +19,18 @@ export default function ServiceListPreviewView({
     <div className="w-full mx-auto px-4">
       {visibleServices.length ? (
         <>
-        <div
-          className={`flex flex-wrap my-3 m-auto grid grid-cols-1 gap-6 ${smClassName} ${mdClassName}`}
-        >
-          {visibleServices.map((service, index) => (
-            <ServiceCardPreview service={service} key={service.id} />
-          ))}
-        </div>
+          <div
+            className={`flex flex-wrap my-3 m-auto grid grid-cols-1 gap-6 ${smClassName} ${mdClassName}`}
+          >
+            {visibleServices.map((service, index) => (
+              <ServiceCardPreview service={service} key={service.id} />
+            ))}
+          </div>
         </>
       ) : (
         <div className="text-center">
           No services found.
-           {/* Click{' '} */}
+          {/* Click{' '} */}
           {/* <a
             href="https://manage.wix.com/account/site-selector?actionUrl=https%3A%2F%2Fmanage.wix.com%2Fdashboard%2F%7BmetaSiteId%7D%2Fbookings%2Fservices%2Ftemplates-catalog%3Forigin%3DHeadless"
             target="_blank"
@@ -54,9 +54,11 @@ const ServiceCardPreview = ({ service }: { service: ServiceInfoViewModel }) => {
 
   return (
     <div className="w-full rounded-none overflow-hidden mx-auto relative h-full min-h-[300px] text-black">
-      <span className="font-bold text-xl">        
+      <span className="font-bold text-xl">
         <WixMediaImage
-          media={service.info.media?.mainMedia || service.info.media?.coverMedia}
+          media={
+            service.info.media?.mainMedia || service.info.media?.coverMedia
+          }
           width={640}
           height={480}
         />

@@ -36,12 +36,13 @@ export async function GET(request: NextRequest) {
 
     if (!apiKeyClient && !oauthClient) {
       return NextResponse.json(
-        { error: 'Wix client not configured (missing OAuth tokens or API key)' },
+        {
+          error: 'Wix client not configured (missing OAuth tokens or API key)',
+        },
         { status: 500 }
       );
     }
 
-    
     // The API requires an explicit namespace filter on the builder
     const runQuery = async (client: any) => {
       // @ts-ignore - typings may vary between SDK versions
@@ -54,25 +55,37 @@ export async function GET(request: NextRequest) {
     try {
       const primary = apiKeyClient ?? oauthClient;
       const { items = [] } = await runQuery(primary);
-      const uniqueFormIds = Array.from(new Set(items.map((s: any) => s.formId).filter(Boolean)));
-      return NextResponse.json({ namespace, formIds: uniqueFormIds, count: uniqueFormIds.length });
+      const uniqueFormIds = Array.from(
+        new Set(items.map((s: any) => s.formId).filter(Boolean))
+      );
+      return NextResponse.json({
+        namespace,
+        formIds: uniqueFormIds,
+        count: uniqueFormIds.length,
+      });
     } catch (err: any) {
       const status = err?.status || err?.response?.status;
       if (apiKeyClient && oauthClient && status === 403) {
         const { items = [] } = await runQuery(oauthClient);
-        const uniqueFormIds = Array.from(new Set(items.map((s: any) => s.formId).filter(Boolean)));
-        return NextResponse.json({ namespace, formIds: uniqueFormIds, count: uniqueFormIds.length });
+        const uniqueFormIds = Array.from(
+          new Set(items.map((s: any) => s.formId).filter(Boolean))
+        );
+        return NextResponse.json({
+          namespace,
+          formIds: uniqueFormIds,
+          count: uniqueFormIds.length,
+        });
       }
       throw err;
     }
   } catch (error: any) {
     const status = error?.status || error?.response?.status || 500;
-    const details = error?.details || error?.response?.data || { message: error?.message };
+    const details = error?.details ||
+      error?.response?.data || { message: error?.message };
     console.error('Failed to query forms by namespace', error);
-    return NextResponse.json({ error: 'Failed to query forms by namespace', details }, { status });
+    return NextResponse.json(
+      { error: 'Failed to query forms by namespace', details },
+      { status }
+    );
   }
 }
-
-
-
-

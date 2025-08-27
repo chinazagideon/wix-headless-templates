@@ -16,7 +16,7 @@ export default async function PlansPage({
   const { data: plans } = await safeGetPaidPlans(wixSession, {
     planIds: planIds ? planIds?.split(',') : undefined,
   });
-  
+
   return (
     <div className="max-w-full-content mx-auto pb-8">
       <div className="px-3 py-12" data-testid={testIds.PLANS_PAGE.HEADER}>

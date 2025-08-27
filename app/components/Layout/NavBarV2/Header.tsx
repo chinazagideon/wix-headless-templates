@@ -11,6 +11,7 @@ import { useState } from 'react';
 import NavLink from './NavLink';
 import routes from './routes';
 import { constants } from '@app/components/constants';
+import Image from 'next/image';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -23,10 +24,10 @@ const Header = () => {
     { name: 'Contact Us', href: routes.contact },
   ];
   const quotation_url = routes.quotation;
-  
-const isActivePage = (path: string) => {
-  return path === window.location.pathname;
-}
+
+  const isActivePage = (path: string) => {
+    return path === window.location.pathname;
+  };
 
   return (
     <>
@@ -59,7 +60,9 @@ const isActivePage = (path: string) => {
                   />
                   <span
                     className="font-outfit font-thin text-sm text-white cursor-pointer"
-                    onClick={() => window.open(`tel:${constants.companyPhone}`, '_blank')}
+                    onClick={() =>
+                      window.open(`tel:${constants.companyPhone}`, '_blank')
+                    }
                   >
                     {constants.companyPhone}
                   </span>
@@ -71,7 +74,11 @@ const isActivePage = (path: string) => {
                 <div className="flex lg:flex-1">
                   <a href={routes.home} className="-m-1.5 p-1.5">
                     <span className="sr-only">{constants.companyName}</span>
-                    <img alt="" src={constants.companyLogo} className="h-8 w-auto" />
+                    <Image
+                      alt=""
+                      src={constants.companyLogo}
+                      className="h-8 w-auto"
+                    />
                   </a>
                 </div>
 
@@ -90,7 +97,11 @@ const isActivePage = (path: string) => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`text-sm/6 font-light text-gray-900 dark:text-white font-outfit ${isActivePage(item.href) ? 'text-theme-orange underline underline-offset-4' : ''}`}
+                      className={`text-sm/6 font-light  md:text-xs/10 text-gray-900 dark:text-white font-outfit ${
+                        isActivePage(item.href)
+                          ? 'text-theme-orange underline underline-offset-4'
+                          : ''
+                      }`}
                     >
                       {item.name}
                     </a>
@@ -99,7 +110,7 @@ const isActivePage = (path: string) => {
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                   <a
                     href={quotation_url}
-                    className="text-sm/6 font-light text-gray-900 dark:text-white font-outfit"
+                    className="text-sm/6 font-light md:text-xs text-gray-900 dark:text-white font-outfit"
                   >
                     Request Quotation <span aria-hidden="true">&rarr;</span>
                   </a>

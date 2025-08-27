@@ -13,11 +13,8 @@ import { useWixServices } from '@app/hooks/useWixServices';
 import ServiceListPreviewView from '@app/components/ServiceList/ServiceListPreview';
 import { Loader } from 'lucide-react';
 import WixMediaImage from '@app/components/Image/WixMediaImage';
-import { queryReviewsFunction } from '@app/hooks/useReviews';
+// import { queryReviewsFunction } from '@app/hooks/useReviews';
 // import { useReviews } from '@app/hooks/useReviews';
-
-
-
 
 export default function Page() {
   const { weatherData, loading, error } = useWeather();
@@ -28,7 +25,7 @@ export default function Page() {
   // }, []);
   // console.log(items);
   // queryPostsFunction();
-  queryReviewsFunction();
+  // queryReviewsFunction();
   return (
     <>
       <div className="bg-white w-full">
@@ -160,7 +157,10 @@ export default function Page() {
           <div className="w-full h-full dark:bg-white sm:flex-row flex-col flex justify-between items-center gap-4 lg:grid lg:grid-cols-2 z-1000">
             <div className="flex flex-col gap-4 lg:px-12 px-0 text-center lg:text-left">
               <h1 className="text-black dark:text-white text-2xl font-outfit font-thin normal-case">
-                Why <span className=" font-outfit font-bold">{constants.companyName}?</span>
+                Why{' '}
+                <span className=" font-outfit font-bold">
+                  {constants.companyName}?
+                </span>
               </h1>
               <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
                 Moving can often feel overwhelming, especially when relocating
@@ -205,12 +205,20 @@ export default function Page() {
             ) : wixError ? (
               <div>Error loading services: {wixError}</div>
             ) : (
-                services?.filter((service) => !service.hidden).slice(0, 3).map((service) => (
-
-                  <div className="flex flex-col rounded-lg p-4 items-center justify-center gap-4 w-full">
+              services
+                ?.filter((service) => !service.hidden)
+                .slice(0, 3)
+                .map((service) => (
+                  <div
+                    key={service.info.name}
+                    className="flex flex-col rounded-lg p-4 items-center justify-center gap-4 w-full"
+                  >
                     <div className="flex w-full items-center justify-center gap-4 w-full bg-black ">
                       <WixMediaImage
-                        media={service.info.media?.mainMedia || service.info.media?.coverMedia}
+                        media={
+                          service.info.media?.mainMedia ||
+                          service.info.media?.coverMedia
+                        }
                         width={300}
                         height={300}
                       />
@@ -227,7 +235,10 @@ export default function Page() {
             )}
           </div>
           <div className="flex flex-row justify-center items-center w-full mt-4 border-t border-theme-orange/20 pt-4">
-            <a href={routes.services} className="text-theme-orange text-base font-outfit font-thin flex flex-row items-center gap-2 hover:scale-105 transition-all duration-200 ">
+            <a
+              href={routes.services}
+              className="text-theme-orange text-base font-outfit font-thin flex flex-row items-center gap-2 hover:scale-105 transition-all duration-200 "
+            >
               View All Services
               <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-0.5 text-theme-orange" />
             </a>

@@ -36,7 +36,9 @@ export async function POST(request: NextRequest) {
     const client = apiKeyClient ?? oauthClient;
     if (!client) {
       return NextResponse.json(
-        { error: 'Wix client not configured (missing OAuth tokens or API key)' },
+        {
+          error: 'Wix client not configured (missing OAuth tokens or API key)',
+        },
         { status: 500 }
       );
     }
@@ -49,8 +51,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result);
   } catch (error: any) {
     console.error('Failed to submit form', error);
-    return NextResponse.json({ error: 'Failed to submit form' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Failed to submit form' },
+      { status: 500 }
+    );
   }
 }
-
-

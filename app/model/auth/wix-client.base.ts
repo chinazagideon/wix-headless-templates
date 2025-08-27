@@ -25,7 +25,8 @@ const getRefreshToken = (cookieStore: CookieStore) => {
   // Prefer JSON format { value, expiresAt }. If raw string, wrap into expected shape.
   try {
     const parsed = JSON.parse(raw);
-    if (parsed && typeof parsed === 'object' && 'value' in parsed) return parsed;
+    if (parsed && typeof parsed === 'object' && 'value' in parsed)
+      return parsed;
   } catch {}
   return { value: raw, expiresAt: 0 } as any;
 };

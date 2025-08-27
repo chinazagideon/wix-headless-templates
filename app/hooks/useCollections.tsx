@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { useQuery } from '@tanstack/react-query';
 import { useClientAuthSession } from '@app/hooks/useClientAuthSession';
 
@@ -17,7 +17,8 @@ export const useListCollections = (params?: ListCollectionsParams) => {
       try {
         const url = new URL('/api/collections', window.location.origin);
         if (params?.limit) url.searchParams.set('limit', String(params.limit));
-        if (params?.offset) url.searchParams.set('offset', String(params.offset));
+        if (params?.offset)
+          url.searchParams.set('offset', String(params.offset));
         params?.fields?.forEach((f) => url.searchParams.append('fields', f));
         const res = await fetch(url.toString(), { cache: 'no-store' });
         if (res.ok) return res.json();
@@ -25,7 +26,10 @@ export const useListCollections = (params?: ListCollectionsParams) => {
 
       if (!session?.wixClient) throw new Error('Wix client is not initialized');
       const result = await session.wixClient.collections.listDataCollections({
-        paging: params?.limit || params?.offset ? { limit: params?.limit, offset: params?.offset } : undefined,
+        paging:
+          params?.limit || params?.offset
+            ? { limit: params?.limit, offset: params?.offset }
+            : undefined,
         fields: params?.fields,
       });
       return result;
@@ -42,7 +46,7 @@ export const useGetCollection = (id?: string, fields?: string[]) => {
       if (!id) return null;
       try {
         const url = new URL('/api/collections', window.location.origin);
-        url.searchParams.set('id', id);
+        url.searchParams.set('_id', id);
         fields?.forEach((f) => url.searchParams.append('fields', f));
         const res = await fetch(url.toString(), { cache: 'no-store' });
         if (res.ok) {
@@ -58,6 +62,7 @@ export const useGetCollection = (id?: string, fields?: string[]) => {
   );
 };
 
-export const useCollections = (params?: ListCollectionsParams) => useListCollections(params);
+export const useCollections = (params?: ListCollectionsParams) =>
+  useListCollections(params);
 
 export default useListCollections;

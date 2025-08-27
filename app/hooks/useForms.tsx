@@ -10,17 +10,15 @@ export type UseFormOptions = {
 };
 
 export type UseFormReturn = {
-  submit: (
-    values: SubmissionValues,
-    options?: UseFormOptions
-  ) => Promise<any>;
+  submit: (values: SubmissionValues, options?: UseFormOptions) => Promise<any>;
   isSubmitting: boolean;
   error: unknown;
   data: any;
   reset: () => void;
 };
 
-const GUID_REGEX = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
+const GUID_REGEX =
+  /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
 const HEX32_REGEX = /^[0-9a-fA-F]{32}$/;
 
@@ -52,9 +50,17 @@ export const useForms = (formId: string): UseFormReturn => {
   const normalizedFormId = normalizeToGuid(formId);
 
   const mutation = useMutation({
-    mutationFn: async ({ values, options }: { values: SubmissionValues; options?: UseFormOptions }) => {
+    mutationFn: async ({
+      values,
+      options,
+    }: {
+      values: SubmissionValues;
+      options?: UseFormOptions;
+    }) => {
       if (!GUID_REGEX.test(normalizedFormId)) {
-        throw new Error('Invalid Wix Forms formId. Expected GUID format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx');
+        throw new Error(
+          'Invalid Wix Forms formId. Expected GUID format xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx'
+        );
       }
       const payload: any = { formId: normalizedFormId, submissions: values };
 
@@ -63,7 +69,10 @@ export const useForms = (formId: string): UseFormReturn => {
         const res = await fetch('/api/forms/submit', {
           method: 'POST',
           headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({ ...payload, captchaToken: options?.captchaToken }),
+          body: JSON.stringify({
+            ...payload,
+            captchaToken: options?.captchaToken,
+          }),
         });
         if (res.ok) return res.json();
       } catch {}
@@ -72,7 +81,9 @@ export const useForms = (formId: string): UseFormReturn => {
       if (!session?.wixClient) throw new Error('Wix client is not initialized');
       const result = await session.wixClient.submissions.createSubmission(
         payload,
-        options?.captchaToken ? { captchaToken: options.captchaToken } : undefined
+        options?.captchaToken
+          ? { captchaToken: options.captchaToken }
+          : undefined
       );
       return result;
     },
@@ -89,5 +100,3 @@ export const useForms = (formId: string): UseFormReturn => {
 };
 
 export default useForms;
-
-

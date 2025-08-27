@@ -35,15 +35,11 @@ export async function queryPostsPaginated(page: number = 1, limit: number = 8) {
 }
 
 export function useBlogPosts() {
-  return useQuery(
-    ['blogPosts'],
-    queryPostsFunction,
-    {
-      staleTime: 5 * 60 * 1000,
-      cacheTime: 15 * 60 * 1000,
-      refetchOnWindowFocus: false,
-    }
-  );
+  return useQuery(['blogPosts'], queryPostsFunction, {
+    staleTime: 5 * 60 * 1000,
+    cacheTime: 15 * 60 * 1000,
+    refetchOnWindowFocus: false,
+  });
 }
 
 export function usePaginatedPosts(initialPage: number = 1, limit: number = 8) {

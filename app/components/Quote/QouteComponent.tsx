@@ -14,11 +14,11 @@ const QuoteComponent = () => {
             </h1>
             <div className="flex flex-col gap-4 text-center lg:text-left">
               <p className="text-white dark:text-white text-center lg:text-left text-base font-outfit font-light">
-                With {constants.companyName}, you can trust us to provide a moving
-                experience that is tailored to your needs, affordable, reliable,
-                and backed by outstanding customer support. Fill out this quick
-                form for a moving quote and we’ll get back to you in the same
-                business day.
+                With {constants.companyName}, you can trust us to provide a
+                moving experience that is tailored to your needs, affordable,
+                reliable, and backed by outstanding customer support. Fill out
+                this quick form for a moving quote and we’ll get back to you in
+                the same business day.
               </p>
             </div>
           </div>

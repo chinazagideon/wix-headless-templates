@@ -42,10 +42,14 @@ const Footer = () => {
                     <MapPinIcon className="w-5 h-5 text-theme-orange/50" />{' '}
                     <span className="text-sm">
                       <span className="font-outfit font-bold">
-                        {constants.companyAddress},</span> <br />
-                        <span className='font-outfit font-light'>{constants.companyCity}, {constants.companyProvince} {constants.companyPostalCode}</span>
-                        
+                        {constants.companyAddress},
+                      </span>{' '}
+                      <br />
+                      <span className="font-outfit font-light">
+                        {constants.companyCity}, {constants.companyProvince}{' '}
+                        {constants.companyPostalCode}
                       </span>
+                    </span>
                   </p>
                 </div>
                 <div className="flex lg:flex-col flex-col items-center lg:items-start">
@@ -72,7 +76,8 @@ const Footer = () => {
           </div>
           <div className="flex flex-row items-center gap-2 lg:hidden justify-center border-t-2 border-theme-orange/10 w-full mt-4 py-4">
             <p className="text-black text-sm font-outfit font-light normal-case">
-              &copy; {new Date().getFullYear()} {constants.companyName}. All rights reserved.
+              &copy; {new Date().getFullYear()} {constants.companyName}. All
+              rights reserved.
             </p>
           </div>
         </div>
