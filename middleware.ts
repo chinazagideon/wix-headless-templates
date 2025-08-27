@@ -42,7 +42,10 @@ export async function middleware(request: NextRequest) {
     cookieStore: request.cookies,
   });
   const isLoggedIn = wixClient?.auth.loggedIn();
-  if (!cookies.get(WIX_REFRESH_TOKEN) && !isLoggedIn) {
+  // If not logged in (invalid/expired/absent member or visitor token), always refresh visitor tokens.
+  // This prevents stale refresh tokens from persisting across deploys or sessions.
+  if (!isLoggedIn) {
+    res.cookies.delete(WIX_REFRESH_TOKEN);
     await setVisitorTokens({ response: res, wixClient, request });
   }
   const wixMemberLoggedIn = request.nextUrl.searchParams.get(
