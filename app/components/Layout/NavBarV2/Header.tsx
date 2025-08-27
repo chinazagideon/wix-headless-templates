@@ -17,7 +17,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigation = [
     { name: 'Home', href: routes.home },
-    { name: 'About', href: routes.about },
+    { name: 'About Us', href: routes.about },
     { name: 'Services', href: routes.services },
     { name: 'Pricing', href: routes.pricing },
     { name: 'Relocation Hub', href: routes.relocation_hub },
@@ -77,6 +77,8 @@ const Header = () => {
                     <Image
                       alt=""
                       src={constants.companyLogo}
+                      height={32}
+                      width={100}
                       className="h-8 w-auto"
                     />
                   </a>

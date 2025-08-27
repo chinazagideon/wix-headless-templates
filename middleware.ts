@@ -17,15 +17,21 @@ const setVisitorTokens = async ({
   request: NextRequest;
   response: NextResponse;
 }) => {
-  const tokens = await wixClient!.auth.generateVisitorTokens();
-  const tokenValue = tokens.refreshToken?.value || '';
-  response.cookies.set(WIX_REFRESH_TOKEN, tokenValue, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
-    maxAge: 60 * 60 * 24 * 30,
-  });
+  if (!wixClient) return;
+  try {
+    const tokens = await wixClient!.auth.generateVisitorTokens();
+    const tokenValue = tokens.refreshToken?.value || '';
+    response.cookies.set(WIX_REFRESH_TOKEN, tokenValue, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 24, // 1 day to reduce stale risk
+    });
+  } catch (error) {
+    // Fail open in middleware to avoid breaking local dev if network fails
+    console.error('Failed to generate visitor tokens', error);
+  }
 };
 
 export async function middleware(request: NextRequest) {
@@ -42,11 +48,18 @@ export async function middleware(request: NextRequest) {
     cookieStore: request.cookies,
   });
   const isLoggedIn = wixClient?.auth.loggedIn();
-  // If not logged in (invalid/expired/absent member or visitor token), always refresh visitor tokens.
-  // This prevents stale refresh tokens from persisting across deploys or sessions.
-  if (!isLoggedIn) {
-    res.cookies.delete(WIX_REFRESH_TOKEN);
-    await setVisitorTokens({ response: res, wixClient, request });
+  const isProd = process.env.NODE_ENV === 'production';
+  if (isProd) {
+    // In production, refresh tokens when not logged in to avoid stale cookies.
+    if (!isLoggedIn) {
+      res.cookies.delete(WIX_REFRESH_TOKEN);
+      await setVisitorTokens({ response: res, wixClient, request });
+    }
+  } else {
+    // In development, avoid generating tokens on every request to prevent spam/fetch failures.
+    if (!cookies.get(WIX_REFRESH_TOKEN) && !isLoggedIn) {
+      await setVisitorTokens({ response: res, wixClient, request });
+    }
   }
   const wixMemberLoggedIn = request.nextUrl.searchParams.get(
     REDIRECT_FROM_WIX_LOGIN_STATUS

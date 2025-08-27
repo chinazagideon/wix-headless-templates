@@ -36,8 +36,8 @@ const Page = () => {
 
   return (
     <>
-      <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-4 sm:px-6 lg:px-20 py-10 lg:py-auto">
-        <div className="lg:mt-15 mt-10 lg:items-start items-center justify-center">
+      <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-2 lg:px-20 py-10 lg:py-auto">
+        <div className="flex flex-col items-start lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
           <h1 className="font-outfit font-thin lg:text-7xl text-4xl text-black normal-case">
             About{' '}
             <span className="font-outfit font-bold lg:text-7xl text-4xl normal-case">
@@ -65,8 +65,8 @@ const Page = () => {
           ) : null}
         </div>
       </div> */}
-      <div className="flex w-full lg:flex-row px-4 gap-1 sm:px-6 lg:px-20 py-10 justify-center items-center">
-        <div className="flex flex-col lg:flex-row gap-4 lg:w-full justify-center">
+      <div className="flex w-full flex-col justify-center px-4 gap-1 sm:px-6 lg:px-20 py-10 items-center">
+        <div className="flex flex-col lg:flex-row gap-4 lg:w-full items-center">
           <div className="flex flex-col pt-4 lg:pt-8">
             <h4 className="font-outfit font-bold text-3xl lg:text-4xl text-black normal-case">
               Our Vision
