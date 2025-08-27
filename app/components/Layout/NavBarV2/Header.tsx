@@ -97,7 +97,7 @@ const Header = () => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`text-sm/6 font-light  md:text-xs/10 text-gray-900 dark:text-white font-outfit ${
+                      className={`text-sm/6 font-light  md:text-xs/10 lg:text-sm text-gray-900 dark:text-white font-outfit ${
                         isActivePage(item.href)
                           ? 'text-theme-orange underline underline-offset-4'
                           : ''
@@ -110,7 +110,7 @@ const Header = () => {
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                   <a
                     href={quotation_url}
-                    className="text-sm/6 font-light md:text-xs text-gray-900 dark:text-white font-outfit"
+                    className="text-sm/6 font-light md:text-xs lg:text-sm text-gray-900 dark:text-white font-outfit"
                   >
                     Request Quotation <span aria-hidden="true">&rarr;</span>
                   </a>

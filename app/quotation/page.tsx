@@ -495,7 +495,6 @@ export default function QuotationPage() {
                       >
                         <option value="">Select building type</option>
                         <option value="Apartment">Apartment</option>
-                        <option value="Dormitory">Dormitory</option>
                         <option value="House">House</option>
                         <option value="Office">Office</option>
                         <option value="Condo">Condo</option>
