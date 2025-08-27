@@ -1,5 +1,6 @@
 import Lines from '@app/components/Design/Lines';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
+import { constants } from '../constants';
 
 const QuoteComponent = () => {
   return (
@@ -13,7 +14,7 @@ const QuoteComponent = () => {
             </h1>
             <div className="flex flex-col gap-4 text-center lg:text-left">
               <p className="text-white dark:text-white text-center lg:text-left text-base font-outfit font-light">
-                With ICANDO MOVERS, you can trust us to provide a moving
+                With {constants.companyName}, you can trust us to provide a moving
                 experience that is tailored to your needs, affordable, reliable,
                 and backed by outstanding customer support. Fill out this quick
                 form for a moving quote and we’ll get back to you in the same
@@ -116,10 +117,10 @@ const QuoteComponent = () => {
                 <button
                   type="submit"
                   disabled={true}
-                  className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 !font-size-10 font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Request Qoutation
-                  <ArrowRightIcon className="w-10 h-10 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                  <ArrowRightIcon className="w-8 h-8 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
                 </button>
               </div>
             </form>

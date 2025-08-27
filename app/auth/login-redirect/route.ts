@@ -32,9 +32,11 @@ export async function GET(request: NextRequest) {
     responseMode: 'query',
   });
   const response = NextResponse.redirect(authUrl);
-  response.cookies.set({
-    name: OAUTH_COOKIE_STATE,
-    value: JSON.stringify(oauthData),
+  response.cookies.set(OAUTH_COOKIE_STATE, JSON.stringify(oauthData), {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
     maxAge: 1800, // 30 minutes
   });
   return response;

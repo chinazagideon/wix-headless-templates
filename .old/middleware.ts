@@ -18,12 +18,7 @@ const setVisitorTokens = async ({
   response: NextResponse;
 }) => {
   const tokens = await wixClient!.auth.generateVisitorTokens();
-  const tokenValue = tokens.refreshToken?.value || '';
-  response.cookies.set(WIX_REFRESH_TOKEN, tokenValue, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
-    path: '/',
+  response.cookies.set(WIX_REFRESH_TOKEN, JSON.stringify(tokens.refreshToken), {
     maxAge: 60 * 60 * 24 * 30,
   });
 };
