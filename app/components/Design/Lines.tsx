@@ -4,12 +4,14 @@ const Lines = ({
   className,
   height = '70vh',
   width = '100vw',
+  layer = 'foreground',
 }: {
   linesColor: string;
   strokeWidth: number;
   className?: string;
   height?: string;
   width?: string;
+  layer?: 'foreground' | 'background';
 }) => {
   return (
     <>
@@ -28,8 +30,13 @@ const Lines = ({
       `}</style>
       {/* Lines SVG Effect - Background */}
       <div
-        className={`absolute inset-0 pointer-events-none opacity-20 z-20 ${className}`}
-        style={{ animation: 'move 10s linear infinite' }}
+        className={`absolute inset-0 pointer-events-none opacity-20 ${
+          layer === 'foreground' ? 'z-20' : ''
+        } ${className}`}
+        style={{
+          animation: 'move 10s linear infinite',
+          zIndex: layer === 'background' ? -1 : undefined,
+        }}
       >
         <svg
           width="100%"

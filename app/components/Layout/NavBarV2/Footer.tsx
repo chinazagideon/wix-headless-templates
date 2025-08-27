@@ -4,6 +4,7 @@ import {
   EnvelopeIcon,
   PhoneIcon,
 } from '@heroicons/react/24/outline';
+import { constants } from '@app/components/constants';
 
 const Footer = () => {
   return (
@@ -12,7 +13,7 @@ const Footer = () => {
         <div className="flex flex-col justify-between lg:items-start items-center gap-2 w-full lg:h-[200px]">
           <div className="flex flex-row items-start text-black text-2xl font-outfit font-light normal-case ">
             <Image
-              src="/custom/logo.svg"
+              src={constants.companyLogo}
               alt="Movers"
               width={100}
               height={100}
@@ -24,7 +25,7 @@ const Footer = () => {
         <div className="flex lg:flex-row flex-col items-center lg:items-end justify-between gap-2 w-full mt-4">
           <div className="align-start flex flex-row items-center gap-2 hidden lg:block">
             <p className="text-black text-sm font-outfit font-light normal-case">
-              &copy; 2025 Movers. All rights reserved.
+              &copy; 2025 {constants.companyName}. All rights reserved.
             </p>
           </div>
           <div className="align-end flex flex-row items-center gap-2">
@@ -40,19 +41,25 @@ const Footer = () => {
                     {' '}
                     <MapPinIcon className="w-5 h-5 text-theme-orange/50" />{' '}
                     <span className="text-sm">
-                      246 Hatcher Road, Winnipeg <br />
-                      MB R2C 3W7, Canada
+                      <span className="font-outfit font-bold">
+                        {constants.companyAddress},
+                      </span>{' '}
+                      <br />
+                      <span className="font-outfit font-light">
+                        {constants.companyCity}, {constants.companyProvince}{' '}
+                        {constants.companyPostalCode}
+                      </span>
                     </span>
                   </p>
                 </div>
                 <div className="flex lg:flex-col flex-col items-center lg:items-start">
                   <p className="text-gray-700 text-1xl font-outfit font-light normal-case flex flex-col lg:flex-row items-center gap-2">
                     <EnvelopeIcon className="w-3 h-3 text-theme-orange/50" />{' '}
-                    <span className="text-sm">info@icanndo.ca</span>
+                    <span className="text-sm">{constants.companyEmail}</span>
                   </p>
                   <p className="text-gray-700 text-1xl font-outfit font-light normal-case flex  flex-col lg:flex-row items-center gap-2">
                     <PhoneIcon className="w-3 h-3 text-theme-orange/50" />{' '}
-                    <span className="text-sm">+1 (120) 422-95871</span>
+                    <span className="text-sm">{constants.companyPhone}</span>
                   </p>
                 </div>
                 {/* </div> */}
@@ -69,7 +76,8 @@ const Footer = () => {
           </div>
           <div className="flex flex-row items-center gap-2 lg:hidden justify-center border-t-2 border-theme-orange/10 w-full mt-4 py-4">
             <p className="text-black text-sm font-outfit font-light normal-case">
-              &copy; 2025 Movers. All rights reserved.
+              &copy; {new Date().getFullYear()} {constants.companyName}. All
+              rights reserved.
             </p>
           </div>
         </div>

@@ -109,6 +109,7 @@ export default function WixMediaImage({
       <div className="overflow-hidden cursor-pointer relative group">
         <img
           className="object-cover w-full group-hover:brightness-75 transition duration-300 ease-in-out rounded-md"
+          style={{ width: width, height: height }}
           src={imageUrl}
           alt="Service image"
           onError={() => {

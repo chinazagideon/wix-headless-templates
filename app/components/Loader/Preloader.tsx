@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { constants } from '../constants';
 
 const Preloader = () => {
   const [isVisible, setIsVisible] = useState(true);
@@ -88,7 +89,7 @@ const Preloader = () => {
             Trusted
           </p>
           <p
-            className="mil-h3 mil-muted"
+            className="mil-h3 mil-muted font-outfit font-bold"
             style={{
               opacity: text2Opacity,
               transition: 'opacity 0.8s ease',
@@ -136,7 +137,9 @@ const Preloader = () => {
                 zIndex: 3,
               }}
             >
-              ICanDoMovers.com
+              <span className="text-theme-orange font-outfit font-bold">
+                {constants.websiteUrl}
+              </span>
             </p>
           </div>
         </div>

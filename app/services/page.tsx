@@ -41,7 +41,7 @@ const ServicePageContent = () => {
 
               <div className="w-full h-full dark:bg-white flex-col flex justify-center items-center gap-4 lg:w-[90%]">
                 <div className="flex flex-col gap-4 lg:px-12 px-0 text-center ">
-                  <p className="text-[#013366] dark:text-white text-center text-medium lg:text-2xl font-outfit font-thin">
+                  <p className="text-[#000000] dark:text-white text-center text-medium lg:text-2xl font-outfit font-thin">
                     We provide{' '}
                     <span className="font-outfit font-light">
                       exceptional service
@@ -62,7 +62,7 @@ const ServicePageContent = () => {
                     </span>{' '}
                     at every step.
                   </p>
-                  <p className="text-[#013366] dark:text-white text-center text-base font-outfit font-bold">
+                  <p className="text-[#000000] dark:text-white text-center text-base font-outfit font-bold">
                     We offer a variety of moving services designed to make the
                     process smoother and less stressful.
                   </p>

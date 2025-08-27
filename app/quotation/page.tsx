@@ -1,35 +1,46 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   TruckIcon,
   HomeIcon,
   MapPinIcon,
+  BuildingOfficeIcon,
 } from '@heroicons/react/24/outline';
 import { useWixServices } from '@app/hooks/useWixServices';
 import AddressAutocomplete from '@app/components/AddressAutocomplete';
-import { CheckCircleIcon, Loader } from 'lucide-react';
+import {
+  BoxIcon,
+  CheckCircleIcon,
+  HandHelping,
+  Loader,
+  SofaIcon,
+} from 'lucide-react';
+import { useForms } from '@app/hooks/useForms';
 
 interface FormData {
   // Step 1: Move Type
-  moveType: string;
+  first_name: string;
+  last_name: string;
+  service_type: string;
   moveCategory: string;
 
   // Step 2: Move Size
-  moveSize: string;
+  move_size: string;
   rooms: string;
-  specialItems: string[];
+  special_items: string[];
 
   // Step 3: Location & Details
-  pickupAddress: string;
-  destinationAddress: string;
-  moveDate: string;
-  additionalInfo: string;
-  buildingType: string;
-  moveTime: string;
-  contactDetails: string;
+  moving_address: string;
+  unloading_address: string;
+  move_date: string;
+  additional_info: string;
+  building_type: string;
+  move_time: string;
+  email_e1ca: string;
+  phone_9f17: string;
 }
 
 const moveTypes = [
@@ -53,28 +64,28 @@ const moveTypes = [
   },
 ];
 
-const moveSizes = [
+const move_sizes = [
   {
     id: 'small',
-    label: 'Small Move',
-    description: 'Studio/1 bedroom',
+    label: 'Small move',
+    description: '(studio/bedroom)',
     items: 'Up to 10 items',
   },
   {
     id: 'medium',
-    label: 'Medium Move',
-    description: '2-3 bedrooms',
+    label: 'Medium move',
+    description: '(2 - 3 bedrooms)',
     items: '10-25 items',
   },
   {
     id: 'large',
-    label: 'Large Move',
-    description: '4+ bedrooms',
+    label: 'Large move',
+    description: '(4+ bedrooms)',
     items: '25+ items',
   },
 ];
 
-const specialItems = [
+const items = [
   'Piano',
   'Pool Table',
   'Large Appliances',
@@ -92,22 +103,82 @@ const specialItems = [
 export default function QuotationPage() {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
-    moveType: '',
+    first_name: '',
+    last_name: '',
+    service_type: '',
     moveCategory: '',
-    moveSize: '',
+    move_size: '',
     rooms: '',
-    specialItems: [],
-    pickupAddress: '',
-    destinationAddress: '',
-    moveDate: '',
-    additionalInfo: '',
-    buildingType: '',
-    moveTime: '',
-    contactDetails: '',
+    special_items: [],
+    moving_address: '',
+    unloading_address: '',
+    move_date: '',
+    additional_info: '',
+    building_type: '',
+    move_time: '',
+    email_e1ca: '',
+    phone_9f17: '',
   });
   const [isCompleted, setIsCompleted] = useState(false);
   const [formHasError, setFormHasError] = useState<boolean>(false);
   const { services, isLoading, error } = useWixServices();
+  const visibleServices = (services ?? []).filter((s) => !s.hidden);
+  const [formId, setFormId] = useState<string | null>(
+    '5cf4b23b-dd41-4c1e-8c8e-71a42be45fda'
+  );
+  const { submit, isSubmitting, error: formError } = useForms(formId || '');
+  const [serviceTypes, setServiceTypes] = useState<any[]>([]);
+  type IconType = typeof HomeIcon;
+  const iconByKeyword: Record<string, IconType> = {
+    residential: HomeIcon,
+    commercial: BuildingOfficeIcon,
+    moving: HandHelping,
+    furniture: SofaIcon,
+    warehousing: HomeIcon,
+    packing: BoxIcon,
+    unpacking: BoxIcon,
+  };
+
+  const getIconForService = (serviceName?: string): IconType => {
+    if (!serviceName) return TruckIcon;
+    const firstWord = serviceName.trim().split(/\s+/)[0].toLowerCase();
+    return iconByKeyword[firstWord] ?? TruckIcon;
+  };
+
+  // useEffect(() => {
+  // console.log(services);
+  //   const serviceTypes = services?.map((service) => ({
+  //     id: service.id,
+  //       label: service.info?.name,
+  //       icon: icons[service.id as keyof typeof icons],
+  //       description: service.info?.description,
+  //     }));
+  //     setServiceTypes(serviceTypes);
+  // }, [services]);
+
+  // console.log(serviceTypes);
+
+  useEffect(() => {
+    const fetchFormId = async () => {
+      try {
+        if (formId) return;
+        const ns =
+          process.env.NEXT_PUBLIC_WIX_FORMS_NAMESPACE || 'wix.form_app.form';
+        const res = await fetch(
+          `/api/forms/form-ids?namespace=${encodeURIComponent(ns)}`,
+          { cache: 'no-store' }
+        );
+        if (!res.ok) throw new Error('Failed to fetch form IDs');
+        const data = await res.json();
+        if (Array.isArray(data.formIds) && data.formIds.length > 0) {
+          setFormId(data.formIds[0]);
+        }
+      } catch (e) {
+        console.error('Failed to resolve formId from namespace', e);
+      }
+    };
+    fetchFormId();
+  }, [formId]);
 
   const updateFormData = (field: keyof FormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -121,32 +192,91 @@ export default function QuotationPage() {
     if (currentStep > 1) setCurrentStep(currentStep - 1);
   };
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    setIsCompleted(true);
-    // Handle form submission here
+  const handleSubmit = async () => {
+    try {
+      const sanitized = {
+        ...formData,
+        moving_address_date_and_time: `${formData.move_date} ${formData.move_time}`,
+      };
+      await onSubmit(formData);
+      setIsCompleted(true);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const isStepValid = (step: number) => {
-    switch (step) {
-      case 1:
-        return formData.moveType && formData.moveCategory;
-      case 2:
-        return formData.moveSize;
-      case 3:
-        return (
-          formData.pickupAddress &&
-          formData.destinationAddress &&
-          isEmailOrPhone(formData.contactDetails)
-        );
-      default:
-        return false;
-    }
+    // switch (step) {
+    //   case 1:
+    //     return formData.service_type;
+    //   case 2:
+    //     return formData.move_size;
+    //   case 3:
+    //     return (
+    //       formData.loading_address &&
+    //       formData.unloading_address
+    //       // isEmailOrPhone(formData.email_e1ca)
+    //     );
+    //   default:
+    //     return false;
+    // }
+    return true;
   };
 
   const isEmailOrPhone = (value: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\d{10}$/.test(value);
   };
+
+  // Normalize phone to E.164. If no country code is provided and the number
+  // has 10 digits, default to +1 (US/Canada).
+  const normalizePhoneE164 = (raw: string): string => {
+    if (!raw) return raw;
+    const digitsOnly = raw.replace(/\D+/g, '');
+    if (raw.trim().startsWith('+')) {
+      // Keep leading + and strip non-digits from the rest
+      const rest = raw.trim().slice(1).replace(/\D+/g, '');
+      return `+${rest}`;
+    }
+    if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
+      return `+${digitsOnly}`;
+    }
+    if (digitsOnly.length === 10) {
+      return `+1${digitsOnly}`;
+    }
+    // Fallback: if looks like an international number without +
+    if (digitsOnly.length > 10) {
+      return `+${digitsOnly}`;
+    }
+    return raw;
+  };
+
+  // Only send known Wix field IDs to avoid "additional properties" errors
+  const allowedWixFieldIds: Array<keyof FormData> = [
+    'first_name',
+    'last_name',
+    'email_e1ca',
+    'phone_9f17',
+    'service_type',
+    'move_size',
+    'moving_address',
+    'unloading_address',
+    'building_type',
+    'special_items',
+  ];
+
+  async function onSubmit(data: FormData) {
+    console.log(data);
+    if (!formId) throw new Error('Form ID not resolved yet');
+    const sanitized: Record<string, any> = {};
+    for (const key of allowedWixFieldIds) {
+      const value = data[key];
+      if (value !== undefined && value !== null && value !== '') {
+        sanitized[key] =
+          key === 'phone_9f17' ? normalizePhoneE164(String(value)) : value;
+      }
+    }
+    return submit(sanitized);
+  }
 
   return (
     <>
@@ -248,40 +378,39 @@ export default function QuotationPage() {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {moveTypes.map((type) => {
-                      const Icon = type.icon;
+                  <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+                    {visibleServices?.map((service) => {
+                      const Icon = getIconForService(service.info?.name);
                       return (
                         <div
-                          key={type.id}
-                          onClick={() => updateFormData('moveType', type.id)}
-                          className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                            formData.moveType === type.id
+                          key={service.id}
+                          onClick={() =>
+                            updateFormData('service_type', service.info?.name)
+                          }
+                          className={`p-3 rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                            formData.service_type === service.info?.name
                               ? 'border-theme-orange bg-orange-50'
                               : 'border-gray-200 hover:border-gray-300'
                           }`}
                         >
                           <div className="text-center">
                             <Icon
-                              className={`w-12 h-12 mx-auto mb-4 ${
-                                formData.moveType === type.id
+                              className={`w-10 h-10 mx-auto mb-4 ${
+                                formData.service_type === service.info?.name
                                   ? 'text-theme-orange'
                                   : 'text-gray-400'
                               }`}
                             />
-                            <h3 className="font-outfit font-semibold text-lg text-gray-900 mb-2">
-                              {type.label}
+                            <h3 className="font-outfit font-semibold text-sm text-gray-900 mb-2">
+                              {service.info?.name}
                             </h3>
-                            <p className="text-gray-600 text-sm">
-                              {type.description}
-                            </p>
                           </div>
                         </div>
                       );
                     })}
                   </div>
 
-                  <div className="space-y-4">
+                  {/* <div className="space-y-4">
                     <label className="block">
                       <span className="text-gray-700 font-outfit font-light">
                         Service Type
@@ -299,7 +428,7 @@ export default function QuotationPage() {
                           className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         >
                           <option value="">Select service type</option>
-                          {services?.map((service) => (
+                          {visibleServices?.map((service) => (
                             <option key={service.id} value={service.id}>
                               {service.info?.name}
                             </option>
@@ -307,7 +436,7 @@ export default function QuotationPage() {
                         </select>
                       )}
                     </label>
-                  </div>
+                  </div> */}
                 </div>
               )}
 
@@ -324,12 +453,12 @@ export default function QuotationPage() {
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {moveSizes.map((size) => (
+                    {move_sizes.map((size) => (
                       <div
                         key={size.id}
-                        onClick={() => updateFormData('moveSize', size.id)}
+                        onClick={() => updateFormData('move_size', size.id)}
                         className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                          formData.moveSize === size.id
+                          formData.move_size === size.id
                             ? 'border-theme-orange bg-orange-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
@@ -358,18 +487,18 @@ export default function QuotationPage() {
                         </span>
                       </span>
                       <select
-                        value={formData.buildingType}
+                        value={formData.building_type}
                         onChange={(e) =>
-                          updateFormData('buildingType', e.target.value)
+                          updateFormData('building_type', e.target.value)
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       >
                         <option value="">Select building type</option>
-                        <option value="apartment">Apartment</option>
-                        <option value="dormitory">Dormitory</option>
-                        <option value="house">House</option>
-                        <option value="office">Office</option>
-                        <option value="condo">Condo</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="Dormitory">Dormitory</option>
+                        <option value="House">House</option>
+                        <option value="Office">Office</option>
+                        <option value="Condo">Condo</option>
                         <option value="other">Other</option>
                       </select>
                     </label>
@@ -397,24 +526,24 @@ export default function QuotationPage() {
                         </span>
                       </span>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {specialItems.map((item) => (
+                        {items.map((item) => (
                           <label
                             key={item}
                             className="flex items-center space-x-2 cursor-pointer"
                           >
                             <input
                               type="checkbox"
-                              checked={formData.specialItems.includes(item)}
+                              checked={formData.special_items.includes(item)}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  updateFormData('specialItems', [
-                                    ...formData.specialItems,
+                                  updateFormData('special_items', [
+                                    ...formData.special_items,
                                     item,
                                   ]);
                                 } else {
                                   updateFormData(
-                                    'specialItems',
-                                    formData.specialItems.filter(
+                                    'special_items',
+                                    formData.special_items.filter(
                                       (i) => i !== item
                                     )
                                   );
@@ -447,9 +576,9 @@ export default function QuotationPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <AddressAutocomplete
-                      value={formData.pickupAddress}
+                      value={formData.moving_address}
                       onChange={(address) =>
-                        updateFormData('pickupAddress', address)
+                        updateFormData('moving_address', address)
                       }
                       placeholder="Enter the loading address"
                       label="Loading Address"
@@ -457,16 +586,75 @@ export default function QuotationPage() {
                     />
 
                     <AddressAutocomplete
-                      value={formData.destinationAddress}
+                      value={formData.unloading_address}
                       onChange={(address) =>
-                        updateFormData('destinationAddress', address)
+                        updateFormData('unloading_address', address)
                       }
                       placeholder="Enter the unloading address"
                       label="Unloading Address"
                       className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                     />
                   </div>
-
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <label className="block">
+                      <span className="text-gray-700 font-medium">
+                        First Name{' '}
+                      </span>
+                      <input
+                        type="text"
+                        value={formData.first_name}
+                        placeholder="Enter your first name"
+                        onChange={(e) =>
+                          updateFormData('first_name', e.target.value)
+                        }
+                        className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="text-gray-700 font-medium">
+                        Last Name{' '}
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Enter your last name"
+                        value={formData.last_name}
+                        onChange={(e) =>
+                          updateFormData('last_name', e.target.value)
+                        }
+                        className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                      />
+                    </label>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <label className="block">
+                      <span className="text-gray-700 font-medium">
+                        Phone number
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Enter your phone number"
+                        value={formData.phone_9f17}
+                        onChange={(e) =>
+                          updateFormData('phone_9f17', e.target.value)
+                        }
+                        className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                      />
+                    </label>
+                    <label className="block">
+                      <span className="text-gray-700 font-medium">
+                        Email address
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="Enter your email address"
+                        value={formData.email_e1ca}
+                        onChange={(e) =>
+                          updateFormData('email_e1ca', e.target.value)
+                        }
+                        className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                      />
+                    </label>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
@@ -477,24 +665,26 @@ export default function QuotationPage() {
                       </span>
                       <input
                         type="date"
-                        value={formData.moveDate}
+                        value={formData.move_date}
                         min={new Date().toISOString().split('T')[0]}
                         onChange={(e) =>
-                          updateFormData('moveDate', e.target.value)
+                          updateFormData('move_date', e.target.value)
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
                     </label>
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Contact Information
+                        Estimated Move Time{' '}
+                        <span className="text-gray-500 text-sm">
+                          (Optional)
+                        </span>
                       </span>
                       <input
-                        type="text"
-                        placeholder="Enter your email or phone number"
-                        value={formData.contactDetails}
+                        type="time"
+                        value={formData.move_time}
                         onChange={(e) =>
-                          updateFormData('contactDetails', e.target.value)
+                          updateFormData('move_time', e.target.value)
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
@@ -509,9 +699,9 @@ export default function QuotationPage() {
                         </span>
                       </span>
                       <textarea
-                        value={formData.additionalInfo}
+                        value={formData.additional_info}
                         onChange={(e) =>
-                          updateFormData('additionalInfo', e.target.value)
+                          updateFormData('additional_info', e.target.value)
                         }
                         placeholder="Any special requirements or notes?"
                         rows={3}

@@ -24,6 +24,7 @@ export function mapServiceInfo(service?: services.Service) {
   return {
     id: id!,
     scheduleId: service?.schedule?._id,
+    hidden: service?.hidden,
     info: {
       name: name!,
       description,

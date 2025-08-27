@@ -38,9 +38,11 @@ export async function GET(request: NextRequest) {
 
   response.cookies.delete(OAUTH_COOKIE_STATE);
   response.cookies.delete(WIX_LOGIN_REDIRECT);
-  response.cookies.set({
-    name: WIX_REFRESH_TOKEN,
-    value: JSON.stringify(memberTokens.refreshToken),
+  response.cookies.set(WIX_REFRESH_TOKEN, memberTokens.refreshToken.value, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
     maxAge: 60 * 60 * 24 * 2, // 2 days
   });
 

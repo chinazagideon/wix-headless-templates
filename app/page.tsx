@@ -8,10 +8,24 @@ import TestimonialComponent from '@app/components/Testimonials/TestimonialCompon
 import QuoteComponent from '@app/components/Quote/QouteComponent';
 import Lines from '@app/components/Design/Lines';
 import routes from '@app/components/Layout/NavBarV2/routes';
+import { constants } from '@app/components/constants';
+import { useWixServices } from '@app/hooks/useWixServices';
+import ServiceListPreviewView from '@app/components/ServiceList/ServiceListPreview';
+import { Loader } from 'lucide-react';
+import WixMediaImage from '@app/components/Image/WixMediaImage';
+// import { queryReviewsFunction } from '@app/hooks/useReviews';
+// import { useReviews } from '@app/hooks/useReviews';
 
 export default function Page() {
   const { weatherData, loading, error } = useWeather();
-
+  const { services, isLoading, error: wixError } = useWixServices();
+  // const [items, setItems] = useState<any[]>([]);
+  // useEffect(() => {
+  //   fetchProductItems().then(setItems as any).catch(() => setItems([]));
+  // }, []);
+  // console.log(items);
+  // queryPostsFunction();
+  // queryReviewsFunction();
   return (
     <>
       <div className="bg-white w-full">
@@ -80,11 +94,11 @@ export default function Page() {
                 <div className="flex-row gap-4 flex">
                   <div className="flex items-center gap-2 animate-slide-in-left">
                     <a
-                      href={routes.services}
-                      className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
+                      href={routes.quotation}
+                      className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 text-base text-sm font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
                     >
-                      What We Do
-                      <ArrowRightIcon className="w-10 h-10 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                      Book Now
+                      <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
                     </a>
                   </div>
                   <a
@@ -101,11 +115,11 @@ export default function Page() {
                 {/* <div className="flex-row gap-4 flex"> */}
                 <div className="flex items-center gap-2 animate-slide-in-left">
                   <a
-                    href={routes.services}
-                    className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
+                    href={routes.quotation}
+                    className="capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 text-base font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
                   >
-                    What We Do
-                    <ArrowRightIcon className="w-10 h-10 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                    Book Now
+                    <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
                   </a>
                 </div>
                 <a
@@ -140,10 +154,13 @@ export default function Page() {
             className="lg:mr-60 lg:ml-0 ml-20"
           />
 
-          <div className="w-full h-full dark:bg-white sm:flex-row flex-col flex justify-between items-center gap-4 lg:grid lg:grid-cols-2">
+          <div className="w-full h-full dark:bg-white sm:flex-row flex-col flex justify-between items-center gap-4 lg:grid lg:grid-cols-2 z-1000">
             <div className="flex flex-col gap-4 lg:px-12 px-0 text-center lg:text-left">
               <h1 className="text-black dark:text-white text-2xl font-outfit font-thin normal-case">
-                Why <span className=" font-outfit font-bold">Movers?</span>
+                Why{' '}
+                <span className=" font-outfit font-bold">
+                  {constants.companyName}?
+                </span>
               </h1>
               <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
                 Moving can often feel overwhelming, especially when relocating
@@ -156,7 +173,7 @@ export default function Page() {
               <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
                 <a
                   href={routes.about}
-                  className="rounded-lg bg-theme-orange px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white  hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
+                  className="rounded-full bg-theme-orange px-3 w-fit py-1.5 text-sm font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
                 >
                   About Us
                   <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
@@ -176,62 +193,55 @@ export default function Page() {
         </div>
       </div>
       <div className="w-full h-full bg-black py-10 mt-10">
-        <div className="w-full lg:w-[70%] mx-auto flex flex-col justify-center items-center gap-3">
+        <div className="w-full lg:w-[90%] mx-auto flex flex-col justify-center items-center gap-3">
           <h1 className="text-white dark:text-white text-2xl font-outfit font-light mb-4 normal-case">
             <span className="font-bold">Our</span> Services
           </h1>
-          <div className="flex lg:flex-row flex-col w-full gap-8 lg:grid lg:grid-cols-3 px-4">
-            <div className="flex flex-col rounded-lg bg-[#D9D9D9] dark:bg-black p-4 items-center justify-center gap-4 w-full">
-              <Image
-                src="/custom/city.svg"
-                alt="Movers"
-                className="w-15 h-15"
-                width={100}
-                height={100}
-              />
+          <div className="flex lg:flex-row flex-col w-full gap-8 lg:grid lg:grid-cols-3 px-4 relative">
+            {isLoading ? (
+              <div className="flex flex-row justify-center items-center h-screen w-full">
+                <Loader className="w-10 h-10 animate-spin text-theme-orange" />
+              </div>
+            ) : wixError ? (
+              <div>Error loading services: {wixError}</div>
+            ) : (
+              services
+                ?.filter((service) => !service.hidden)
+                .slice(0, 3)
+                .map((service) => (
+                  <div
+                    key={service.info.name}
+                    className="flex flex-col rounded-lg p-4 items-center justify-center gap-4 w-full"
+                  >
+                    <div className="flex w-full items-center justify-center gap-4 w-full bg-black ">
+                      <WixMediaImage
+                        media={
+                          service.info.media?.mainMedia ||
+                          service.info.media?.coverMedia
+                        }
+                        width={300}
+                        height={300}
+                      />
+                    </div>
 
-              <h2 className="text-black dark:text-white text-base font-outfit font-light">
-                Commercial Moving
-              </h2>
-              <p className="text-black dark:text-white text-sm font-outfit font-thin text-center">
-                We offer a variety of commercial moving services designed to
-                make the process smoother and less stressful.
-              </p>
-            </div>
-            <div className="flex flex-col rounded-lg bg-[#D9D9D9] dark:bg-black p-4 items-center justify-center gap-4">
-              <Image
-                src="/custom/palm.svg"
-                alt="Movers"
-                className="w-15 h-15"
-                width={100}
-                height={100}
-              />
-
-              <h2 className="text-black dark:text-white text-base font-outfit font-light">
-                Residential Moving
-              </h2>
-              <p className="text-black dark:text-white text-sm font-outfit font-thin text-center">
-                We offer a variety of commercial moving services designed to
-                make the process smoother and less stressful.
-              </p>
-            </div>
-            <div className="flex flex-col rounded-lg bg-[#D9D9D9] dark:bg-black p-4 items-center justify-center gap-4">
-              <Image
-                src="/custom/surbway.svg"
-                alt="Movers"
-                className="w-15 h-15"
-                width={100}
-                height={100}
-              />
-
-              <h2 className="text-black dark:text-white text-base font-outfit font-light">
-                Storage
-              </h2>
-              <p className="text-black dark:text-white text-sm font-outfit font-thin text-center">
-                We offer a variety of commercial moving services designed to
-                make the process smoother and less stressful.
-              </p>
-            </div>
+                    <h2 className="text-white text-base font-outfit font-bold">
+                      {service.info.name}
+                    </h2>
+                    <p className="text-white text-sm font-outfit font-light text-center">
+                      {service.info.description?.slice(0, 300)}...
+                    </p>
+                  </div>
+                ))
+            )}
+          </div>
+          <div className="flex flex-row justify-center items-center w-full mt-4 border-t border-theme-orange/20 pt-4">
+            <a
+              href={routes.services}
+              className="text-theme-orange text-base font-outfit font-thin flex flex-row items-center gap-2 hover:scale-105 transition-all duration-200 "
+            >
+              View All Services
+              <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-0.5 text-theme-orange" />
+            </a>
           </div>
         </div>
       </div>
