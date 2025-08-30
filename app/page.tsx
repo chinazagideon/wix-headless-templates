@@ -150,13 +150,21 @@ export default function Page() {
               We offer a variety of moving services designed to make the process
               smoother and less stressful.
             </p>
-            <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
+            <div className="flex flex-row gap-4 w-full justify-center md:justify-start lg:justify-start">
+              <div className="flex items-center gap-2 animate-slide-in-left">
+                <a
+                  href={routes.about}
+                  className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 text-base text-sm font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
+                >
+                  About us{' '}
+                  <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                </a>
+              </div>
               <a
-                href={routes.about}
-                className="rounded-full bg-theme-orange px-3 w-fit py-1.5 text-sm font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
+                href={routes.services}
+                className="flex flex-col py-5 underline font-outfit font-bold text-black hover:text-theme-orange transition-colors duration-200 animate-slide-in-right"
               >
-                About Us
-                <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+                Our services
               </a>
             </div>
           </div>
