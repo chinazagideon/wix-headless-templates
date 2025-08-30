@@ -38,35 +38,37 @@ const Header = () => {
         >
           <div className="flex flex-col justify-center items-center w-full">
             <div className="w-[95%] mx-auto bg-black dark:bg-black text-white p-2 flex flex-row justify-center items-center rounded-2xl mb-2 sm:flex-col">
-              <div className="flex justify-between items-center w-full">
-                <p className="text-sm font-light text-white font-outfit flex flex-row items-center justify-start gap-2">
+              <div className="flex justify-between items-center md:w-full w-fit">
+                <p className="hidden md:flex text-sm font-light text-white font-outfit flex-row items-center justify-start gap-2">
                   <MapPinIcon
                     className="size-4 text-theme-orange"
                     height={6}
                     width={6}
                   />
-                  <span className="font-outfit font-thin text-sm text-white">
+                  <span className="font-outfit font-thin text-sm text-white ">
                     {constants.companyCity}, {constants.companyProvince}
                   </span>
                 </p>
-                <p className="text-sm font-light text-gray-900 font-outfit flex flex-row items-center justify-end gap-2">
-                  <span className="hidden sm:block font-outfit font-thin text-sm text-white">
+                <div className="text-sm font-light text-gray-900 font-outfit flex flex-col md:flex-row items-center md:justify-end justify-center gap-2">
+                  <span className="font-outfit text-xs md:text-sm font-thin lg:text-sm text-white">
                     Need help moving? Call us today!
                   </span>
-                  <PhoneIcon
-                    className="size-4 text-theme-orange"
-                    height={6}
-                    width={6}
-                  />
-                  <span
-                    className="font-outfit font-thin text-sm text-white cursor-pointer"
-                    onClick={() =>
-                      window.open(`tel:${constants.companyPhone}`, '_blank')
-                    }
-                  >
-                    {constants.companyPhone}
-                  </span>
-                </p>
+                  <div className="flex flex-row items-center justify-end gap-2">
+                    <PhoneIcon
+                      className="size-4 text-theme-orange "
+                      height={6}
+                      width={6}
+                    />
+                    <span
+                      className="font-outfit font-thin text-sm text-white cursor-pointer"
+                      onClick={() =>
+                        window.open(`tel:${constants.companyPhone}`, '_blank')
+                      }
+                    >
+                      {constants.companyPhone}
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="w-full bg-white dark:bg-black dark:text-white rounded-lg p-4 flex flex-col justify-center items-center">
@@ -99,7 +101,7 @@ const Header = () => {
                     <a
                       key={item.name}
                       href={item.href}
-                      className={`text-sm/6 font-light  md:text-xs/10 lg:text-sm text-gray-900 dark:text-white font-outfit ${
+                      className={`text-sm/6 font-light  md:text-xs/5 text-gray-900 dark:text-white font-outfit ${
                         isActivePage(item.href)
                           ? 'text-theme-orange underline underline-offset-4'
                           : ''
@@ -112,7 +114,7 @@ const Header = () => {
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                   <a
                     href={quotation_url}
-                    className="text-sm/6 font-light md:text-xs lg:text-sm text-gray-900 dark:text-white font-outfit"
+                    className="text-xs font-light md:text-xs/5 lg:text-sm text-gray-900 dark:text-white font-outfit"
                   >
                     Request Quotation <span aria-hidden="true">&rarr;</span>
                   </a>

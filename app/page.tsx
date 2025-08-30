@@ -13,11 +13,13 @@ import { useWixServices } from '@app/hooks/useWixServices';
 import ServiceListPreviewView from '@app/components/ServiceList/ServiceListPreview';
 import { Loader } from 'lucide-react';
 import WixMediaImage from '@app/components/Image/WixMediaImage';
+import HeroWidget from '@app/components/Widget/HeroWdget';
+
 // import { queryReviewsFunction } from '@app/hooks/useReviews';
 // import { useReviews } from '@app/hooks/useReviews';
 
 export default function Page() {
-  const { weatherData, loading, error } = useWeather();
+  // const { weatherData, loading, error } = useWeather();
   const { services, isLoading, error: wixError } = useWixServices();
   // const [items, setItems] = useState<any[]>([]);
   // useEffect(() => {
@@ -68,29 +70,27 @@ export default function Page() {
           </div>
 
           {/* Content */}
-          <div className="relative z-10 w-[90%] mx-auto flex flex-col lg:flex-row items-center justify-center min-h-[80vh] px-5 lg:pt-0 pt-10">
+          <div className="relative z-10 w-[90%] mx-auto flex flex-col lg:flex-row items-center justify-center  px-5 lg:pt-0 pt-10">
             {/* Left: Hero Text - More Width */}
-            <div className="flex-[2] flex flex-col justify-center items-center lg:items-start text-center lg:text-left py-24 lg:py-0 lg:pr-12 lg:mt-0 mt-10">
+
+            <div className="flex flex-col justify-center items-center  text-center lg:text-left py-24 lg:py-10 lg:pr-12 lg:mt-0 mt-10">
               <div className="space-y-6 mt-0 gap-4 animate-fade-in-up">
-                <h3 className="text-white text-4xl lg:text-6xl sm:text-7xl font-outfit font-thin drop-shadow-lg animate-slide-in-left">
-                  Redefining the{' '}
-                  <span className="font-din-neu font-outfit font-bold animate-slide-in-right">
-                    Neighborhood Moving Services
-                  </span>
-                </h3>
-                <p className="font-outfit font-light text-pretty text-gray-200 sm:text-xl/8 mb-2 drop-shadow-md animate-fade-in-delay">
-                  Live in Winnipeg? We are moving experts. <br />
-                  {weatherData?.main && (
+                <h1 className="text-center font-outfit normal-case font-thin text-pretty justify-center text-gray-200 text-3xl sm:text-4xl mb-2 drop-shadow-md animate-fade-in-delay">
+                  Start your move today{' '}
+                </h1>
+                <span className="font-outfit font-bold text-6xl pt-2">
+                  {constants.companyName}
+                </span>
+                {/* {weatherData?.main && (
                     <span className="font-outfit font-bold text-gray-200 text-sm animate-fade-in-delay-2">
                       Weather now in the city: ~{weatherData?.main?.temp}°
                       <span className="text-base">C</span>,{' '}
                       {weatherData?.weather?.[0]?.description?.toUpperCase()}
                     </span>
-                  )}
-                </p>
+                  )} */}
               </div>
               {/* Desktop Button */}
-              <div className="hidden lg:flex relative top-10 sm:flex-row items-center lg:items-start gap-4 w-full lg:pt-[5%] animate-fade-in-delay">
+              <div className=" flex flex-col items-center lg:items-center gap-4 w-full lg:pt-[10%] animate-fade-in-delay">
                 <div className="flex-row gap-4 flex">
                   <div className="flex items-center gap-2 animate-slide-in-left">
                     <a
@@ -109,29 +109,9 @@ export default function Page() {
                   </a>
                 </div>
               </div>
-
-              {/* Mobile Button */}
-              <div className="lg:hidden flex flex-col items-center justify-between gap-4 w-full mt-6 animate-fade-in-delay">
-                {/* <div className="flex-row gap-4 flex"> */}
-                <div className="flex items-center gap-2 animate-slide-in-left">
-                  <a
-                    href={routes.quotation}
-                    className="capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 text-base font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
-                  >
-                    Book Now
-                    <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
-                  </a>
-                </div>
-                <a
-                  href={routes.about}
-                  className="flex flex-col py-5 font-outfit font-bold text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
-                >
-                  Learn More
-                </a>
-              </div>
             </div>
             {/* Right: Weather Widget - Less Width */}
-            <div className="hidden lg:flex flex-1 items-center justify-end h-full relative lg:pt-[1%]">
+            {/* <div className="hidden lg:flex flex-1 items-center justify-end h-full relative lg:pt-[1%]">
               <div className="sticky top-12 right-0 z-20 w-[300px] max-w-xs animate-fade-in-delay-2">
                 <WeatherWidget
                   weatherData={weatherData}
@@ -139,60 +119,60 @@ export default function Page() {
                   error={error}
                 />
               </div>
-            </div>
+            </div> */}
           </div>
           {/* Lines SVG Effect - Background */}
           {/* <Lines linesColor="red" strokeWidth={4} /> */}
         </div>
       </div>
+      <QuoteComponent services={services} />
+      <div className="w-full h-full py-10 px-4 lg:px-10 rounded-lg relative transition-all duration-300">
+        <div className="w-full h-full dark:bg-white flex-col md:flex-col lg:flex-row flex px-0 lg:px-10 justify-between items-center gap-4 mt-0 md:mt-4 mb-0 md:mb-6">
+          <div className="flex flex-col gap-4 px-0 py-10 text-center lg:text-left">
+            <Lines
+              layer="background"
+              strokeWidth={5}
+              linesColor="orange"
+              className="lg:mr-60 lg:ml-0 ml-20"
+            />
 
-      <div className="w-full h-full bg-white dark:bg-black py-10 rounded-lg relative transition-all duration-300">
-        <div className="w-[90%] mx-auto flex flex-col justify-center items-center ">
-          <Lines
-            linesColor="black"
-            strokeWidth={1}
-            className="lg:mr-60 lg:ml-0 ml-20"
-          />
+            <h3 className="text-black dark:text-white text-4xl lg:text-4xl md:text-5xl font-outfit font-thin drop-shadow-lg animate-slide-in-left">
+              Redefining the{' '}
+              <span className="font-din-neu font-outfit font-bold animate-slide-in-right">
+                Neighborhood Moving Services
+              </span>
+            </h3>
+            <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
+              Moving can often feel overwhelming, especially when relocating to
+              a different city or province.
+            </p>
+            <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
+              We offer a variety of moving services designed to make the process
+              smoother and less stressful.
+            </p>
+            <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
+              <a
+                href={routes.about}
+                className="rounded-full bg-theme-orange px-3 w-fit py-1.5 text-sm font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
+              >
+                About Us
+                <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
+              </a>
+            </div>
+          </div>
 
-          <div className="w-full h-full dark:bg-white sm:flex-row flex-col flex justify-between items-center gap-4 lg:grid lg:grid-cols-2 z-1000">
-            <div className="flex flex-col gap-4 lg:px-12 px-0 text-center lg:text-left">
-              <h1 className="text-black dark:text-white text-2xl font-outfit font-thin normal-case">
-                Why{' '}
-                <span className=" font-outfit font-bold">
-                  {constants.companyName}?
-                </span>
-              </h1>
-              <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
-                Moving can often feel overwhelming, especially when relocating
-                to a different city or province.
-              </p>
-              <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
-                We offer a variety of moving services designed to make the
-                process smoother and less stressful.
-              </p>
-              <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
-                <a
-                  href={routes.about}
-                  className="rounded-full bg-theme-orange px-3 w-fit py-1.5 text-sm font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
-                >
-                  About Us
-                  <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
-                </a>
-              </div>
-            </div>
-            <div className="flex flex-col items-center justify-center w-full">
-              <Image
-                src="/custom/moving-elevator.jpg"
-                className="w-full h-full rounded-lg w-full lg:w-[calc(100%-100px)]"
-                alt="Movers"
-                width={500}
-                height={500}
-              />
-            </div>
+          <div className="flex  items-center justify-center w-full">
+            <Image
+              src="/custom/moving-elevator.jpg"
+              className="h-full rounded-lg w-full lg:w-3/3 "
+              alt="Movers"
+              width={500}
+              height={500}
+            />
           </div>
         </div>
       </div>
-      <div className="w-full h-full bg-black py-10 mt-10">
+      {/* <div className="w-full h-full bg-black py-10 mt-10">
         <div className="w-full lg:w-[90%] mx-auto flex flex-col justify-center items-center gap-3">
           <h1 className="text-white dark:text-white text-2xl font-outfit font-light mb-4 normal-case">
             <span className="font-bold">Our</span> Services
@@ -244,64 +224,60 @@ export default function Page() {
             </a>
           </div>
         </div>
-      </div>
-      <div className="w-full h-full bg-white dark:bg-black py-10 rounded-lg relative transition-all duration-300">
-        <div className="w-[90%] mx-auto flex flex-col justify-center items-center ">
-          <div className="w-full h-full dark:bg-white sm:flex-row flex-col flex justify-between items-center gap-4 lg:grid lg:grid-cols-2">
-            <div className="flex flex-col items-center justify-center">
-              <Image
-                src="/custom/mobile-prototype.png"
-                className="w-[50%] rounded-lg "
-                alt="Movers"
-                width={500}
-                height={500}
-              />
-            </div>
-            <div className="flex flex-col gap-4 lg:px-12 px-0 text-center lg:text-left">
-              <span className="text-black dark:text-white text-base font-outfit font-light">
-                Coming Soon
+      </div> */}
+
+      <div className="w-full h-full bg-white relative transition-all duration-300 ">
+        <div className="flex w-full h-full dark:bg-white flex-col md:flex-row lg:flex-row justify-between items-center gap-4">
+          <div className="flex flex-col items-center justify-center bg-white dark:bg-black w-full lg:pt-0 pt-4">
+            <Image
+              src="/custom/mobile-prototype.png"
+              className="w-1/3 rounded-lg "
+              alt="Movers"
+              width={500}
+              height={500}
+            />
+          </div>
+          <div className="flex flex-col gap-1 w-full px-4 lg:px-0 md:px-5 py-10 px-0 text-center justify-center items-center lg:text-left bg-white  md:border-l border-theme-orange/20 rounded-lg ">
+            <h1 className="text-black text-2xl font-outfit font-thin normal-case text-center items-center">
+              <span className=" font-outfit font-bold">
+                Its Easy, Convenient <br />{' '}
               </span>
-              <h1 className="text-black dark:text-white text-2xl font-outfit font-thin normal-case">
-                Download the{' '}
-                <span className=" font-outfit font-bold">Our Mobile App</span>
-              </h1>
-              <p className="text-black dark:text-white text-center lg:text-left text-base font-outfit font-light">
-                Download the Movers mobile app to get started with your move.
-              </p>
-              <div className="flex flex-row gap-4 lg:justify-start justify-center mt-4 ">
-                <a
-                  href={routes.services}
-                  className="rounded-lg px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
-                >
-                  <Image
-                    src="/custom/download-apple-store.svg"
-                    alt="Movers"
-                    className="w-40 h-40"
-                    width={400}
-                    height={400}
-                  />
-                </a>
-                <a
-                  href={routes.services}
-                  className="rounded-lg px-1 w-fit py-1 pr-3 pl-3 text-base font-outfit font-light text-white  focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2"
-                >
-                  <Image
-                    src="/custom/download-google-store.svg"
-                    alt="Movers"
-                    className="w-40 h-40"
-                    width={400}
-                    height={400}
-                  />
-                </a>
-              </div>
+              Download our mobile app
+            </h1>
+
+            <p className="text-theme-orange mt-2 dark:text-white text-center lg:text-left text-xs font-outfit font-light">
+              book your next move and track your move in real-time.
+            </p>
+            <div className="flex flex-row gap-4 mt-2 ">
+              <a href="#" className="">
+                <Image
+                  src="/custom/download-apple-store.svg"
+                  alt="Movers"
+                  className="w-28"
+                  width={800}
+                  height={244}
+                />
+              </a>
+              <a href="#" className="">
+                <Image
+                  src="/custom/download-google-store.svg"
+                  alt="Movers"
+                  className="w-28"
+                  width={800}
+                  height={265}
+                />
+              </a>
             </div>
+            <span className="text-black dark:text-white text-xs mt-2 font-outfit font-light ">
+              Available on Apple and Google Play Store soon.
+            </span>
           </div>
         </div>
       </div>
 
       {/* Testimonial Slider */}
       <TestimonialComponent />
-      <QuoteComponent />
+      <HeroWidget />
     </>
   );
 }
