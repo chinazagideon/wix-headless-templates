@@ -7,7 +7,12 @@ const TestimonialComponent = () => {
     <>
       <div className="w-full h-full py-10 px-5 transition-all duration-300 relative">
         <div className="flex flex-col justify-center items-center mt-8">
-          <Lines linesColor="#023465" strokeWidth={1} className="" />
+          <Lines
+            linesColor="#023465"
+            strokeWidth={1}
+            className=""
+            layer="background"
+          />
           <h1 className="text-black text-center dark:text-white text-2xl font-outfit font-light normal-case ">
             <span className="font-bold text-gray-700">Customer</span> Voices
           </h1>

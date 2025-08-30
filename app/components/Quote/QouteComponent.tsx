@@ -1,93 +1,359 @@
+'use client';
 import Lines from '@app/components/Design/Lines';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
-import { constants } from '../constants';
+import { useEffect, useRef, useState } from 'react';
+import {
+  BoxIcon,
+  CheckCircleIcon,
+  HandHelping,
+  Loader,
+  SofaIcon,
+} from 'lucide-react';
+import { useForms } from '@app/hooks/useForms';
+import { normalizePhoneE164 } from '@app/utils/format-phone';
+// import { constants } from '../constants';
 
-const QuoteComponent = () => {
+const QuoteComponent = ({ services }: { services: any[] }) => {
+  const {
+    submit,
+    isSubmitting,
+    error: formError,
+    formId,
+    onSubmit,
+  } = useForms(process.env.NEXT_PUBLIC_WIX_FORM_ID || '');
+  const [isCompleted, setIsCompleted] = useState(false);
+  const successRef = useRef<HTMLDivElement | null>(null);
+
+  const [formData, setFormData] = useState({
+    first_name: '',
+    last_name: '',
+    email_e1ca: '',
+    phone_9f17: '',
+    moving_address: '',
+    unloading_address: '',
+    service_type: '',
+    moving_address_date_and_time: '',
+  });
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof typeof formData, string>>
+  >({});
+  const visibleServices = (services ?? [])?.filter((s: any) => !s.hidden);
+
+  useEffect(() => {
+    if (isCompleted && successRef.current) {
+      successRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'center',
+      });
+    }
+  }, [isCompleted]);
+
+  const handleChange = (e: any) => {
+    const fieldName = e.target.name as keyof typeof formData;
+    const fieldValue = e.target.value as string;
+    setFormData({ ...formData, [fieldName]: fieldValue });
+    // Clear error for this field on change
+    if (errors[fieldName]) {
+      const { [fieldName]: _removed, ...rest } = errors;
+      setErrors(rest);
+    }
+  };
+
+  const validateForm = (data: typeof formData) => {
+    const newErrors: Partial<Record<keyof typeof formData, string>> = {};
+
+    // First name
+    if (!data.first_name || !data.first_name.trim()) {
+      newErrors.first_name = 'First name is required';
+    }
+
+    // Last name
+    if (!data.last_name || !data.last_name.trim()) {
+      newErrors.last_name = 'Last name is required';
+    }
+
+    // Email
+    if (!data.email_e1ca || !data.email_e1ca.trim()) {
+      newErrors.email_e1ca = 'Email is required';
+    } else if (!/^\S+@\S+\.\S+$/.test(data.email_e1ca)) {
+      newErrors.email_e1ca = 'Enter a valid email address';
+    }
+
+    // Phone (basic digit length check)
+    const digits = (data.phone_9f17 || '').replace(/\D/g, '');
+    if (!digits) {
+      newErrors.phone_9f17 = 'Phone number is required';
+    } else if (digits.length < 10) {
+      newErrors.phone_9f17 = 'Enter a valid phone number';
+    }
+
+    // Pickup / Moving address
+    if (!data.moving_address || !data.moving_address.trim()) {
+      newErrors.moving_address = 'Pickup location is required';
+    }
+
+    // Final destination / Unloading address
+    if (!data.unloading_address || !data.unloading_address.trim()) {
+      newErrors.unloading_address = 'Final destination is required';
+    }
+
+    // Moving date and time (must be valid date-time)
+    if (
+      !data.moving_address_date_and_time ||
+      !data.moving_address_date_and_time.trim()
+    ) {
+      newErrors.moving_address_date_and_time =
+        'Moving date and time is required';
+    } else {
+      const parsed = new Date(data.moving_address_date_and_time);
+      if (isNaN(parsed.getTime())) {
+        newErrors.moving_address_date_and_time = 'Enter a valid date and time';
+      }
+    }
+
+    // Service type
+    if (!data.service_type || !data.service_type.trim()) {
+      newErrors.service_type = 'Please select a service';
+    }
+
+    return newErrors;
+  };
+  //submit form data to wix forms
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    const validationErrors = validateForm(formData);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+    try {
+      const sanitized = {
+        ...formData,
+        phone_9f17: normalizePhoneE164(String(formData.phone_9f17 || '')),
+        moving_address_date_and_time: new Date(
+          formData.moving_address_date_and_time
+        ).toISOString(),
+      };
+      const success = await onSubmit(sanitized);
+      if (success.status === 'PENDING') {
+        // Reset controlled inputs and errors
+        setFormData({
+          first_name: '',
+          last_name: '',
+          email_e1ca: '',
+          phone_9f17: '',
+          moving_address: '',
+          unloading_address: '',
+          service_type: '',
+          moving_address_date_and_time: '',
+        });
+        setErrors({});
+        // Optional scroll and native form reset
+        document.querySelector<HTMLFormElement>('#quote-form')?.reset();
+        setIsCompleted(true);
+      }
+
+      // setIsCompleted(true);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Only send known Wix field IDs to avoid "additional properties" errors
+  const allowedWixFieldIds: Array<keyof typeof formData> = [
+    'first_name',
+    'last_name',
+    'email_e1ca',
+    'phone_9f17',
+    'service_type',
+    'moving_address',
+    'unloading_address',
+    'moving_address_date_and_time',
+  ];
+
+  const isFormValid = Object.keys(validateForm(formData)).length === 0;
   return (
     <>
-      <div className="w-full h-full bg-black py-10 mt-10 relative" id="quote">
-        <div className="w-full lg:w-[70%] mx-auto  flex lg:flex-row flex-col gap-4 lg:px-0 px-4 justify-center items-center gap-3">
+      <div
+        className="w-full h-full bg-black/90 py-10 relative justify-center items-center"
+        id="quote"
+      >
+        <div className="z-10 w-full lg:w-[70%] mx-auto  flex lg:flex-row flex-col gap-4 lg:px-0 px-4 justify-center items-center gap-3">
           {/* <div className='flex lg:flex-row sm:flex-col gap-4 w-full justify-between'> */}
-          <div className="flex flex-col gap-4 w-full lg:w-[50%] mr-4 lg:justify-start justify-center lg:mr-4 mr-0 lg:mb-0 mb-4">
-            <h1 className="text-white dark:text-white text-2xl font-outfit font-light mb-4 normal-case lg:text-left text-center">
-              <span className="font-bold">Get</span> a Quote
-            </h1>
-            <div className="flex flex-col gap-4 text-center lg:text-left">
-              <p className="text-white dark:text-white text-center lg:text-left text-base font-outfit font-light">
-                With {constants.companyName}, you can trust us to provide a
-                moving experience that is tailored to your needs, affordable,
-                reliable, and backed by outstanding customer support. Fill out
-                this quick form for a moving quote and we’ll get back to you in
-                the same business day.
-              </p>
+          <div className="flex flex-col gap-4 w-full w-full">
+            <div className="flex flex-row gap-4 w-full justify-center items-center border-b border-theme-orange/20 pb-4">
+              <h1 className="text-white dark:text-white flex md:flex-row flex-col text-xl font-outfit font-thin normal-case text-center">
+                In a hurry?&nbsp;
+                <span className="text-white dark:text-white text-2xl font-outfit font-bold normal-case text-center">
+                  Fill out our quick quote form
+                </span>
+              </h1>
             </div>
-          </div>
-          <div className="flex flex-col gap-4 w-full lg:w-[50%] w-full justify-end">
-            <form action="">
-              <div className="flex flex-col gap-2 w-full mt-2">
-                <label
-                  htmlFor="name"
-                  className="text-gray-400 dark:text-white text-sm font-outfit font-light"
-                >
-                  Fullname
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
-                />
+            <p className="text-theme-orange dark:text-white text-sm italic font-outfit font-light normal-case text-center">
+              Complete the form below to get a free quote.
+            </p>
+            {isCompleted && (
+              <div
+                ref={successRef}
+                className="flex flex-col items-center justify-center gap-1 bg-green-500/10 p-4 rounded-lg"
+              >
+                <CheckCircleIcon className="w-8 h-8 text-green-500 mb-4" />
+                <h1 className="font-outfit font-thin lg:text-xl text-lg text-white normal-case mb-4 text-center">
+                  Thank you for your interest in our services! We will get back
+                  to you shortly.
+                </h1>
+              </div>
+            )}
+            <form onSubmit={handleSubmit} id="quote-form">
+              <div className="flex md:flex-row flex-col gap-2 w-full mt-2">
+                <div className="flex flex-col gap-2 w-full">
+                  <label
+                    htmlFor="name"
+                    className="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  >
+                    First Name<span className="text-theme-orange">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                    name="first_name"
+                    value={formData.first_name}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.first_name && (
+                    <p className="text-red-500 text-xs">{errors.first_name}</p>
+                  )}
+                </div>
+                <div className="flex flex-col gap-2 w-full">
+                  <label
+                    htmlFor="name"
+                    className="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  >
+                    Last Name<span className="text-theme-orange">*</span>
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                    name="last_name"
+                    value={formData.last_name}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.last_name && (
+                    <p className="text-red-500 text-xs">{errors.last_name}</p>
+                  )}
+                </div>
+              </div>
+              <div className="flex md:flex-row flex-col gap-2 w-full mt-2">
+                <div className="flex flex-col gap-2 w-full">
+                  <label
+                    htmlFor="email"
+                    className="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  >
+                    Email<span className="text-theme-orange">*</span>
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                    name="email_e1ca"
+                    value={formData.email_e1ca}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.email_e1ca && (
+                    <p className="text-red-500 text-xs">{errors.email_e1ca}</p>
+                  )}
+                </div>
+                <div className="flex flex-col gap-2 w-full">
+                  <label
+                    htmlFor="phone"
+                    className="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  >
+                    Phone Number<span className="text-theme-orange">*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    id="phone"
+                    className="w-full rounded-lg  bg-[#2B2B2B] border-2 border-[#2B2B2B] active:border-theme-orange"
+                    name="phone_9f17"
+                    value={formData.phone_9f17}
+                    onChange={handleChange}
+                    required
+                  />
+                  {errors.phone_9f17 && (
+                    <p className="text-red-500 text-xs">{errors.phone_9f17}</p>
+                  )}
+                </div>
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
                 <label
-                  htmlFor="email"
+                  htmlFor="moving_datetime"
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                 >
-                  Email
+                  Moving Date & Time<span className="text-theme-orange">*</span>
                 </label>
                 <input
-                  type="email"
-                  id="email"
+                  type="datetime-local"
+                  id="moving_datetime"
                   className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                  name="moving_address_date_and_time"
+                  value={formData.moving_address_date_and_time}
+                  onChange={handleChange}
+                  required
                 />
-              </div>
-              <div className="flex flex-col gap-2 w-full mt-2">
-                <label
-                  htmlFor="phone"
-                  className="text-gray-400 dark:text-white text-sm font-outfit font-light"
-                >
-                  Phone Number
-                </label>
-                <input
-                  type="tel"
-                  id="phone"
-                  className="w-full rounded-lg  bg-[#2B2B2B] border-2 border-[#2B2B2B] active:border-theme-orange"
-                />
+                {errors.moving_address_date_and_time && (
+                  <p className="text-red-500 text-xs">
+                    {errors.moving_address_date_and_time}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
                 <label
                   htmlFor="pickup_l"
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                 >
-                  Pickup Location
+                  Pickup Location <span className="text-theme-orange">*</span>
                 </label>
                 <input
                   type="tel"
                   id="pickup"
                   className="w-full rounded-lg  bg-[#2B2B2B] border-2 border-[#2B2B2B] active:border-theme-orange"
+                  name="moving_address"
+                  value={formData.moving_address}
+                  onChange={handleChange}
+                  required
                 />
+                {errors.moving_address && (
+                  <p className="text-red-500 text-xs">
+                    {errors.moving_address}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
                 <label
                   htmlFor="final_d"
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                 >
-                  Final Destination
+                  Final Destination <span className="text-theme-orange">*</span>
                 </label>
                 <input
                   type="tel"
                   id="final"
                   className="w-full rounded-lg  bg-[#2B2B2B] border-2 border-[#2B2B2B] active:border-theme-orange"
+                  name="unloading_address"
+                  value={formData.unloading_address}
+                  onChange={handleChange}
+                  required
                 />
+                {errors.unloading_address && (
+                  <p className="text-red-500 text-xs">
+                    {errors.unloading_address}
+                  </p>
+                )}
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
                 <label
@@ -95,29 +361,46 @@ const QuoteComponent = () => {
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                 >
                   Please select desired service
+                  <span className="text-theme-orange">*</span>
                 </label>
 
                 <select
-                  name=""
-                  id=""
+                  name="service_type"
+                  id="service_type"
                   className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange text-sm text-gray-400"
+                  value={formData.service_type}
+                  onChange={handleChange}
+                  required
                 >
                   <option value="">Select Service</option>
-                  <option value="1">Commercial Moving</option>
-                  <option value="2">Residential Moving</option>
-                  <option value="3">Storage</option>
-                  <option value="4">Packing</option>
+                  {visibleServices.map((service: any, index: number) => (
+                    <option
+                      key={
+                        service?.slug ||
+                        service?.id ||
+                        `${service?.info?.name || 'service'}-${index}`
+                      }
+                      value={service?.info?.name || service?.name}
+                    >
+                      {service?.info?.name || service?.name}
+                    </option>
+                  ))}
                 </select>
+                {errors.service_type && (
+                  <p className="text-red-500 text-xs">{errors.service_type}</p>
+                )}
               </div>
-              {/* <div className='flex flex-col gap-2 w-full mt-2'>
-                                <label htmlFor="comment" className='text-gray-400 dark:text-white text-sm font-outfit font-light'>Additional Comment</label>
-                                <textarea className='w-full rounded-lg bg-[#2B2B2B] text-sm bg-[#2B2B2B] border-[#2B2B2B] text-gray-600'>Addtional Comment </textarea>
-                            </div> */}
-              <div className="flex items-center gap-2 animate-slide-in-left mt-4 w-full">
+              <div className="flex flex-col gap-2 w-full mt-2">
+                {/* <p className="text-gray-400 dark:text-white text-sm font-outfit font-light">
+                 <span className="text-theme-orange">*</span> Indicates a required field
+                </p> */}
+              </div>
+              <div className="flex justify-center items-center gap-2 animate-slide-in-left mt-4 w-full">
                 <button
                   type="submit"
-                  disabled={true}
-                  className="capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 !font-size-10 font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={isSubmitting}
+                  onClick={handleSubmit}
+                  className="capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 !font-size-10 font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case "
                 >
                   Request Qoutation
                   <ArrowRightIcon className="w-8 h-8 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
@@ -126,10 +409,12 @@ const QuoteComponent = () => {
             </form>
             {/* </div> */}
           </div>
+
           <Lines
             linesColor="white"
             strokeWidth={1}
             className="mr-80 lg:block hidden"
+            layer="background"
             height="100vh"
           />
         </div>

@@ -19,7 +19,8 @@ import {
   SofaIcon,
 } from 'lucide-react';
 import { useForms } from '@app/hooks/useForms';
-
+import { normalizePhoneE164 } from '@app/utils/format-phone';
+import formId from '@app/hooks/useForms';
 interface FormData {
   // Step 1: Move Type
   first_name: string;
@@ -124,7 +125,7 @@ export default function QuotationPage() {
   const { services, isLoading, error } = useWixServices();
   const visibleServices = (services ?? []).filter((s) => !s.hidden);
   const [formId, setFormId] = useState<string | null>(
-    '5cf4b23b-dd41-4c1e-8c8e-71a42be45fda'
+    process.env.NEXT_PUBLIC_WIX_FORM_ID || ''
   );
   const { submit, isSubmitting, error: formError } = useForms(formId || '');
   const [serviceTypes, setServiceTypes] = useState<any[]>([]);
@@ -158,27 +159,27 @@ export default function QuotationPage() {
 
   // console.log(serviceTypes);
 
-  useEffect(() => {
-    const fetchFormId = async () => {
-      try {
-        if (formId) return;
-        const ns =
-          process.env.NEXT_PUBLIC_WIX_FORMS_NAMESPACE || 'wix.form_app.form';
-        const res = await fetch(
-          `/api/forms/form-ids?namespace=${encodeURIComponent(ns)}`,
-          { cache: 'no-store' }
-        );
-        if (!res.ok) throw new Error('Failed to fetch form IDs');
-        const data = await res.json();
-        if (Array.isArray(data.formIds) && data.formIds.length > 0) {
-          setFormId(data.formIds[0]);
-        }
-      } catch (e) {
-        console.error('Failed to resolve formId from namespace', e);
-      }
-    };
-    fetchFormId();
-  }, [formId]);
+  // useEffect(() => {
+  //   const fetchFormId = async () => {
+  //     try {
+  //       if (formId) return;
+  //       const ns =
+  //         process.env.NEXT_PUBLIC_WIX_FORMS_NAMESPACE || 'wix.form_app.form';
+  //       const res = await fetch(
+  //         `/api/forms/form-ids?namespace=${encodeURIComponent(ns)}`,
+  //         { cache: 'no-store' }
+  //       );
+  //       if (!res.ok) throw new Error('Failed to fetch form IDs');
+  //       const data = await res.json();
+  //       if (Array.isArray(data.formIds) && data.formIds.length > 0) {
+  //         setFormId(data.formIds[0]);
+  //       }
+  //     } catch (e) {
+  //       console.error('Failed to resolve formId from namespace', e);
+  //     }
+  //   };
+  //   fetchFormId();
+  // }, [formId]);
 
   const updateFormData = (field: keyof FormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -206,21 +207,24 @@ export default function QuotationPage() {
   };
 
   const isStepValid = (step: number) => {
-    // switch (step) {
-    //   case 1:
-    //     return formData.service_type;
-    //   case 2:
-    //     return formData.move_size;
-    //   case 3:
-    //     return (
-    //       formData.loading_address &&
-    //       formData.unloading_address
-    //       // isEmailOrPhone(formData.email_e1ca)
-    //     );
-    //   default:
-    //     return false;
-    // }
-    return true;
+    switch (step) {
+      case 1:
+        return formData.service_type;
+      case 2:
+        return formData.move_size && formData.building_type;
+      case 3:
+        return (
+          formData.moving_address &&
+          formData.unloading_address &&
+          formData.first_name &&
+          formData.last_name &&
+          formData.email_e1ca &&
+          formData.phone_9f17
+          // isEmailOrPhone(formData.email_e1ca)
+        );
+      default:
+        return false;
+    }
   };
 
   const isEmailOrPhone = (value: string) => {
@@ -229,26 +233,26 @@ export default function QuotationPage() {
 
   // Normalize phone to E.164. If no country code is provided and the number
   // has 10 digits, default to +1 (US/Canada).
-  const normalizePhoneE164 = (raw: string): string => {
-    if (!raw) return raw;
-    const digitsOnly = raw.replace(/\D+/g, '');
-    if (raw.trim().startsWith('+')) {
-      // Keep leading + and strip non-digits from the rest
-      const rest = raw.trim().slice(1).replace(/\D+/g, '');
-      return `+${rest}`;
-    }
-    if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
-      return `+${digitsOnly}`;
-    }
-    if (digitsOnly.length === 10) {
-      return `+1${digitsOnly}`;
-    }
-    // Fallback: if looks like an international number without +
-    if (digitsOnly.length > 10) {
-      return `+${digitsOnly}`;
-    }
-    return raw;
-  };
+  // const normalizePhoneE164 = (raw: string): string => {
+  //   if (!raw) return raw;
+  //   const digitsOnly = raw.replace(/\D+/g, '');
+  //   if (raw.trim().startsWith('+')) {
+  //     // Keep leading + and strip non-digits from the rest
+  //     const rest = raw.trim().slice(1).replace(/\D+/g, '');
+  //     return `+${rest}`;
+  //   }
+  //   if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
+  //     return `+${digitsOnly}`;
+  //   }
+  //   if (digitsOnly.length === 10) {
+  //     return `+1${digitsOnly}`;
+  //   }
+  //   // Fallback: if looks like an international number without +
+  //   if (digitsOnly.length > 10) {
+  //     return `+${digitsOnly}`;
+  //   }
+  //   return raw;
+  // };
 
   // Only send known Wix field IDs to avoid "additional properties" errors
   const allowedWixFieldIds: Array<keyof FormData> = [
@@ -265,7 +269,7 @@ export default function QuotationPage() {
   ];
 
   async function onSubmit(data: FormData) {
-    console.log(data);
+    // console.log(data);
     if (!formId) throw new Error('Form ID not resolved yet');
     const sanitized: Record<string, any> = {};
     for (const key of allowedWixFieldIds) {
@@ -359,7 +363,7 @@ export default function QuotationPage() {
                     currentStep >= 3 ? 'text-theme-orange font-medium' : ''
                   }
                 >
-                  Location Details
+                  Moving Details
                 </span>
               </div>
             </div>
@@ -482,9 +486,6 @@ export default function QuotationPage() {
                     <label className="block">
                       <span className="text-gray-700 font-medium">
                         Building Type{' '}
-                        <span className="text-gray-500 text-sm">
-                          (optional)
-                        </span>
                       </span>
                       <select
                         value={formData.building_type}
@@ -566,34 +567,13 @@ export default function QuotationPage() {
                 <div className="space-y-8 animate-fade-in">
                   <div className="text-center">
                     <h2 className="text-2xl font-outfit font-semibold text-gray-900 mb-2">
-                      Where and when?
+                      Moving Details
                     </h2>
                     <p className="text-gray-600">
-                      Tell us about your loading and unloading address
+                      Tell us about your contact and moving details
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <AddressAutocomplete
-                      value={formData.moving_address}
-                      onChange={(address) =>
-                        updateFormData('moving_address', address)
-                      }
-                      placeholder="Enter the loading address"
-                      label="Loading Address"
-                      className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                    />
-
-                    <AddressAutocomplete
-                      value={formData.unloading_address}
-                      onChange={(address) =>
-                        updateFormData('unloading_address', address)
-                      }
-                      placeholder="Enter the unloading address"
-                      label="Unloading Address"
-                      className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                    />
-                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
@@ -653,6 +633,28 @@ export default function QuotationPage() {
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
                     </label>
+                  </div>
+
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <AddressAutocomplete
+                      value={formData.moving_address}
+                      onChange={(address) =>
+                        updateFormData('moving_address', address)
+                      }
+                      placeholder="Enter the loading address"
+                      label="Loading Address"
+                      className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                    />
+
+                    <AddressAutocomplete
+                      value={formData.unloading_address}
+                      onChange={(address) =>
+                        updateFormData('unloading_address', address)
+                      }
+                      placeholder="Enter the unloading address"
+                      label="Unloading Address"
+                      className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                    />
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">

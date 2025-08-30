@@ -2,6 +2,8 @@
 
 import { useMutation } from '@tanstack/react-query';
 import { useClientAuthSession } from '@app/hooks/useClientAuthSession';
+import { useEffect } from 'react';
+import { normalizePhoneE164 } from '@app/utils/format-phone';
 
 type SubmissionValues = Record<string, any>;
 
@@ -15,6 +17,8 @@ export type UseFormReturn = {
   error: unknown;
   data: any;
   reset: () => void;
+  formId: string;
+  onSubmit: (data: SubmissionValues) => Promise<any>;
 };
 
 const GUID_REGEX =
@@ -89,6 +93,41 @@ export const useForms = (formId: string): UseFormReturn => {
     },
   });
 
+  useEffect(() => {
+    const fetchFormId = async () => {
+      try {
+        if (formId) return;
+        const ns =
+          process.env.NEXT_PUBLIC_WIX_FORMS_NAMESPACE || 'wix.form_app.form';
+        const res = await fetch(
+          `/api/forms/form-ids?namespace=${encodeURIComponent(ns)}`,
+          { cache: 'no-store' }
+        );
+        if (!res.ok) throw new Error('Failed to fetch form IDs');
+        const data = await res.json();
+        if (Array.isArray(data.formIds) && data.formIds.length > 0) {
+          return data.formIds[0];
+        }
+      } catch (e) {
+        console.error('Failed to resolve formId from namespace', e);
+      }
+    };
+    fetchFormId();
+  }, [formId]);
+
+  async function onSubmit(data: SubmissionValues) {
+    // console.log(data);
+    if (!formId) throw new Error('Form ID not resolved yet');
+    const sanitized: Record<string, any> = {};
+    for (const key of Object.keys(data)) {
+      const value = data[key];
+      if (value !== undefined && value !== null && value !== '') {
+        sanitized[key] =
+          key === 'phone_9f17' ? normalizePhoneE164(String(value)) : value;
+      }
+    }
+    return mutation.mutateAsync({ values: sanitized });
+  }
   return {
     submit: async (values: SubmissionValues, options?: UseFormOptions) =>
       mutation.mutateAsync({ values, options }),
@@ -96,6 +135,8 @@ export const useForms = (formId: string): UseFormReturn => {
     error: mutation.error,
     data: mutation.data,
     reset: mutation.reset,
+    formId: normalizedFormId,
+    onSubmit,
   };
 };
 
