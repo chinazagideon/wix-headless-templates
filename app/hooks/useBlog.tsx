@@ -44,7 +44,7 @@ export function useBlogPosts() {
 
 export function usePaginatedPosts(initialPage: number = 1, limit: number = 8) {
   const [page, setPage] = useState<number>(initialPage);
-  const { data: allItems = [], isLoading, isError } = useBlogPosts();
+  const { data: allItems = [], isLoading, isError, isFetching } = useBlogPosts();
 
   const computed = useMemo(() => {
     const safeLimit = Math.max(1, limit);
@@ -68,5 +68,5 @@ export function usePaginatedPosts(initialPage: number = 1, limit: number = 8) {
   const next = () => setPage((p) => Math.min(p + 1, computed.totalPages));
   const prev = () => setPage((p) => Math.max(p - 1, 1));
 
-  return { ...computed, setPage, next, prev, isLoading, isError };
+  return { ...computed, setPage, next, prev, isLoading, isError, isFetching };
 }
