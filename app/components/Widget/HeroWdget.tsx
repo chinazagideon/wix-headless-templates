@@ -1,12 +1,12 @@
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import routes from '@app/components/Layout/NavBarV2/routes';
+import ThemeButton from '../Button/ThemeButton';
 
 const HeroWidget = ({ className }: { className?: string }) => {
   const quotation_url = routes.quotation;
   return (
     <>
       <div
-        className={`w-full bg-[#D9D9D9] px-4 lg:px-20 py-10 pb-20 bg-[#D9D9D9] lg:py-auto overflow-hidden relative ${className}`}
+        className={`w-full bg-[#011a34] px-4 lg:px-20 py-10 pb-20 lg:py-auto overflow-hidden relative ${className}`}
         style={{
           background: `url('/custom/icando-move-truck.jpg')`,
           backgroundSize: 'cover',
@@ -30,19 +30,22 @@ const HeroWidget = ({ className }: { className?: string }) => {
           </p>
           <div className="flex flex-col lg:flex-row  items-center justify-center gap-4 w-full pt-10 lg:pt-[5%] animate-fade-in-delay">
             <div className="flex items-center gap-2 animate-slide-in-left">
-              <a
+              <ThemeButton isSubmitting={false} href={quotation_url}>
+                Get a free quote
+              </ThemeButton>
+              {/* <a
                 href={quotation_url}
                 className="z-50 text-sm rounded-full bg-theme-orange px-3 w-fit py-2 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
               >
-                Book a Move
+                Get a free quote
                 <ArrowRightIcon className="w-6 h-6 rounded-full bg-[#000] p-1  text-white hover:scale-105 transition-all duration-200" />
-              </a>
+              </a> */}
             </div>
             <a
               href={routes.relocation_hub}
               className="flex underline flex-col text-md py-5 font-outfit font-light text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
             >
-              Visit Winnipeg Hub
+              Visit our relocation hub
             </a>
           </div>
         </div>

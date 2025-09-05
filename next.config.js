@@ -16,7 +16,7 @@ const nextConfig = {
     dirs: ['app', 'src'],
   },
   images: {
-    domains: ['fakeimg.pl', 'static.wixstatic.com', 'fonts.cdnfonts.com'],
+    domains: ['fakeimg.pl', 'static.wixstatic.com', 'fonts.cdnfonts.com', 'lh3.googleusercontent.com'],
     formats: ['image/webp'],
   },
 };

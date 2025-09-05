@@ -91,7 +91,7 @@ export default function WixMediaImage({
     return (
       <>
         <div className="flex items-center justify-center">
-          <img
+          <Image
             src="/custom/icando-move-truck.jpg"
             className="object-cover w-full group-hover:brightness-75 transition duration-300 ease-in-out rounded-md"
             alt="Service image"

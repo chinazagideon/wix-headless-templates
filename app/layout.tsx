@@ -34,6 +34,16 @@ export default function RootLayout(layoutProps: any) {
 
   return (
     <html lang="en">
+      <head>
+        {/* Preload hero background video and poster for faster start */}
+        <link rel="preload" as="image" href="/custom/truck-move-2.jpg" />
+        <link
+          rel="preload"
+          as="video"
+          href="/custom/moving-video.mp4"
+          type="video/mp4"
+        />
+      </head>
       {wixSession.wixClient ? (
         <body
           className="parallax-background overflow-x-hidden w-full min-h-screen mobile-no-scroll"

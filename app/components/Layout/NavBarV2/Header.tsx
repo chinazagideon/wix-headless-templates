@@ -5,6 +5,7 @@ import {
   PhoneIcon,
   Bars3Icon,
   XMarkIcon,
+  ArrowRightIcon,
 } from '@heroicons/react/24/outline';
 
 import { useState } from 'react';
@@ -12,6 +13,7 @@ import NavLink from './NavLink';
 import routes from './routes';
 import { constants } from '@app/components/constants';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -34,10 +36,10 @@ const Header = () => {
       <header className="absolute inset-x-0 mx-auto top-0 z-50">
         <nav
           aria-label="Global"
-          className="flex items-center justify-center p-6 lg:px-8"
+          className="flex items-center justify-center p-0 lg:p-4 px-0 lg:px-8 md:px-0"
         >
           <div className="flex flex-col justify-center items-center w-full">
-            <div className="w-[95%] mx-auto bg-black dark:bg-black text-white p-2 flex flex-row justify-center items-center rounded-2xl mb-2 sm:flex-col">
+            <div className="w-full md:w-full lg:w-[95%] mx-auto bg-[#011a34] dark:bg-black text-white p-2 flex flex-row justify-center items-center rounded-none lg:rounded-2xl mb-2 sm:flex-col">
               <div className="flex justify-between items-center md:w-full w-fit">
                 <p className="hidden md:flex text-sm font-light text-white font-outfit flex-row items-center justify-start gap-2">
                   <MapPinIcon
@@ -71,7 +73,7 @@ const Header = () => {
                 </div>
               </div>
             </div>
-            <div className="w-full bg-white dark:bg-black dark:text-white rounded-lg p-4 flex flex-col justify-center items-center">
+            <div className="w-full bg-white dark:bg-black dark:text-white rounded-none lg:rounded-lg p-4 flex flex-col justify-center items-center">
               <div className="flex flex-row justify-between items-center w-full">
                 <div className="flex lg:flex-1">
                   <a href={routes.home} className="-m-1.5 p-1.5">
@@ -121,12 +123,32 @@ const Header = () => {
                 </div>
               </div>
             </div>
+            {window.location.pathname == routes.home && (
+              <div
+                className="flex flex-col justify-center items-center lg:w-[95%] w-full h-full bg-[#011a34]/90 lg:rounded-none rounded-none cursor-pointer hover:bg-[#011a34] transition-all duration-300"
+                onClick={() => {
+                  const quote = document.getElementById('quote');
+                  if (quote) {
+                    quote.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+              >
+                <p className="text-gray-100 text-xl font-outfit shadow-md font-thin px-2 py-2">
+                  In a rush?{' '}
+                  <Link href="/#quote" className="">
+                    get a free qoute{' '}
+                  </Link>
+                </p>
+              </div>
+            )}
           </div>
         </nav>
+
         <NavLink
           navigation={navigation}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
+          isActivePage={isActivePage as any}
         />
       </header>
     </>

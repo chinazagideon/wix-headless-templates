@@ -1,17 +1,20 @@
 import { Dialog, DialogPanel } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import routes from './routes';
+import Image from 'next/image';
 
 export type NavLinkProps = {
   navigation: { name: string; href: string }[];
   mobileMenuOpen: boolean;
   setMobileMenuOpen: (open: boolean) => void;
+  isActivePage?: (href: string) => boolean;
 };
 
 const NavLink = ({
   navigation,
   mobileMenuOpen,
   setMobileMenuOpen,
+  isActivePage = () => false,
 }: NavLinkProps) => {
   return (
     <>
@@ -25,7 +28,13 @@ const NavLink = ({
           <div className="flex items-center justify-between">
             <a href={routes.home} className="-m-1.5 p-1.5">
               <span className="sr-only">IcanDo Movers</span>
-              <img alt="" src="/custom/logo.svg" className="h-8 w-auto" />
+              <Image
+                alt=""
+                src="/custom/logo.svg"
+                className="h-8 w-auto"
+                width={32}
+                height={32}
+              />
             </a>
             <button
               type="button"
@@ -43,7 +52,13 @@ const NavLink = ({
                   <a
                     key={item.name}
                     href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                    className={`-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50
+                    ${
+                      isActivePage(item.href)
+                        ? 'text-theme-orange underline underline-offset-4'
+                        : ''
+                    }
+                        `}
                   >
                     {item.name}
                   </a>
@@ -52,7 +67,13 @@ const NavLink = ({
               <div className="py-6">
                 <a
                   href={routes.quotation}
-                  className="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50"
+                  className={`-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50
+                    ${
+                      isActivePage(routes.quotation)
+                        ? 'text-theme-orange underline underline-offset-4'
+                        : ''
+                    }
+                        `}
                 >
                   Request Quotation
                 </a>

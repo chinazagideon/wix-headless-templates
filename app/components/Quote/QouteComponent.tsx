@@ -1,16 +1,10 @@
 'use client';
 import Lines from '@app/components/Design/Lines';
-import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import { useEffect, useRef, useState } from 'react';
-import {
-  BoxIcon,
-  CheckCircleIcon,
-  HandHelping,
-  Loader,
-  SofaIcon,
-} from 'lucide-react';
+import { CheckCircleIcon, Loader } from 'lucide-react';
 import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
+import ThemeButton from '../Button/ThemeButton';
 // import { constants } from '../constants';
 
 const QuoteComponent = ({ services }: { services: any[] }) => {
@@ -175,7 +169,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
   return (
     <>
       <div
-        className="w-full h-full bg-black/90 py-10 relative justify-center items-center"
+        className="w-full h-full bg-[#011a34]/90 py-10 relative justify-center items-center"
         id="quote"
       >
         <div className="z-10 w-full lg:w-[70%] mx-auto  flex lg:flex-row flex-col gap-4 lg:px-0 px-4 justify-center items-center gap-3">
@@ -216,7 +210,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   <input
                     type="text"
                     id="name"
-                    className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                    className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="first_name"
                     value={formData.first_name}
                     onChange={handleChange}
@@ -236,7 +230,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   <input
                     type="text"
                     id="name"
-                    className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                    className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="last_name"
                     value={formData.last_name}
                     onChange={handleChange}
@@ -258,7 +252,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   <input
                     type="email"
                     id="email"
-                    className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                    className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="email_e1ca"
                     value={formData.email_e1ca}
                     onChange={handleChange}
@@ -278,7 +272,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   <input
                     type="tel"
                     id="phone"
-                    className="w-full rounded-lg  bg-[#2B2B2B] border-2 border-[#2B2B2B] active:border-theme-orange"
+                    className="w-full rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                     name="phone_9f17"
                     value={formData.phone_9f17}
                     onChange={handleChange}
@@ -299,7 +293,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 <input
                   type="datetime-local"
                   id="moving_datetime"
-                  className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange"
+                  className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] text-gray-600 dark:text-white focus:border-theme-orange active:border-theme-orange"
                   name="moving_address_date_and_time"
                   value={formData.moving_address_date_and_time}
                   onChange={handleChange}
@@ -321,7 +315,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 <input
                   type="tel"
                   id="pickup"
-                  className="w-full rounded-lg  bg-[#2B2B2B] border-2 border-[#2B2B2B] active:border-theme-orange"
+                  className="w-full rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   name="moving_address"
                   value={formData.moving_address}
                   onChange={handleChange}
@@ -343,7 +337,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 <input
                   type="tel"
                   id="final"
-                  className="w-full rounded-lg  bg-[#2B2B2B] border-2 border-[#2B2B2B] active:border-theme-orange"
+                  className="w-full rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   name="unloading_address"
                   value={formData.unloading_address}
                   onChange={handleChange}
@@ -367,7 +361,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 <select
                   name="service_type"
                   id="service_type"
-                  className="w-full rounded-lg bg-[#2B2B2B] border-2 border-[#2B2B2B] focus:border-theme-orange active:border-theme-orange text-sm text-gray-400"
+                  className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange text-sm text-gray-400"
                   value={formData.service_type}
                   onChange={handleChange}
                   required
@@ -396,15 +390,12 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 </p> */}
               </div>
               <div className="flex justify-center items-center gap-2 animate-slide-in-left mt-4 w-full">
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  onClick={handleSubmit}
-                  className="capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 !font-size-10 font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case "
+                <ThemeButton
+                  isSubmitting={isSubmitting}
+                  handleSubmit={() => handleSubmit(new Event('submit'))}
                 >
                   Request Qoutation
-                  <ArrowRightIcon className="w-8 h-8 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
-                </button>
+                </ThemeButton>
               </div>
             </form>
             {/* </div> */}
