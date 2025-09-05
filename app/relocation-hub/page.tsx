@@ -6,8 +6,9 @@ import { usePaginatedPosts } from '@app/hooks/useBlog';
 import { formatDate } from '@app/utils/format-date';
 import PaginationLinks from '@app/components/pagination/PaginationLinks';
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+// import { Loader2 } from 'lucide-react';
 import PageHeader from '@app/components/Layout/PageHeader';
+import { BinocularsIcon, Loader, Gauge } from 'lucide-react';
 
 const Page = () => {
   const router = useRouter();
@@ -47,7 +48,7 @@ const Page = () => {
           {isLoading ||
             (isFetching && (
               <div className="flex items-center justify-center">
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader className="w-10 h-10 animate-spin text-theme-orange" />
               </div>
             ))}
           {isError && (
@@ -55,12 +56,12 @@ const Page = () => {
               Error loading posts
             </div>
           )}
-          {posts.length === 0 && (
+          {!isLoading && !isFetching && !isError && posts.length === 0 && (
             <div className="flex items-center justify-center">
               No posts found
             </div>
           )}
-          {!isLoading && !isError && posts.length > 0 && (
+          {!isLoading && !isFetching && !isError && posts.length > 0 && (
             <>
               {posts.map((post: any, index: number) => (
                 <div
@@ -130,7 +131,7 @@ const Page = () => {
             </>
           )}
         </div>
-        {!isLoading && !isError && (
+        {!isLoading && !isFetching && !isError && (
           <PaginationLinks
             prev={prev}
             next={next}

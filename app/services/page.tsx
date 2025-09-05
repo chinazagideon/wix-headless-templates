@@ -10,11 +10,11 @@ import PageHeader from '@app/components/Layout/PageHeader';
 import { constants } from '@app/components/constants';
 
 const ServicePageContent = () => {
-  const { services, isLoading, error } = useWixServices();
+  const { services, isLoading, error, isFetching } = useWixServices();
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || isFetching ? (
         <div className="flex justify-center items-center h-screen">
           <Loader className="w-10 h-10 animate-spin text-theme-orange" />
         </div>

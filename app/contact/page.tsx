@@ -69,9 +69,12 @@ const Page = () => {
                 <h4 className="font-outfit font-thin text-sm text-black normal-case items-center justify-center">
                   Email
                 </h4>
-                <p className="font-outfit font-bold text-lg text-black">
+                <a
+                  href={`mailto:${data.contactEmail}`}
+                  className="font-outfit font-bold text-lg text-black"
+                >
                   {data.contactEmail}
-                </p>
+                </a>
               </div>
               <div className="font-outfit font-thin text-xs text-black w-full pt-4 border border-gray-200 p-6 rounded-lg flex flex-col items-center text-center">
                 <span className="flex items-center justify-center p-4">
@@ -80,9 +83,12 @@ const Page = () => {
                 <h4 className="font-outfit font-thin text-xs text-black normal-case items-center justify-center">
                   Phone
                 </h4>
-                <p className="font-outfit font-bold text-lg text-black">
+                <a
+                  href={`tel:${data.contactPhone}`}
+                  className="font-outfit font-bold text-lg text-black"
+                >
                   {data.contactPhone}
-                </p>
+                </a>
               </div>
             </div>
           </div>

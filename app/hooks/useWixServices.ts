@@ -6,13 +6,13 @@ export const useWixServices = () => {
   const [services, setServices] = useState<ServiceInfoViewModel[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
+  const [isFetching, setIsFetching] = useState(false);
   useEffect(() => {
     const fetchServices = async () => {
       try {
         setIsLoading(true);
         setError(null);
-
+        setIsFetching(true);
         const fetchedServices = await wixService.getServices();
         setServices(fetchedServices);
       } catch (err) {
@@ -22,13 +22,14 @@ export const useWixServices = () => {
         );
       } finally {
         setIsLoading(false);
+        setIsFetching(false);
       }
     };
 
     fetchServices();
   }, []);
 
-  return { services, isLoading, error };
+  return { services, isLoading, error, isFetching };
 };
 
 export const useWixServiceBySlug = (slug: string) => {
