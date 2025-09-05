@@ -74,8 +74,8 @@ const Footer = () => {
               </p>
             </div> */}
           </div>
-          <div className="flex flex-row items-center gap-2 lg:hidden justify-center border-t-2 border-theme-orange/10 w-full mt-4 py-4">
-            <p className="text-black text-sm font-outfit font-light normal-case">
+          <div className="flex flex-row items-center gap-2 lg:hidden justify-center border-t-2 border-theme-orange/10 w-full mt-4 py-2">
+            <p className="text-black text-xs font-outfit font-light normal-case">
               &copy; {new Date().getFullYear()} {constants.companyName}. All
               rights reserved.
             </p>

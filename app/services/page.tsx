@@ -6,6 +6,8 @@ import { useWixServices } from '@app/hooks/useWixServices';
 import HeroWidget from '@app/components/Widget/HeroWdget';
 import { Loader } from 'lucide-react';
 import Lines from '@app/components/Design/Lines';
+import PageHeader from '@app/components/Layout/PageHeader';
+import { constants } from '@app/components/constants';
 
 const ServicePageContent = () => {
   const { services, isLoading, error } = useWixServices();
@@ -20,16 +22,10 @@ const ServicePageContent = () => {
         <div>Error loading services: {error}</div>
       ) : (
         <>
-          <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-2 lg:px-20 py-10 lg:py-auto">
-            <div className="flex flex-col items-start lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
-              <h1 className="font-outfit font-thin lg:text-7xl text-4xl text-black normal-case">
-                Our{' '}
-                <span className="font-outfit font-bold lg:text-7xl text-4xl normal-case">
-                  Services
-                </span>
-              </h1>
-            </div>
-          </div>
+          <PageHeader
+            title="Our Services"
+            description={constants.serviceDescription}
+          />
 
           <div className="w-full h-full bg-white dark:bg-black py-10 rounded-lg relative transition-all duration-300">
             <div className="w-[90%] mx-auto flex flex-col justify-center items-center ">

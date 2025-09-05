@@ -1,6 +1,7 @@
 'use client';
 import Image from 'next/image';
 import HeroWidget from '../components/Widget/HeroWdget';
+import PageHeader from '@app/components/Layout/PageHeader';
 import { useAboutUsItems } from '@app/hooks/useAbout';
 import { media as wixMedia } from '@wix/sdk';
 import { constants } from '@app/components/constants';
@@ -36,21 +37,14 @@ const Page = () => {
 
   return (
     <>
-      <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-2 lg:px-20 py-10 lg:py-auto">
-        <div className="flex flex-col items-start lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
-          <h1 className="font-outfit font-thin lg:text-7xl text-4xl text-black normal-case">
-            About{' '}
-            <span className="font-outfit font-bold lg:text-7xl text-4xl normal-case">
-              {constants.companyName}
-            </span>
-          </h1>
-          <p className="font-outfit font-thin lg:text-sm text-xs text-black lg:w-[70%] w-full pt-4">
-            <span
-              dangerouslySetInnerHTML={{ __html: data.aboutDescription || '' }}
-            />
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        title={`About ${constants.companyName}`}
+        description={
+          <span
+            dangerouslySetInnerHTML={{ __html: data.aboutDescription || '' }}
+          />
+        }
+      />
 
       {/* <div className="w-full pt-4 lg:pt-12 px-4 sm:px-6 justify-center h-[300px] rounded-lg  overflow-hidden flex flex-col lg:flex-row gap-4 lg:gap-10 pb-10">
         <div className="hidden lg:flex flex-col gap-4 lg:w-[100%] justify-center items-center">
