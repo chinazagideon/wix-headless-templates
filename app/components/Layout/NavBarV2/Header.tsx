@@ -122,7 +122,7 @@ const Header = () => {
                         : ''
                     }`}
                   >
-                    Request Quotation <span aria-hidden="true">&rarr;</span>
+                    Request Quote <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
               </div>
@@ -140,7 +140,7 @@ const Header = () => {
                 <p className="text-gray-100 text-xl font-outfit shadow-md font-thin px-2 py-2">
                   In a rush?{' '}
                   <Link href="/#quote" className="">
-                    get a free qoute{' '}
+                    get a free quote{' '}
                   </Link>
                 </p>
               </div>
