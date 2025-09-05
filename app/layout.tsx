@@ -65,11 +65,11 @@ export default function RootLayout(layoutProps: any) {
     <html lang="en">
       <head>
         {/* Preload hero background video and poster for faster start */}
-        <link rel="preload" as="image" href="/custom/truck-move-2.jpg" />
+        <link rel="preload" as="image" href="/custom/icando-move-truck.jpg" />
         <link
           rel="preload"
           as="video"
-          href="/custom/moving-video.mp4"
+          href="/custom/videos/icandomovers.mp4"
           type="video/mp4"
         />
         {/* Warm up DNS and connections for frequently used third-parties */}

@@ -9,7 +9,7 @@ const HeroWidget = ({ className }: { className?: string }) => {
       <div
         className={`w-full bg-[#011a34] px-4 lg:px-20 py-10 pb-20 lg:py-auto overflow-hidden relative ${className}`}
         style={{
-          background: `url('/custom/icando-move-truck.jpg')`,
+          background: `url('/custom/truck-bg.jpg')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}

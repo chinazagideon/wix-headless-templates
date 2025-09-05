@@ -50,7 +50,7 @@ export default function Page() {
             <div
               className="absolute inset-0 w-full h-full bg-cover bg-center bg-no-repeat"
               style={{
-                backgroundImage: 'url(/custom/truck-move-2.jpg)',
+                backgroundImage: 'url(/custom/icando-move-truck.jpg)',
               }}
             ></div>
 
@@ -60,10 +60,12 @@ export default function Page() {
               loop
               muted
               playsInline
-              preload="auto"
-              poster="/custom/truck-move-2.jpg"
+              preload="metadata"
+              poster="/custom/icando-move-truck.jpg"
               crossOrigin="anonymous"
               className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+              aria-hidden="true"
+              role="presentation"
               onLoadedData={(e) => {
                 const video = e.target as HTMLVideoElement;
                 video.classList.remove('opacity-0');
@@ -75,7 +77,7 @@ export default function Page() {
                 video.style.display = 'none';
               }}
             >
-              <source src="/custom/moving-video.mp4" type="video/mp4" />
+              <source src="/custom/videos/icandomovers.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
 

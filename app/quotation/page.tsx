@@ -22,6 +22,7 @@ import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import formId from '@app/hooks/useForms';
 import PageHeader from '@app/components/Layout/PageHeader';
+import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 
 interface FormData {
   // Step 1: Move Type
@@ -640,7 +641,7 @@ export default function QuotationPage() {
                       <input
                         type="text"
                         value={formData.first_name}
-                        placeholder="Enter your first name"
+                        placeholder="please enter your first name"
                         onChange={(e) =>
                           updateFormData('first_name', e.target.value)
                         }
@@ -658,7 +659,7 @@ export default function QuotationPage() {
                       </span>
                       <input
                         type="text"
-                        placeholder="Enter your last name"
+                        placeholder="please enter your last name"
                         value={formData.last_name}
                         onChange={(e) =>
                           updateFormData('last_name', e.target.value)
@@ -679,7 +680,7 @@ export default function QuotationPage() {
                       </span>
                       <input
                         type="text"
-                        placeholder="Enter your phone number"
+                        placeholder="please enter your phone number"
                         value={formData.phone_9f17}
                         onChange={(e) =>
                           updateFormData('phone_9f17', e.target.value)
@@ -698,7 +699,7 @@ export default function QuotationPage() {
                       </span>
                       <input
                         type="text"
-                        placeholder="Enter your email address"
+                        placeholder="please enter your email address"
                         value={formData.email_e1ca}
                         onChange={(e) =>
                           updateFormData('email_e1ca', e.target.value)
@@ -712,7 +713,6 @@ export default function QuotationPage() {
                       )}
                     </label>
                   </div>
-
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-col">
                       <AddressAutocomplete
@@ -720,8 +720,9 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('moving_address', address)
                         }
-                        placeholder="Enter the loading address"
+                        placeholder="please enter your loading address"
                         label="Loading address"
+                        fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium"
                       />
@@ -738,8 +739,9 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('unloading_address', address)
                         }
-                        placeholder="Enter the unloading address"
+                        placeholder="please enter your unloading address"
                         label="Unloading address"
+                        fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium"
                       />
@@ -750,7 +752,7 @@ export default function QuotationPage() {
                       )}
                     </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
                         Moving date
@@ -792,6 +794,30 @@ export default function QuotationPage() {
                         </p>
                       )}
                     </label>
+                  </div> */}
+                  <div className="flex flex-col gap-2 w-full mt-4">
+                    <label
+                      htmlFor="moving_datetime"
+                      className="text-gray-700 font-medium"
+                    >
+                      Moving Date & Time<span className=""></span>
+                    </label>
+                    <DateTimePicker
+                      value={formData.moving_address_date_and_time}
+                      onChange={(val) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          moving_address_date_and_time: val,
+                        }))
+                      }
+                      placeholder="select moving date and time"
+                      inputClassName="w-full pr-10 py-3 rounded-lg border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange cursor-pointer"
+                    />
+                    {errors.moving_address_date_and_time && (
+                      <p className="text-red-500 text-xs">
+                        {errors.moving_address_date_and_time}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-col gap-4 hidden">
                     <label className="block">

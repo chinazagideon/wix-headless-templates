@@ -104,17 +104,17 @@ const Page = () => {
             <thead>
               <tr>
                 <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                  <p className="block font-sans text-sm antialiased font-bold leading-none text-black opacity-70">
+                  <p className="block antialiased lg:text-sm text-xs font-bold leading-none text-black opacity-70">
                     Location
                   </p>
                 </th>
                 <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                  <p className="block font-sans text-sm antialiased font-bold leading-none text-black opacity-70">
+                  <p className="block text-center antialiased lg:text-sm text-xs font-bold leading-none text-black opacity-70">
                     Distance (km)
                   </p>
                 </th>
                 <th className="p-4 border-b border-blue-gray-100 bg-blue-gray-50">
-                  <p className="block font-sans text-sm antialiased font-bold leading-none text-black opacity-70">
+                  <p className="block text-center antialiased lg:text-sm text-xs font-bold leading-none text-black opacity-70">
                     Truck Fee
                   </p>
                 </th>
@@ -125,18 +125,18 @@ const Page = () => {
               {data && data.length > 0 ? (
                 data?.map((item: any) => (
                   <tr key={generateId()}>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <td className="lg:p-4 p-2 border-b border-blue-gray-50">
+                      <p className="block text-xs lg:text-sm antialiased font-normal leading-normal text-blue-gray-900">
                         {item.location}
                       </p>
                     </td>
-                    <td className="p-4 border-b border-blue-gray-50 item">
-                      <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <td className="p-2 border-b border-blue-gray-50 item">
+                      <p className="block text-center  text-xs lg:text-sm antialiased font-normal leading-normal text-blue-gray-900">
                         {item.distanceKm}
                       </p>
                     </td>
-                    <td className="p-4 border-b border-blue-gray-50">
-                      <p className="block font-sans text-sm antialiased font-normal leading-normal text-blue-gray-900">
+                    <td className="p-2 border-b border-blue-gray-50">
+                      <p className="block text-center text-xs lg:text-sm antialiased font-normal leading-normal text-blue-gray-900">
                         {item.truckFee}
                         {item.currency}
                       </p>

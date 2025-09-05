@@ -6,14 +6,6 @@ import { useAboutUsItems } from '@app/hooks/useAbout';
 import { media as wixMedia } from '@wix/sdk';
 import { constants } from '@app/components/constants';
 import { BinocularsIcon, Loader, Gauge } from 'lucide-react';
-import {
-  ChevronRightIcon,
-  ChevronLeftIcon,
-  TruckIcon,
-  HomeIcon,
-  MapPinIcon,
-  BuildingOfficeIcon,
-} from '@heroicons/react/24/outline';
 
 const Page = () => {
   const {

@@ -2,10 +2,12 @@
 import Lines from '@app/components/Design/Lines';
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircleIcon, Loader } from 'lucide-react';
+import { format } from 'date-fns';
 import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import ThemeButton from '../Button/ThemeButton';
 import AddressAutocomplete from '@app/components/AddressAutocomplete';
+import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 
 // import { constants } from '../constants';
 
@@ -19,6 +21,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
   } = useForms(process.env.NEXT_PUBLIC_WIX_FORM_ID || '');
   const [isCompleted, setIsCompleted] = useState(false);
   const successRef = useRef<HTMLDivElement | null>(null);
+  const dateTimeRef = useRef<HTMLInputElement | null>(null);
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -54,6 +57,8 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       setErrors(rest);
     }
   };
+
+  // picker logic moved to reusable component
 
   const validateForm = (data: typeof formData) => {
     const newErrors: Partial<Record<keyof typeof formData, string>> = {};
@@ -114,6 +119,8 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
 
     return newErrors;
   };
+
+  // outside-click handled in reusable component
   //submit form data to wix forms
   const handleSubmit = async (e: any) => {
     e.preventDefault();
@@ -207,12 +214,13 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     htmlFor="name"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    First Name<span className="text-theme-orange">*</span>
+                    First Name<span className="">*</span>
                   </label>
                   <input
                     type="text"
                     id="name"
-                    className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
+                    placeholder="please enter your first name "
+                    className="w-full py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="first_name"
                     value={formData.first_name}
                     onChange={handleChange}
@@ -222,17 +230,18 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     <p className="text-red-500 text-xs">{errors.first_name}</p>
                   )}
                 </div>
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full lg:mt-0 mt-2">
                   <label
                     htmlFor="name"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    Last Name<span className="text-theme-orange">*</span>
+                    Last Name<span className="">*</span>
                   </label>
                   <input
                     type="text"
                     id="name"
-                    className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
+                    placeholder="please enter your last name"
+                    className="w-full  py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="last_name"
                     value={formData.last_name}
                     onChange={handleChange}
@@ -244,17 +253,18 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 </div>
               </div>
               <div className="flex md:flex-row flex-col gap-2 w-full mt-2">
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full mt-2">
                   <label
                     htmlFor="email"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    Email<span className="text-theme-orange">*</span>
+                    Email Address<span className="">*</span>
                   </label>
                   <input
                     type="email"
                     id="email"
-                    className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
+                    placeholder="please enter your email address"
+                    className="w-full  py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="email_e1ca"
                     value={formData.email_e1ca}
                     onChange={handleChange}
@@ -264,17 +274,19 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     <p className="text-red-500 text-xs">{errors.email_e1ca}</p>
                   )}
                 </div>
-                <div className="flex flex-col gap-2 w-full">
+
+                <div className="flex flex-col gap-2 w-full mt-2">
                   <label
                     htmlFor="phone"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    Phone Number<span className="text-theme-orange">*</span>
+                    Phone Number<span className="">*</span>
                   </label>
                   <input
                     type="tel"
                     id="phone"
-                    className="w-full rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
+                    placeholder="please enter your phone number"
+                    className="w-full  py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                     name="phone_9f17"
                     value={formData.phone_9f17}
                     onChange={handleChange}
@@ -285,27 +297,68 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   )}
                 </div>
               </div>
-              <div className="flex flex-col gap-2 w-full mt-2">
-                <label
-                  htmlFor="moving_datetime"
-                  className="text-gray-400 dark:text-white text-sm font-outfit font-light"
-                >
-                  Moving Date & Time<span className="text-theme-orange">*</span>
-                </label>
-                <input
-                  type="datetime-local"
-                  id="moving_datetime"
-                  className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] text-gray-600 dark:text-white focus:border-theme-orange active:border-theme-orange"
-                  name="moving_address_date_and_time"
-                  value={formData.moving_address_date_and_time}
-                  onChange={handleChange}
-                  required
-                />
-                {errors.moving_address_date_and_time && (
-                  <p className="text-red-500 text-xs">
-                    {errors.moving_address_date_and_time}
-                  </p>
-                )}
+              <div className="flex lg:flex-row flex-col gap-2 w-full mt-2">
+                <div className="flex flex-col gap-2 w-full mt-4">
+                  <label
+                    htmlFor="service"
+                    className="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  >
+                    Please select desired service
+                    <span className="">*</span>
+                  </label>
+
+                  <select
+                    name="service_type"
+                    id="service_type"
+                    className="w-full rounded-lg pr-10 py-3 bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange text-sm text-gray-400"
+                    value={formData.service_type}
+                    onChange={handleChange}
+                    required
+                  >
+                    <option value="">Select Service</option>
+                    {visibleServices.map((service: any, index: number) => (
+                      <option
+                        key={
+                          service?.slug ||
+                          service?.id ||
+                          `${service?.info?.name || 'service'}-${index}`
+                        }
+                        value={service?.info?.name || service?.name}
+                      >
+                        {service?.info?.name || service?.name}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.service_type && (
+                    <p className="text-red-500 text-xs">
+                      {errors.service_type}
+                    </p>
+                  )}
+                </div>
+                <div className="flex flex-col gap-2 w-full mt-4">
+                  <label
+                    htmlFor="moving_datetime"
+                    className="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  >
+                    Moving Date & Time<span className="">*</span>
+                  </label>
+                  <DateTimePicker
+                    value={formData.moving_address_date_and_time}
+                    onChange={(val) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        moving_address_date_and_time: val,
+                      }))
+                    }
+                    placeholder="select moving date and time"
+                    inputClassName="w-full pr-10 py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] text-gray-300 dark:text-white focus:border-theme-orange active:border-theme-orange cursor-pointer"
+                  />
+                  {errors.moving_address_date_and_time && (
+                    <p className="text-red-500 text-xs">
+                      {errors.moving_address_date_and_time}
+                    </p>
+                  )}
+                </div>
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
                 <AddressAutocomplete
@@ -315,8 +368,8 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                       target: { name: 'moving_address', value: address },
                     })
                   }
-                  placeholder="Enter the loading address"
-                  label={`Loading Address <span className="text-theme-orange">*</span>`}
+                  placeholder="please enter the loading address"
+                  label={`Your Loading Address <span className="">*</span>`}
                   className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                   fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"
@@ -325,7 +378,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   htmlFor="pickup_l"
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                 >
-                  Pickup Location <span className="text-theme-orange">*</span>
+                  Pickup Location <span className="">*</span>
                 </label>
                 <input
                   type="tel"
@@ -350,8 +403,8 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                       target: { name: 'unloading_address', value: address },
                     })
                   }
-                  placeholder="Enter the unloading address"
-                  label={`Unloading Address <span className="text-theme-orange">*</span>`}
+                  placeholder="please enter the unloading address"
+                  label={`Your Unloading Address <span className="">*</span>`}
                   className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                   fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"
@@ -377,44 +430,10 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   </p>
                 )}
               </div>
-              <div className="flex flex-col gap-2 w-full mt-4">
-                <label
-                  htmlFor="service"
-                  className="text-gray-400 dark:text-white text-sm font-outfit font-light"
-                >
-                  Please select desired service
-                  <span className="text-theme-orange">*</span>
-                </label>
 
-                <select
-                  name="service_type"
-                  id="service_type"
-                  className="w-full rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange text-sm text-gray-400"
-                  value={formData.service_type}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="">Select Service</option>
-                  {visibleServices.map((service: any, index: number) => (
-                    <option
-                      key={
-                        service?.slug ||
-                        service?.id ||
-                        `${service?.info?.name || 'service'}-${index}`
-                      }
-                      value={service?.info?.name || service?.name}
-                    >
-                      {service?.info?.name || service?.name}
-                    </option>
-                  ))}
-                </select>
-                {errors.service_type && (
-                  <p className="text-red-500 text-xs">{errors.service_type}</p>
-                )}
-              </div>
               <div className="flex flex-col gap-2 w-full mt-2">
                 {/* <p className="text-gray-400 dark:text-white text-sm font-outfit font-light">
-                 <span className="text-theme-orange">*</span> Indicates a required field
+                 <span className="">*</span> Indicates a required field
                 </p> */}
               </div>
               <div className="flex justify-center items-center gap-2 animate-slide-in-left mt-4 w-full">
@@ -438,6 +457,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
           />
         </div>
       </div>
+      {/* hover styles are provided in reusable DateTimePicker */}
     </>
   );
 };

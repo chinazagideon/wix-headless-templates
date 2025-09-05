@@ -17,7 +17,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
         className || ''
       }`}
     >
-      <div className="flex flex-col items-start lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
+      <div className="flex flex-col items-start pt-20 lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
         <h1 className="font-outfit font-bold lg:text-5xl text-4xl text-black normal-case">
           {title}
         </h1>
