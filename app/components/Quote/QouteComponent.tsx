@@ -422,7 +422,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   isSubmitting={isSubmitting}
                   handleSubmit={() => handleSubmit(new Event('submit'))}
                 >
-                  Request Qoutation
+                  Request Quote
                 </ThemeButton>
               </div>
             </form>
