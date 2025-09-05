@@ -14,13 +14,15 @@ import ServiceListPreviewView from '@app/components/ServiceList/ServiceListPrevi
 import { Loader } from 'lucide-react';
 import WixMediaImage from '@app/components/Image/WixMediaImage';
 import HeroWidget from '@app/components/Widget/HeroWdget';
-
-// import { queryReviewsFunction } from '@app/hooks/useReviews';
-// import { useReviews } from '@app/hooks/useReviews';
+// import GoogleReviews from '@app/components/Testimonials/GoogleReviews';
+import { useGoogleReviews } from '@app/hooks/useGoogleReviews';
 
 export default function Page() {
   // const { weatherData, loading, error } = useWeather();
   const { services, isLoading, error: wixError } = useWixServices();
+  const { data: reviewsData } = useGoogleReviews({
+    website: 'icanndomovers.ca',
+  });
   // const [items, setItems] = useState<any[]>([]);
   // useEffect(() => {
   //   fetchProductItems().then(setItems as any).catch(() => setItems([]));
@@ -49,6 +51,8 @@ export default function Page() {
               muted
               playsInline
               preload="auto"
+              poster="/custom/truck-move-2.jpg"
+              crossOrigin="anonymous"
               className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
               onLoadedData={(e) => {
                 const video = e.target as HTMLVideoElement;
@@ -74,30 +78,30 @@ export default function Page() {
             {/* Left: Hero Text - More Width */}
 
             <div className="flex flex-col justify-center items-center  text-center lg:text-left py-24 lg:py-10 lg:pr-12 lg:mt-0 mt-10">
-              <div className="space-y-6 mt-0 gap-4 animate-fade-in-up">
-                <h1 className="text-center font-outfit normal-case font-thin text-pretty justify-center text-gray-200 text-3xl sm:text-4xl mb-2 drop-shadow-md animate-fade-in-delay">
+              {/* <div className="space-y-6 mt-0 gap-4 animate-fade-in-up"> */}
+              {/* <h1 className="text-center font-outfit normal-case font-thin text-pretty justify-center text-gray-200 text-3xl sm:text-4xl mb-2 drop-shadow-md animate-fade-in-delay">
                   Start your move today{' '}
                 </h1>
                 <span className="font-outfit font-bold text-6xl pt-2">
                   {constants.companyName}
-                </span>
-                {/* {weatherData?.main && (
+                </span> */}
+              {/* {weatherData?.main && (
                     <span className="font-outfit font-bold text-gray-200 text-sm animate-fade-in-delay-2">
                       Weather now in the city: ~{weatherData?.main?.temp}°
                       <span className="text-base">C</span>,{' '}
                       {weatherData?.weather?.[0]?.description?.toUpperCase()}
                     </span>
                   )} */}
-              </div>
+              {/* </div> */}
               {/* Desktop Button */}
-              <div className=" flex flex-col items-center lg:items-center gap-4 w-full lg:pt-[10%] animate-fade-in-delay">
+              {/* <div className=" flex flex-col items-center lg:items-center gap-4 w-full lg:pt-[10%] animate-fade-in-delay">
                 <div className="flex-row gap-4 flex">
                   <div className="flex items-center gap-2 animate-slide-in-left">
                     <a
                       href={routes.quotation}
                       className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 text-base text-sm font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
                     >
-                      Book Now
+                      Get a free quote
                       <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
                     </a>
                   </div>
@@ -105,10 +109,10 @@ export default function Page() {
                     href={routes.about}
                     className="flex flex-col py-5 font-outfit font-bold text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
                   >
-                    Learn More
+                    About Us
                   </a>
                 </div>
-              </div>
+              </div> */}
             </div>
             {/* Right: Weather Widget - Less Width */}
             {/* <div className="hidden lg:flex flex-1 items-center justify-end h-full relative lg:pt-[1%]">
@@ -180,66 +184,13 @@ export default function Page() {
           </div>
         </div>
       </div>
-      {/* <div className="w-full h-full bg-black py-10 mt-10">
-        <div className="w-full lg:w-[90%] mx-auto flex flex-col justify-center items-center gap-3">
-          <h1 className="text-white dark:text-white text-2xl font-outfit font-light mb-4 normal-case">
-            <span className="font-bold">Our</span> Services
-          </h1>
-          <div className="flex lg:flex-row flex-col w-full gap-8 lg:grid lg:grid-cols-3 px-4 relative">
-            {isLoading ? (
-              <div className="flex flex-row justify-center items-center h-screen w-full">
-                <Loader className="w-10 h-10 animate-spin text-theme-orange" />
-              </div>
-            ) : wixError ? (
-              <div>Error loading services: {wixError}</div>
-            ) : (
-              services
-                ?.filter((service) => !service.hidden)
-                .slice(0, 3)
-                .map((service) => (
-                  <div
-                    key={service.info.name}
-                    className="flex flex-col rounded-lg p-4 items-center justify-center gap-4 w-full"
-                  >
-                    <div className="flex w-full items-center justify-center gap-4 w-full bg-black ">
-                      <WixMediaImage
-                        media={
-                          service.info.media?.mainMedia ||
-                          service.info.media?.coverMedia
-                        }
-                        width={300}
-                        height={300}
-                      />
-                    </div>
-
-                    <h2 className="text-white text-base font-outfit font-bold">
-                      {service.info.name}
-                    </h2>
-                    <p className="text-white text-sm font-outfit font-light text-center">
-                      {service.info.description?.slice(0, 300)}...
-                    </p>
-                  </div>
-                ))
-            )}
-          </div>
-          <div className="flex flex-row justify-center items-center w-full mt-4 border-t border-theme-orange/20 pt-4">
-            <a
-              href={routes.services}
-              className="text-theme-orange text-base font-outfit font-thin flex flex-row items-center gap-2 hover:scale-105 transition-all duration-200 "
-            >
-              View All Services
-              <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-0.5 text-theme-orange" />
-            </a>
-          </div>
-        </div>
-      </div> */}
 
       <div className="w-full h-full bg-white relative transition-all duration-300 ">
         <div className="flex w-full h-full dark:bg-white flex-col md:flex-row lg:flex-row justify-between items-center gap-4">
           <div className="flex flex-col items-center justify-center bg-white dark:bg-black w-full lg:pt-0 pt-4">
             <Image
               src="/custom/mobile-prototype.png"
-              className="w-1/3 rounded-lg "
+              className="w-1/3 rounded-lg p-6"
               alt="Movers"
               width={500}
               height={500}
