@@ -21,6 +21,8 @@ import {
 import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import formId from '@app/hooks/useForms';
+import PageHeader from '@app/components/Layout/PageHeader';
+
 interface FormData {
   // Step 1: Move Type
   first_name: string;
@@ -37,11 +39,12 @@ interface FormData {
   moving_address: string;
   unloading_address: string;
   move_date: string;
-  additional_info: string;
+  additional_info?: string;
   building_type: string;
   move_time: string;
   email_e1ca: string;
   phone_9f17: string;
+  moving_address_date_and_time: string;
 }
 
 const moveTypes = [
@@ -119,9 +122,13 @@ export default function QuotationPage() {
     move_time: '',
     email_e1ca: '',
     phone_9f17: '',
+    moving_address_date_and_time: '',
   });
   const [isCompleted, setIsCompleted] = useState(false);
   const [formHasError, setFormHasError] = useState<boolean>(false);
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
+    {}
+  );
   const { services, isLoading, error } = useWixServices();
   const visibleServices = (services ?? []).filter((s) => !s.hidden);
   const [formId, setFormId] = useState<string | null>(
@@ -146,43 +153,39 @@ export default function QuotationPage() {
     return iconByKeyword[firstWord] ?? TruckIcon;
   };
 
-  // useEffect(() => {
-  // console.log(services);
-  //   const serviceTypes = services?.map((service) => ({
-  //     id: service.id,
-  //       label: service.info?.name,
-  //       icon: icons[service.id as keyof typeof icons],
-  //       description: service.info?.description,
-  //     }));
-  //     setServiceTypes(serviceTypes);
-  // }, [services]);
-
-  // console.log(serviceTypes);
-
-  // useEffect(() => {
-  //   const fetchFormId = async () => {
-  //     try {
-  //       if (formId) return;
-  //       const ns =
-  //         process.env.NEXT_PUBLIC_WIX_FORMS_NAMESPACE || 'wix.form_app.form';
-  //       const res = await fetch(
-  //         `/api/forms/form-ids?namespace=${encodeURIComponent(ns)}`,
-  //         { cache: 'no-store' }
-  //       );
-  //       if (!res.ok) throw new Error('Failed to fetch form IDs');
-  //       const data = await res.json();
-  //       if (Array.isArray(data.formIds) && data.formIds.length > 0) {
-  //         setFormId(data.formIds[0]);
-  //       }
-  //     } catch (e) {
-  //       console.error('Failed to resolve formId from namespace', e);
-  //     }
-  //   };
-  //   fetchFormId();
-  // }, [formId]);
-
   const updateFormData = (field: keyof FormData, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    if ((errors as any)[field]) {
+      const { [field]: _removed, ...rest } = errors as Record<string, string>;
+      setErrors(rest as Partial<Record<keyof FormData, string>>);
+    }
+  };
+
+  const updateMoveDateTime = (
+    field: 'move_date' | 'move_time',
+    value: string
+  ) => {
+    setFormData((prev) => {
+      const next = { ...prev, [field]: value };
+      const hasDate = Boolean(next.move_date);
+      const hasTime = Boolean(next.move_time);
+      if (hasDate && hasTime) {
+        const localString = `${next.move_date}T${next.move_time}`;
+        next.moving_address_date_and_time = localString;
+      } else {
+        next.moving_address_date_and_time = '';
+      }
+      return next;
+    });
+    if (
+      errors.move_date ||
+      errors.move_time ||
+      errors.moving_address_date_and_time
+    ) {
+      const { move_date, move_time, moving_address_date_and_time, ...rest } =
+        errors;
+      setErrors(rest);
+    }
   };
 
   const nextStep = () => {
@@ -194,11 +197,12 @@ export default function QuotationPage() {
   };
 
   const handleSubmit = async () => {
+    const validationErrors = validateForm(formData);
+    setErrors(validationErrors);
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
     try {
-      const sanitized = {
-        ...formData,
-        moving_address_date_and_time: `${formData.move_date} ${formData.move_time}`,
-      };
       await onSubmit(formData);
       setIsCompleted(true);
     } catch (e) {
@@ -209,9 +213,9 @@ export default function QuotationPage() {
   const isStepValid = (step: number) => {
     switch (step) {
       case 1:
-        return formData.service_type;
+        return Boolean(formData.service_type);
       case 2:
-        return formData.move_size && formData.building_type;
+        return Boolean(formData.move_size && formData.building_type);
       case 3:
         return (
           formData.moving_address &&
@@ -219,7 +223,8 @@ export default function QuotationPage() {
           formData.first_name &&
           formData.last_name &&
           formData.email_e1ca &&
-          formData.phone_9f17
+          formData.phone_9f17 &&
+          formData.moving_address_date_and_time
           // isEmailOrPhone(formData.email_e1ca)
         );
       default:
@@ -230,29 +235,6 @@ export default function QuotationPage() {
   const isEmailOrPhone = (value: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\d{10}$/.test(value);
   };
-
-  // Normalize phone to E.164. If no country code is provided and the number
-  // has 10 digits, default to +1 (US/Canada).
-  // const normalizePhoneE164 = (raw: string): string => {
-  //   if (!raw) return raw;
-  //   const digitsOnly = raw.replace(/\D+/g, '');
-  //   if (raw.trim().startsWith('+')) {
-  //     // Keep leading + and strip non-digits from the rest
-  //     const rest = raw.trim().slice(1).replace(/\D+/g, '');
-  //     return `+${rest}`;
-  //   }
-  //   if (digitsOnly.length === 11 && digitsOnly.startsWith('1')) {
-  //     return `+${digitsOnly}`;
-  //   }
-  //   if (digitsOnly.length === 10) {
-  //     return `+1${digitsOnly}`;
-  //   }
-  //   // Fallback: if looks like an international number without +
-  //   if (digitsOnly.length > 10) {
-  //     return `+${digitsOnly}`;
-  //   }
-  //   return raw;
-  // };
 
   // Only send known Wix field IDs to avoid "additional properties" errors
   const allowedWixFieldIds: Array<keyof FormData> = [
@@ -266,17 +248,76 @@ export default function QuotationPage() {
     'unloading_address',
     'building_type',
     'special_items',
+    'moving_address_date_and_time',
   ];
 
+  function validateForm(data: FormData) {
+    const newErrors: Partial<Record<keyof FormData, string>> = {};
+
+    if (!data.service_type || !data.service_type.trim()) {
+      newErrors.service_type = 'Please select a service';
+    }
+    if (!data.move_size || !data.move_size.trim()) {
+      newErrors.move_size = 'Please select move size';
+    }
+    if (!data.building_type || !data.building_type.trim()) {
+      newErrors.building_type = 'Please select building type';
+    }
+
+    if (!data.first_name || !data.first_name.trim()) {
+      newErrors.first_name = 'First name is required';
+    }
+    if (!data.last_name || !data.last_name.trim()) {
+      newErrors.last_name = 'Last name is required';
+    }
+    if (!data.email_e1ca || !data.email_e1ca.trim()) {
+      newErrors.email_e1ca = 'Email is required';
+    } else if (!/^\S+@\S+\.\S+$/.test(data.email_e1ca)) {
+      newErrors.email_e1ca = 'Enter a valid email address';
+    }
+    const digits = (data.phone_9f17 || '').replace(/\D/g, '');
+    if (!digits) {
+      newErrors.phone_9f17 = 'Phone number is required';
+    } else if (digits.length < 10) {
+      newErrors.phone_9f17 = 'Enter a valid phone number';
+    }
+
+    if (!data.moving_address || !data.moving_address.trim()) {
+      newErrors.moving_address = 'Pickup location is required';
+    }
+    if (!data.unloading_address || !data.unloading_address.trim()) {
+      newErrors.unloading_address = 'Final destination is required';
+    }
+
+    if (
+      !data.moving_address_date_and_time ||
+      !data.moving_address_date_and_time.trim()
+    ) {
+      newErrors.moving_address_date_and_time =
+        'Moving date and time is required';
+    } else {
+      const parsed = new Date(data.moving_address_date_and_time);
+      if (isNaN(parsed.getTime())) {
+        newErrors.moving_address_date_and_time = 'Enter a valid date and time';
+      }
+    }
+
+    return newErrors;
+  }
+
   async function onSubmit(data: FormData) {
-    // console.log(data);
     if (!formId) throw new Error('Form ID not resolved yet');
     const sanitized: Record<string, any> = {};
     for (const key of allowedWixFieldIds) {
       const value = data[key];
       if (value !== undefined && value !== null && value !== '') {
-        sanitized[key] =
-          key === 'phone_9f17' ? normalizePhoneE164(String(value)) : value;
+        if (key === 'phone_9f17') {
+          sanitized[key] = normalizePhoneE164(String(value));
+        } else if (key === 'moving_address_date_and_time') {
+          sanitized[key] = new Date(String(value)).toISOString();
+        } else {
+          sanitized[key] = value;
+        }
       }
     }
     return submit(sanitized);
@@ -284,7 +325,11 @@ export default function QuotationPage() {
 
   return (
     <>
-      <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-4 sm:px-6 lg:px-20 py-10 lg:py-auto"></div>
+      <PageHeader
+        title={`Get a Free Moving Quote`}
+        description={`Tell us about your move and get a personalized quote in minutes`}
+        className="items-center justify-center"
+      />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
         {isCompleted && (
           <>
@@ -295,7 +340,7 @@ export default function QuotationPage() {
                   Thank you for your interest in our services!
                 </h1>
                 <p className="text-gray-600 text-lg max-w-2xl mx-auto text-center">
-                  We will get back to you as soon as possible.
+                  We will get back to you shortly.
                 </p>
               </div>
             </div>
@@ -304,18 +349,18 @@ export default function QuotationPage() {
         {!isCompleted && (
           <div className="max-w-4xl mx-auto">
             {/* Header */}
-            <div className="text-center mb-12">
-              <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
+            {/* <div className="text-center mb-12"> */}
+            {/* <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
                 Get Your{' '}
                 <span className="font-outfit font-bold">Moving Quote</span>
-              </h1>
-              <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+              </h1> */}
+            {/* <p className="text-gray-600 text-lg max-w-2xl mx-auto">
                 Tell us about your move and get a personalized quote in minutes
-              </p>
-            </div>
+              </p> */}
+            {/* </div> */}
 
             {/* Progress Bar */}
-            <div className="mb-12 w-full relative z-1000 ">
+            <div className="mb-4 lg:mb-12 w-full relative z-1000 ">
               <div className="flex items-center justify-between mb-4  w-full z-1000">
                 <div
                   className={`absolute top-5 left-0 w-full h-0.5 bg-gray-200 z-1000  border-b border-gray-200 ${
@@ -369,7 +414,7 @@ export default function QuotationPage() {
             </div>
 
             {/* Form Container */}
-            <div className="bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <div className="bg-white rounded-2xl shadow-xl p-4 lg:p-8 mb-8">
               {/* Step 1: Move Type */}
               {currentStep === 1 && (
                 <div className="space-y-8 animate-fade-in">
@@ -413,6 +458,11 @@ export default function QuotationPage() {
                       );
                     })}
                   </div>
+                  {errors.service_type && (
+                    <p className="text-red-500 text-xs">
+                      {errors.service_type}
+                    </p>
+                  )}
 
                   {/* <div className="space-y-4">
                     <label className="block">
@@ -481,11 +531,14 @@ export default function QuotationPage() {
                       </div>
                     ))}
                   </div>
+                  {errors.move_size && (
+                    <p className="text-red-500 text-xs">{errors.move_size}</p>
+                  )}
 
                   <div className="space-y-4">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Building Type{' '}
+                        Building type{' '}
                       </span>
                       <select
                         value={formData.building_type}
@@ -502,6 +555,11 @@ export default function QuotationPage() {
                         <option value="other">Other</option>
                       </select>
                     </label>
+                    {errors.building_type && (
+                      <p className="text-red-500 text-xs">
+                        {errors.building_type}
+                      </p>
+                    )}
                     {/* <label className="block">
                                             <span className="text-gray-700 font-medium">Number of Rooms</span>
                                             <select
@@ -520,7 +578,7 @@ export default function QuotationPage() {
 
                     <div>
                       <span className="text-gray-700 font-medium block mb-3">
-                        Special Items{' '}
+                        Special items{' '}
                         <span className="text-gray-500 text-sm">
                           (Optional)
                         </span>
@@ -577,7 +635,7 @@ export default function QuotationPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        First Name{' '}
+                        First name{' '}
                       </span>
                       <input
                         type="text"
@@ -588,10 +646,15 @@ export default function QuotationPage() {
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
+                      {errors.first_name && (
+                        <p className="text-red-500 text-xs">
+                          {errors.first_name}
+                        </p>
+                      )}
                     </label>
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Last Name{' '}
+                        Last name{' '}
                       </span>
                       <input
                         type="text"
@@ -602,12 +665,17 @@ export default function QuotationPage() {
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
+                      {errors.last_name && (
+                        <p className="text-red-500 text-xs">
+                          {errors.last_name}
+                        </p>
+                      )}
                     </label>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Phone number
+                        Phone number{' '}
                       </span>
                       <input
                         type="text"
@@ -618,6 +686,11 @@ export default function QuotationPage() {
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
+                      {errors.phone_9f17 && (
+                        <p className="text-red-500 text-xs">
+                          {errors.phone_9f17}
+                        </p>
+                      )}
                     </label>
                     <label className="block">
                       <span className="text-gray-700 font-medium">
@@ -632,69 +705,98 @@ export default function QuotationPage() {
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
+                      {errors.email_e1ca && (
+                        <p className="text-red-500 text-xs">
+                          {errors.email_e1ca}
+                        </p>
+                      )}
                     </label>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <AddressAutocomplete
-                      value={formData.moving_address}
-                      onChange={(address) =>
-                        updateFormData('moving_address', address)
-                      }
-                      placeholder="Enter the loading address"
-                      label="Loading Address"
-                      className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                    />
+                    <div className="flex flex-col">
+                      <AddressAutocomplete
+                        value={formData.moving_address}
+                        onChange={(address) =>
+                          updateFormData('moving_address', address)
+                        }
+                        placeholder="Enter the loading address"
+                        label="Loading address"
+                        className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                        labelClassName="text-gray-700 font-medium"
+                      />
+                      {errors.moving_address && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.moving_address}
+                        </p>
+                      )}
+                    </div>
 
-                    <AddressAutocomplete
-                      value={formData.unloading_address}
-                      onChange={(address) =>
-                        updateFormData('unloading_address', address)
-                      }
-                      placeholder="Enter the unloading address"
-                      label="Unloading Address"
-                      className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                    />
+                    <div className="flex flex-col">
+                      <AddressAutocomplete
+                        value={formData.unloading_address}
+                        onChange={(address) =>
+                          updateFormData('unloading_address', address)
+                        }
+                        placeholder="Enter the unloading address"
+                        label="Unloading address"
+                        className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                        labelClassName="text-gray-700 font-medium"
+                      />
+                      {errors.unloading_address && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.unloading_address}
+                        </p>
+                      )}
+                    </div>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Estimated Move Date{' '}
-                        <span className="text-gray-500 text-sm">
-                          (Optional)
-                        </span>
+                        Moving date
                       </span>
                       <input
                         type="date"
                         value={formData.move_date}
                         min={new Date().toISOString().split('T')[0]}
                         onChange={(e) =>
-                          updateFormData('move_date', e.target.value)
+                          updateMoveDateTime('move_date', e.target.value)
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
+                      {(errors.move_date ||
+                        errors.moving_address_date_and_time) && (
+                        <p className="text-red-500 text-xs">
+                          {errors.move_date ||
+                            errors.moving_address_date_and_time}
+                        </p>
+                      )}
                     </label>
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Estimated Move Time{' '}
-                        <span className="text-gray-500 text-sm">
-                          (Optional)
-                        </span>
+                        Moving time
                       </span>
                       <input
                         type="time"
                         value={formData.move_time}
                         onChange={(e) =>
-                          updateFormData('move_time', e.target.value)
+                          updateMoveDateTime('move_time', e.target.value)
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
+                      {(errors.move_time ||
+                        errors.moving_address_date_and_time) && (
+                        <p className="text-red-500 text-xs">
+                          {errors.move_time ||
+                            errors.moving_address_date_and_time}
+                        </p>
+                      )}
                     </label>
                   </div>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-4 hidden">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Additional Information{' '}
+                        Additional information{' '}
                         <span className="text-gray-500 text-sm">
                           (Optional)
                         </span>
@@ -731,7 +833,37 @@ export default function QuotationPage() {
 
               {currentStep < 3 ? (
                 <button
-                  onClick={nextStep}
+                  onClick={() => {
+                    const validationErrors = validateForm(formData);
+                    if (currentStep === 1) {
+                      const stepErrors: Partial<
+                        Record<keyof FormData, string>
+                      > = {};
+                      if (validationErrors.service_type)
+                        stepErrors.service_type = validationErrors.service_type;
+                      setErrors(stepErrors);
+                      if (!validationErrors.service_type)
+                        setCurrentStep(currentStep + 1);
+                      return;
+                    }
+                    if (currentStep === 2) {
+                      const stepErrors: Partial<
+                        Record<keyof FormData, string>
+                      > = {};
+                      if (validationErrors.move_size)
+                        stepErrors.move_size = validationErrors.move_size;
+                      if (validationErrors.building_type)
+                        stepErrors.building_type =
+                          validationErrors.building_type;
+                      setErrors(stepErrors);
+                      if (
+                        !validationErrors.move_size &&
+                        !validationErrors.building_type
+                      )
+                        setCurrentStep(currentStep + 1);
+                      return;
+                    }
+                  }}
                   disabled={!isStepValid(currentStep)}
                   className={`flex items-center px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
                     isStepValid(currentStep)

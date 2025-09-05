@@ -1,4 +1,5 @@
 import routes from '@app/components/Layout/NavBarV2/routes';
+import Link from 'next/link';
 import ThemeButton from '../Button/ThemeButton';
 
 const HeroWidget = ({ className }: { className?: string }) => {
@@ -41,12 +42,13 @@ const HeroWidget = ({ className }: { className?: string }) => {
                 <ArrowRightIcon className="w-6 h-6 rounded-full bg-[#000] p-1  text-white hover:scale-105 transition-all duration-200" />
               </a> */}
             </div>
-            <a
+            <Link
               href={routes.relocation_hub}
+              prefetch
               className="flex underline flex-col text-md py-5 font-outfit font-light text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
             >
               Visit our relocation hub
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -2,6 +2,9 @@
 
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
+import Link from 'next/link';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 import { WeatherWidget, useWeather } from '@app/components/Weather';
 import TestimonialComponent from '@app/components/Testimonials/TestimonialComponent';
@@ -18,6 +21,13 @@ import HeroWidget from '@app/components/Widget/HeroWdget';
 import { useGoogleReviews } from '@app/hooks/useGoogleReviews';
 
 export default function Page() {
+  const router = useRouter();
+  useEffect(() => {
+    // Prefetch high-traffic routes
+    router.prefetch(routes.quotation);
+    router.prefetch(routes.services);
+    router.prefetch(routes.about);
+  }, [router]);
   // const { weatherData, loading, error } = useWeather();
   const { services, isLoading, error: wixError } = useWixServices();
   const { data: reviewsData } = useGoogleReviews({
@@ -156,20 +166,22 @@ export default function Page() {
             </p>
             <div className="flex flex-row gap-4 w-full justify-center md:justify-start lg:justify-start">
               <div className="flex items-center gap-2 animate-slide-in-left">
-                <a
+                <Link
                   href={routes.about}
+                  prefetch
                   className="capitalize rounded-full bg-theme-orange px-3 w-fit py-3 text-base text-sm font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
                 >
                   About us{' '}
                   <ArrowRightIcon className="w-5 h-5 rounded-full bg-[#000] p-1 text-white hover:scale-105 transition-all duration-200" />
-                </a>
+                </Link>
               </div>
-              <a
+              <Link
                 href={routes.services}
+                prefetch
                 className="flex flex-col py-5 underline font-outfit font-bold text-black hover:text-theme-orange transition-colors duration-200 animate-slide-in-right"
               >
                 Our services
-              </a>
+              </Link>
             </div>
           </div>
 

@@ -1,4 +1,11 @@
 import { NextResponse } from 'next/server';
+import { Agent } from 'next/dist/compiled/undici';
+
+const keepAliveAgent = new Agent({
+  keepAliveTimeout: 10_000,
+  keepAliveMaxTimeout: 15_000,
+  connections: 10,
+});
 
 type TextSearchCandidate = {
   name?: string;
@@ -50,7 +57,11 @@ export async function GET(request: Request) {
     }
 
     const url = buildTextSearchUrl(query, apiKey);
-    const res = await fetch(url, { cache: 'no-store' });
+    const res = await fetch(url, {
+      cache: 'no-store',
+      // @ts-ignore
+      dispatcher: keepAliveAgent,
+    });
     if (!res.ok) {
       const text = await res.text();
       return NextResponse.json(

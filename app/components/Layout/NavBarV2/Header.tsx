@@ -116,7 +116,11 @@ const Header = () => {
                 <div className="hidden lg:flex lg:flex-1 lg:justify-end">
                   <a
                     href={quotation_url}
-                    className="text-xs font-light md:text-xs/5 lg:text-sm text-gray-900 dark:text-white font-outfit"
+                    className={`text-xs font-light md:text-xs/5 lg:text-sm text-gray-900 dark:text-white font-outfit ${
+                      isActivePage(quotation_url)
+                        ? 'text-theme-orange underline underline-offset-4'
+                        : ''
+                    }`}
                   >
                     Request Quotation <span aria-hidden="true">&rarr;</span>
                   </a>

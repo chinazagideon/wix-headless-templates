@@ -5,6 +5,8 @@ import { CheckCircleIcon, Loader } from 'lucide-react';
 import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import ThemeButton from '../Button/ThemeButton';
+import AddressAutocomplete from '@app/components/AddressAutocomplete';
+
 // import { constants } from '../constants';
 
 const QuoteComponent = ({ services }: { services: any[] }) => {
@@ -306,7 +308,20 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 )}
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
-                <label
+                <AddressAutocomplete
+                  value={formData.moving_address}
+                  onChange={(address) =>
+                    handleChange({
+                      target: { name: 'moving_address', value: address },
+                    })
+                  }
+                  placeholder="Enter the loading address"
+                  label={`Loading Address <span className="text-theme-orange">*</span>`}
+                  className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                  fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
+                  labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                />
+                {/* <label
                   htmlFor="pickup_l"
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                 >
@@ -320,7 +335,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   value={formData.moving_address}
                   onChange={handleChange}
                   required
-                />
+                />*/}
                 {errors.moving_address && (
                   <p className="text-red-500 text-xs">
                     {errors.moving_address}
@@ -328,7 +343,20 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 )}
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
-                <label
+                <AddressAutocomplete
+                  value={formData.unloading_address}
+                  onChange={(address) =>
+                    handleChange({
+                      target: { name: 'unloading_address', value: address },
+                    })
+                  }
+                  placeholder="Enter the unloading address"
+                  label={`Unloading Address <span className="text-theme-orange">*</span>`}
+                  className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                  fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
+                  labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                />
+                {/* <label
                   htmlFor="final_d"
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                 >
@@ -342,14 +370,14 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                   value={formData.unloading_address}
                   onChange={handleChange}
                   required
-                />
+                />*/}
                 {errors.unloading_address && (
                   <p className="text-red-500 text-xs">
                     {errors.unloading_address}
                   </p>
                 )}
               </div>
-              <div className="flex flex-col gap-2 w-full mt-2">
+              <div className="flex flex-col gap-2 w-full mt-4">
                 <label
                   htmlFor="service"
                   className="text-gray-400 dark:text-white text-sm font-outfit font-light"

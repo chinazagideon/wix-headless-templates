@@ -10,7 +10,6 @@ export function usePriceListItems() {
       if (!session?.wixClient) throw new Error('Wix client not ready');
       const result = await session.wixClient.items
         .query('PriceList')
-        .ascending('distanceKm')
         .limit(1000)
         .find();
       return result.items; // [{ _id, location, distanceKm, truckFee, priceListImage, effectiveDate, ... }]

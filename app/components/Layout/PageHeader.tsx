@@ -13,7 +13,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   return (
     <div
-      className={`w-full bg-[#D9D9D9] pt-32 px-2 lg:px-20 py-10 ${
+      className={`w-full bg-[#D9D9D9] pt-32 px-2 lg:px-20 py-4 ${
         className || ''
       }`}
     >
@@ -22,7 +22,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           {title}
         </h1>
         {description ? (
-          <p className="font-outfit font-thin lg:text-sm text-xs text-black lg:w-[70%] w-full pt-4">
+          <p className="font-outfit font-thin lg:text-sm text-xs text-black lg:w-full lg:text-center w-full pt-4">
             {description}
           </p>
         ) : null}

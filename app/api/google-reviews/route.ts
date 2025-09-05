@@ -1,4 +1,11 @@
 import { NextResponse } from 'next/server';
+import { Agent } from 'next/dist/compiled/undici';
+
+const keepAliveAgent = new Agent({
+  keepAliveTimeout: 10_000,
+  keepAliveMaxTimeout: 15_000,
+  connections: 10,
+});
 
 type GooglePlaceReview = {
   author_name?: string;
@@ -261,7 +268,11 @@ export async function GET(request: Request) {
 
     // Fetch details (reviews). If NOT_FOUND, attempt resolution again without relying on provided placeId
     const detailsUrl = buildPlaceDetailsUrl(resolved.placeId, apiKey);
-    let res = await fetch(detailsUrl, { cache: 'no-store' });
+    let res = await fetch(detailsUrl, {
+      cache: 'no-store',
+      // @ts-ignore: undici agent supported in Node 18+ runtime
+      dispatcher: keepAliveAgent,
+    });
     if (!res.ok) {
       const text = await res.text();
       return NextResponse.json(
@@ -294,7 +305,11 @@ export async function GET(request: Request) {
         });
         if (retry.placeId && retry.placeId !== resolved.placeId) {
           const retryUrl = buildPlaceDetailsUrl(retry.placeId, apiKey);
-          const res2 = await fetch(retryUrl, { cache: 'no-store' });
+          const res2 = await fetch(retryUrl, {
+            cache: 'no-store',
+            // @ts-ignore
+            dispatcher: keepAliveAgent,
+          });
           if (res2.ok) {
             const data2: GooglePlaceDetailsResponse = await res2.json();
             if (!data2.status || data2.status === 'OK') {

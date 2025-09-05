@@ -9,6 +9,8 @@ interface AddressAutocompleteProps {
   placeholder: string;
   label: string;
   className?: string;
+  fieldClassName?: string;
+  labelClassName?: string;
 }
 
 interface NominatimResult {
@@ -30,6 +32,8 @@ export default function AddressAutocomplete({
   placeholder,
   label,
   className = '',
+  fieldClassName = '',
+  labelClassName = '',
 }: AddressAutocompleteProps) {
   const [suggestions, setSuggestions] = useState<NominatimResult[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -150,7 +154,10 @@ export default function AddressAutocomplete({
   return (
     <div className={`relative ${className}`}>
       <label className="block">
-        <span className="text-gray-700 font-medium">{label}</span>
+        <span
+          className={`font-medium ${labelClassName}`}
+          dangerouslySetInnerHTML={{ __html: label || '' }}
+        />
         <div className="relative mt-2">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <MapPinIcon className="h-5 w-5 text-gray-400" />
@@ -163,7 +170,7 @@ export default function AddressAutocomplete({
             onFocus={handleInputFocus}
             onBlur={handleInputBlur}
             placeholder={placeholder}
-            className="text-gray-700 block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+            className={`text-gray-700 block w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200 ${fieldClassName}`}
           />
           {isLoading && (
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
@@ -201,14 +208,21 @@ export default function AddressAutocomplete({
       )}
 
       {/* No results message */}
-      {/* {!isLoading && value && value.length >= 3 && !showSuggestions && suggestions.length === 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-3">
-          <div className="flex items-center text-gray-500 text-sm">
-            <MapPinIcon className="h-4 w-4 mr-2" />
-            <span>No Canadian addresses found. Please try a different search term.</span>
+      {!isLoading &&
+        value &&
+        value.length >= 3 &&
+        value.length < 3 &&
+        !showSuggestions &&
+        suggestions.length === 0 && (
+          <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg p-3">
+            <div className="flex items-center text-gray-500 text-sm">
+              <MapPinIcon className="h-4 w-4 mr-2" />
+              <span>
+                No Canadian addresses found. Please try a different search term.
+              </span>
+            </div>
           </div>
-        </div>
-      )} */}
+        )}
     </div>
   );
 }

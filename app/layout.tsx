@@ -72,6 +72,16 @@ export default function RootLayout(layoutProps: any) {
           href="/custom/moving-video.mp4"
           type="video/mp4"
         />
+        {/* Warm up DNS and connections for frequently used third-parties */}
+        <meta httpEquiv="x-dns-prefetch-control" content="on" />
+        <link rel="dns-prefetch" href="//nominatim.openstreetmap.org" />
+        <link rel="preconnect" href="https://nominatim.openstreetmap.org" />
+        <link rel="dns-prefetch" href="//maps.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://maps.googleapis.com"
+          crossOrigin=""
+        />
       </head>
       {wixSession.wixClient ? (
         <body

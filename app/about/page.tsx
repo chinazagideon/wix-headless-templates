@@ -5,9 +5,23 @@ import PageHeader from '@app/components/Layout/PageHeader';
 import { useAboutUsItems } from '@app/hooks/useAbout';
 import { media as wixMedia } from '@wix/sdk';
 import { constants } from '@app/components/constants';
+import { BinocularsIcon, Loader, Gauge } from 'lucide-react';
+import {
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  TruckIcon,
+  HomeIcon,
+  MapPinIcon,
+  BuildingOfficeIcon,
+} from '@heroicons/react/24/outline';
 
 const Page = () => {
-  const { data: aboutUsItems, isFetching, isLoading } = useAboutUsItems();
+  const {
+    data: aboutUsItems,
+    isFetching,
+    isLoading,
+    error,
+  } = useAboutUsItems();
   const data = {
     aboutTitle: aboutUsItems?.[0]?.title_fld,
     aboutDescription: aboutUsItems?.[0]?.description_fld,
@@ -59,25 +73,44 @@ const Page = () => {
           ) : null}
         </div>
       </div> */}
-      <div className="flex w-full flex-col justify-center px-4 gap-1 sm:px-6 lg:px-20 py-10 items-center">
-        <div className="flex flex-col lg:flex-row gap-4 lg:w-full items-center">
-          <div className="flex flex-col pt-4 lg:pt-8">
-            <h4 className="font-outfit font-bold text-3xl lg:text-4xl text-black normal-case">
-              Our Vision
-            </h4>
-            <p className="font-outfit font-thin lg:text-sm text-xs text-black lg:w-[70%] w-full pt-4">
-              {data.ourVision}
-            </p>
+      <div className="flex flex-col justify-center px-4 gap-1 sm:px-6 lg:px-20 py-10 items-center">
+        {isFetching || isLoading ? (
+          <div className="flex justify-center items-center h-screen py-10">
+            <Loader className="w-10 h-10 animate-spin text-theme-orange" />
           </div>
-          <div className="flex flex-col pt-4 lg:pt-8">
-            <h4 className="font-outfit font-bold text-3xl lg:text-4xl text-black normal-case">
-              Our Mission
-            </h4>
-            <p className="font-outfit font-thin lg:text-sm text-xs text-black lg:w-[70%] w-full pt-4">
-              {data.ourMission}
-            </p>
+        ) : null}
+        {error ? (
+          <div className="flex justify-center items-center h-screen">
+            <p className="text-red-500">Error loading about us items</p>
+            {/* <p className="text-red-500">{error }</p> */}
           </div>
-        </div>
+        ) : null}
+        {!isFetching && !isLoading && !error ? (
+          <div className="flex flex-col lg:flex-row gap-12 w-full items-center lg:w-[90%]">
+            <div className="flex flex-col pt-4 lg:pt-8">
+              <span className="flex items-center justify-center p-6">
+                <BinocularsIcon className="w-10 h-10 text-theme-orange" />{' '}
+              </span>
+              <h4 className="font-outfit text-center font-light text-lg lg:text-2xl text-black normal-case">
+                Our Vision
+              </h4>
+              <p className="font-outfit text-center font-bold lg:text-md text-sm text-black pt-4">
+                {data.ourVision}
+              </p>
+            </div>
+            <div className="flex flex-col pt-4 lg:pt-8">
+              <span className="flex items-center justify-center p-6">
+                <Gauge className="w-10 h-10 text-theme-orange" />{' '}
+              </span>
+              <h4 className="font-outfit text-center font-light text-lg lg:text-2xl text-black normal-case">
+                Our Mission
+              </h4>
+              <p className="font-outfit font-bold text-center lg:text-md text-sm text-black  pt-4">
+                {data.ourMission}
+              </p>
+            </div>
+          </div>
+        ) : null}
       </div>
       <HeroWidget />
     </>
