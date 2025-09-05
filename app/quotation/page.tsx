@@ -130,7 +130,7 @@ export default function QuotationPage() {
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>(
     {}
   );
-  const { services, isLoading, error } = useWixServices();
+  const { services, isLoading, error, isFetching } = useWixServices();
   const visibleServices = (services ?? []).filter((s) => !s.hidden);
   const [formId, setFormId] = useState<string | null>(
     process.env.NEXT_PUBLIC_WIX_FORM_ID || ''
@@ -206,6 +206,7 @@ export default function QuotationPage() {
     try {
       await onSubmit(formData);
       setIsCompleted(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e) {
       console.error(e);
     }
@@ -416,8 +417,14 @@ export default function QuotationPage() {
 
             {/* Form Container */}
             <div className="bg-white rounded-2xl shadow-xl p-4 lg:p-8 mb-8">
+              {isFetching && (
+                <div className="flex flex-col items-center justify-center">
+                  <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
+                  <span className="text-gray-600">Loading...</span>
+                </div>
+              )}
               {/* Step 1: Move Type */}
-              {currentStep === 1 && (
+              {currentStep === 1 && !isFetching && (
                 <div className="space-y-8 animate-fade-in">
                   <div className="text-center">
                     <h2 className="text-2xl font-outfit font-semibold text-gray-900 mb-2">
@@ -904,16 +911,19 @@ export default function QuotationPage() {
                 <button
                   onClick={() => {
                     handleSubmit();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
-                  disabled={!isStepValid(currentStep)}
+                  disabled={!isStepValid(currentStep) || isSubmitting}
                   className={`flex items-center px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
                     isStepValid(currentStep)
                       ? 'bg-theme-orange text-white hover:bg-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
                       : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                   }`}
                 >
-                  Get Quote
+                  {isSubmitting ? (
+                    <Loader className="w-5 h-5 mr-2" />
+                  ) : (
+                    'Get Quote'
+                  )}
                   <ChevronRightIcon className="w-5 h-5 ml-2" />
                 </button>
               )}

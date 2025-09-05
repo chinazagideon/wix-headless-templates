@@ -4,6 +4,7 @@ import Lines from '@app/components/Design/Lines';
 import Link from 'next/link';
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import routes from '@app/components/Layout/NavBarV2/routes';
+import { Loader } from 'lucide-react';
 
 import PageHeader from '@app/components/Layout/PageHeader';
 // import { useListCollections, useGetCollection } from "@app/hooks/useCollections";
@@ -153,9 +154,10 @@ const Page = () => {
             </tbody>
           </table>
           {isFetching && (
-            <div className="flex justify-center items-center h-full">
+            <div className="flex flex-col justify-center items-center h-full">
               <div className="w-full h-full flex justify-center items-center">
-                <div className="w-10 h-10 border-t-transparent border-b-transparent border-r-transparent border-l-transparent border-t-gray-500 border-r-gray-500 border-l-gray-500 border-b-gray-500 rounded-full animate-spin"></div>
+                <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
+                <span className="text-gray-600">Loading...</span>
               </div>
             </div>
           )}

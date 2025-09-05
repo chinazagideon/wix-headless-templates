@@ -13,7 +13,7 @@ export const constants = {
   instagram: 'http://www.instagram.com/icandomovers',
   facebook: 'https://www.facebook.com/icandomovers',
   websiteUrl: 'www.icandomovers.ca',
-
+  requestQuotationText: 'Request Quote',
   aboutDescription: ` Icando Movers is a professional moving company based in Winnipeg, 
   Manitoba. We are a team of experienced movers who are dedicated 
   to providing the best possible moving experience for our clients. 

@@ -40,10 +40,10 @@ const Header = () => {
           className="flex items-center justify-center p-0 lg:p-4 px-0 lg:px-8 md:px-0"
         >
           <div className="flex flex-col justify-center items-center w-full">
-            <div className="w-full md:w-full lg:w-[95%] mx-auto bg-[#011a34] dark:bg-black text-white p-2 flex flex-row justify-center items-center rounded-none lg:rounded-2xl mb-0 lg:mb-2 sm:flex-col">
+            <div className="w-full lg:w-[95%] mx-auto bg-[#011a34] dark:bg-black text-white p-2 flex flex-row justify-center items-center rounded-none lg:rounded-2xl mb-0 lg:mb-2 sm:flex-col">
               <div className="flex flex-col lg:flex-row justify-between items-center md:w-full w-fit">
                 <div
-                  className="flex flex-col lg:rounded-none rounded-none cursor-pointer hover:bg-[#011a34] lg:border-none border-b border-theme-orange/40 lg:mb-0 mb-2 transition-all duration-300"
+                  className="flex flex-col w-full lg:rounded-none rounded-none cursor-pointer hover:bg-[#011a34] lg:border-none border-b border-theme-orange/10 lg:mb-0 mb-2 transition-all duration-300"
                   onClick={() => {
                     const quote = document.getElementById('quote');
                     if (quote) {
@@ -74,7 +74,7 @@ const Header = () => {
                     {constants.companyCity}, {constants.companyProvince}
                   </span>
                 </p> */}
-                <div className="text-sm font-light text-gray-900 font-outfit flex flex-col md:flex-row items-center md:justify-end justify-center gap-2 pr-0 lg:pr-2">
+                <div className="text-sm font-light text-gray-900 font-outfit flex flex-col md:flex-row items-center md:justify-end justify-center gap-2 pr-0 lg:pr-2 w-full">
                   <span className="font-outfit text-xs md:text-sm font-thin lg:text-sm text-white">
                     Need help moving? Call us today!
                   </span>
@@ -149,7 +149,7 @@ const Header = () => {
                         : ''
                     }`}
                   >
-                    Request Quote <span aria-hidden="true">&rarr;</span>
+                    {constants.requestQuotationText} <span aria-hidden="true">&rarr;</span>
                   </Link>
                 </div>
               </div>

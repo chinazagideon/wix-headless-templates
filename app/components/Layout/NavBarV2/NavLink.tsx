@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import { constants } from '@app/components/constants';
 
 export type NavLinkProps = {
   navigation: { name: string; href: string }[];
@@ -80,15 +81,15 @@ const NavLink = ({
                   href={routes.quotation}
                   prefetch
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50
+                  className={`-mx-3 block rounded-lg px-3 py-2 border border-theme-orange rounded-lg bg-theme-orange text-center text-base/7 font-semibold text-gray-900 hover:bg-theme-orange/10
                     ${
                       routes.quotation === pathname
-                        ? 'text-theme-orange underline underline-offset-4'
-                        : ''
+                        ? 'text-white/60 underline underline-offset-4'
+                        : 'text-white'
                     }
                         `}
                 >
-                  Request Quotation
+                  {constants.requestQuotationText}
                 </Link>
               </div>
             </div>
