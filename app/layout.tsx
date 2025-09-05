@@ -17,7 +17,7 @@ export const revalidate = 0;
 export const metadata: Metadata = {
   metadataBase: new URL(constants.companyWebsite),
   title: {
-    default: 'ICANDO Movers — Winnipeg Movers',
+    default: 'ICANDO Movers —  Redefining the neighborhood moving services',
     template: '%s | ICANDO Movers',
   },
   description:
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     icon: '/custom/favicon.png',
   },
   openGraph: {
-    title: 'ICANDO Movers — Winnipeg Movers',
+    title: 'ICANDO Movers — Redefining the neighborhood moving services',
     description:
       'Affordable, reliable moving services in Winnipeg and across Manitoba.',
     url: '/',
-    siteName: 'ICANDO Movers',
+    siteName: 'ICANDO Movers — Redefining the neighborhood moving services',
     type: 'website',
     locale: 'en_CA',
   },
