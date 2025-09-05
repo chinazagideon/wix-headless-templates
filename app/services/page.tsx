@@ -68,7 +68,10 @@ const ServicePageContent = () => {
             </div>
           </div>
           <div className="flex flex-col items-center px-4 sm:px-6 lg:px-20  justify-center">
-            <ServiceListPreviewView services={services} isLoading={isLoading || isFetching} />
+            <ServiceListPreviewView
+              services={services}
+              isLoading={isLoading || isFetching}
+            />
           </div>
           <HeroWidget />
         </>

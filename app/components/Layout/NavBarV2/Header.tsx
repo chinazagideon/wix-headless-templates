@@ -149,7 +149,8 @@ const Header = () => {
                         : ''
                     }`}
                   >
-                    {constants.requestQuotationText} <span aria-hidden="true">&rarr;</span>
+                    {constants.requestQuotationText}{' '}
+                    <span aria-hidden="true">&rarr;</span>
                   </Link>
                 </div>
               </div>

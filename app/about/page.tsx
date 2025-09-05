@@ -65,20 +65,19 @@ const Page = () => {
           ) : null}
         </div>
       </div> */}
-       {isFetching || isLoading ? (
-          <div className="flex flex-col justify-center items-center h-screen py-2">
-            <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
-            <span className="text-gray-600">Loading...</span>
-          </div>
-        ) : null}
-        {error ? (
-          <div className="flex justify-center items-center h-screen">
-            <p className="text-red-500">Error loading about us items</p>
-            {/* <p className="text-red-500">{error }</p> */}
-          </div>
-        ) : null}
+      {isFetching || isLoading ? (
+        <div className="flex flex-col justify-center items-center h-screen py-2">
+          <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
+          <span className="text-gray-600">Loading...</span>
+        </div>
+      ) : null}
+      {error ? (
+        <div className="flex justify-center items-center h-screen">
+          <p className="text-red-500">Error loading about us items</p>
+          {/* <p className="text-red-500">{error }</p> */}
+        </div>
+      ) : null}
       <div className="flex flex-col justify-center px-4 gap-1 sm:px-6 lg:px-20 py-10 items-center">
-       
         {!isFetching && !isLoading && !error ? (
           <div className="flex flex-col lg:flex-row gap-12 w-full items-center lg:w-[90%]">
             <div className="flex flex-col pt-4 lg:pt-8">
