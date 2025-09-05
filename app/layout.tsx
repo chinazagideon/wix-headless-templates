@@ -5,6 +5,7 @@ import PreloaderWrapper from '@app/components/Loader/PreloaderWrapper';
 import { WixBookingsClientProvider } from '@app/components/Provider/WixBookingsClientProvider';
 import React from 'react';
 import type { Metadata } from 'next';
+import { constants } from '@app/components/constants';
 
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.
@@ -14,10 +15,38 @@ import type { Metadata } from 'next';
 export const revalidate = 0;
 
 export const metadata: Metadata = {
-  title: 'IcanMovers | Winnipeg most trusted Movers',
-  description: 'IcanDo Movers  Winnipeg trusted Movers',
+  metadataBase: new URL(constants.companyWebsite),
+  title: {
+    default: 'ICANDO Movers — Winnipeg Movers',
+    template: '%s | ICANDO Movers',
+  },
+  description:
+    'Affordable, reliable moving services in Winnipeg and across Manitoba.',
+  alternates: {
+    canonical: '/',
+  },
   icons: {
     icon: '/custom/favicon.png',
+  },
+  openGraph: {
+    title: 'ICANDO Movers — Winnipeg Movers',
+    description:
+      'Affordable, reliable moving services in Winnipeg and across Manitoba.',
+    url: '/',
+    siteName: 'ICANDO Movers',
+    type: 'website',
+    locale: 'en_CA',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
   },
 };
 
