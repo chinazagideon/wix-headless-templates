@@ -189,7 +189,12 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 <span className="flex flex-row items-center justify-center gap-0 text-white dark:text-white text-xl font-outfit font-bold normal-case text-center">
                   {/* <span className="text-white dark:text-white text-xl font-outfit font-bold normal-case text-center"> */}
                   <PhoneIcon className="w-4 h-4 pt-1 text-white" />
-                  <p className="text-2xl font-bold cursor-pointer hover:text-theme-orange/60 transition-all duration-300" onClick={() => window.open(`tel:${constants.companyPhone}`, '_blank')}>
+                  <p
+                    className="text-2xl font-bold cursor-pointer hover:text-theme-orange/60 transition-all duration-300"
+                    onClick={() =>
+                      window.open(`tel:${constants.companyPhone}`, '_blank')
+                    }
+                  >
                     {' '}
                     {constants.companyPhone}&nbsp;
                   </p>
