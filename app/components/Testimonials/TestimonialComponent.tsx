@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import Lines from '../Design/Lines';
 import { useGoogleReviews } from '@app/hooks/useGoogleReviews';
 import Image from 'next/image';
+import Link from 'next/link';
+import { ExternalLinkIcon } from 'lucide-react';
 
 const TestimonialComponent = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -9,8 +11,9 @@ const TestimonialComponent = () => {
     data: reviewsData,
     isLoading,
     isError,
-  } = useGoogleReviews({ website: 'icanndomovers.ca' });
-  const allReviews = reviewsData?.result?.reviews ?? [];
+  } = useGoogleReviews({ placeId: process.env.NEXT_PUBLIC_GOOGLE_PLACE_ID });
+
+  const allReviews = reviewsData?.reviews ?? [];
   const getReviewTime = (r: any) => (typeof r?.time === 'number' ? r.time : 0);
   const highRated = allReviews
     .filter((r) => (r.rating ?? 0) > 4)
@@ -19,6 +22,7 @@ const TestimonialComponent = () => {
     .filter((r) => (r.rating ?? 0) > 2 && (r.rating ?? 0) < 4)
     .sort((a, b) => getReviewTime(b) - getReviewTime(a));
   const reviews = [...highRated, ...lowerRated];
+  // const reviews = allReviews;
   const totalSlides = reviews.length;
 
   useEffect(() => {
@@ -28,8 +32,10 @@ const TestimonialComponent = () => {
     }, 5000);
     return () => clearInterval(intervalId);
   }, [totalSlides]);
-  const overallRating = reviewsData?.result?.rating ?? undefined;
-  const totalRatings = reviewsData?.result?.user_ratings_total ?? undefined;
+  const overallRating = reviewsData?.rating;
+  const totalRatings = reviewsData?.userRatingCount;
+  // const overallRating = reviewsData?.result?.rating ?? undefined;
+  // const totalRatings = reviewsData?.result?.user_ratings_total ?? undefined;
 
   return (
     <>
@@ -65,7 +71,7 @@ const TestimonialComponent = () => {
                       </span>
                       <span className="font-bold text-2xl text-black outfit">
                         {' '}
-                        {overallRating.toFixed(1)}
+                        {overallRating ? overallRating?.toFixed(1) : ''}
                       </span>
                       <Stars rating={overallRating} />
                     </>
@@ -77,6 +83,21 @@ const TestimonialComponent = () => {
                   )}
                 </div>
               )}
+            </div>
+            <div className="flex flex-col justify-center items-center gap-2 mt-6">
+              <div className="flex flex-row">
+                <Link
+                  href={'https://g.page/r/Ce3DH2bZSpGZEBM/review'}
+                  target="_blank"
+                  className="text-theme-orange hover:text-theme-orange-dark transition-all duration-300 text-xs font-outfit font-bold pt-1 normal-case"
+                >
+                  Write a review on google
+                </Link>
+                <ExternalLinkIcon className="w-4 h-4 pt-2 text-theme-orange" />
+              </div>
+              {/* <p className='text-gray-700 text-xs font-outfit font-light leading-relaxed mb-6 max-w-2xl normal-case'>
+                    for any feedback, questions, or concerns.
+                  </p> */}
             </div>
 
             {/* </div> */}
@@ -98,32 +119,62 @@ const TestimonialComponent = () => {
                           <div className="w-4 h-4 bg-[inherit] rounded-full flex items-center justify-center mb-1">
                             <span className="text-2xl font-bold text-white"></span>
                           </div>
-                          {r.text && (
+                          {r.text?.text && (
                             <blockquote className="text-gray-700 text-lg font-outfit font-light leading-relaxed mb-6 max-w-2xl normal-case">
-                              &ldquo;{r.text}&rdquo;
+                              &ldquo;
+                              {r.text.text.length > 1000
+                                ? r.text.text.slice(0, 1000) +
+                                  '... (view full review on Google)'
+                                : r.text.text}
+                              &rdquo;
                             </blockquote>
                           )}
+                          {r.text?.text && r.text.text.length > 1000 && (
+                            <p
+                              onClick={() =>
+                                window.open(r.authorAttribution?.uri, '_blank')
+                              }
+                              title="View on Google"
+                              className="text-gray-700 text-sm font-outfit font-light leading-relaxed mb-6 max-w-2xl normal-case cursor-pointer"
+                            >
+                              (view full review on Google)
+                            </p>
+                          )}
+
                           <div className="flex flex-col items-center gap-3">
-                            {r.profile_photo_url ? (
-                              <Image
-                                src={r.profile_photo_url}
-                                alt={r.author_name || 'Reviewer'}
-                                width={40}
-                                height={40}
-                                className="rounded-full object-cover"
-                              />
+                            {r.authorAttribution?.photoUri ? (
+                              <>
+                                <Image
+                                  src={r.authorAttribution?.photoUri}
+                                  alt={
+                                    r.authorAttribution?.displayName ||
+                                    'Reviewer'
+                                  }
+                                  width={40}
+                                  height={40}
+                                  className="rounded-full object-cover"
+                                />
+                              </>
                             ) : (
                               <div className="h-10 w-10 rounded-full bg-gray-200" />
                             )}
-                            <div className="text-center">
-                              <p className="text-gray-700 font-outfit font-semibold normal-case">
-                                {r.author_name || 'Anonymous'}
+                            <div
+                              className="text-center cursor-pointer"
+                              onClick={() =>
+                                window.open(r.authorAttribution?.uri, '_blank')
+                              }
+                              title="View on Google"
+                            >
+                              <p className="text-gray-700 font-outfit font-semibold normal-case cursor-pointer">
+                                {r?.authorAttribution?.displayName ||
+                                  'Anonymous'}
                               </p>
                               <div className="flex flex-col items-center justify-center gap-2">
                                 {!!r.rating && <Stars rating={r.rating} />}
                                 <span className="text-gray-500 text-sm">
-                                  {formatDateMMDDYYYY((r as any)?.time) ||
-                                    r.relative_time_description}
+                                  {formatDateMMDDYYYY(
+                                    (r as any)?.publishTime
+                                  ) || r.relativePublishTimeDescription}
                                 </span>
                               </div>
                             </div>
@@ -180,6 +231,7 @@ const TestimonialComponent = () => {
                     />
                   </svg>
                 </button>
+
                 <button
                   onClick={() =>
                     setCurrentSlide(

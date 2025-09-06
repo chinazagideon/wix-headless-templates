@@ -27,11 +27,12 @@ type GooglePlaceDetailsResponse = {
 };
 
 function buildPlaceDetailsUrl(placeId: string, apiKey: string) {
-  const fields = ['name', 'rating', 'user_ratings_total', 'reviews'].join(',');
+  const fields = ['name', 'rating', 'userRatingCount', 'reviews'].join(',');
+
   const url = new URL(
-    'https://maps.googleapis.com/maps/api/place/details/json'
+    'https://places.googleapis.com/v1/places/' + placeId + ''
   );
-  url.searchParams.set('place_id', placeId);
+  // url.searchParams.set('place_id', placeId);
   url.searchParams.set('fields', fields);
   url.searchParams.set('key', apiKey);
   return url.toString();
@@ -268,11 +269,14 @@ export async function GET(request: Request) {
 
     // Fetch details (reviews). If NOT_FOUND, attempt resolution again without relying on provided placeId
     const detailsUrl = buildPlaceDetailsUrl(resolved.placeId, apiKey);
+
     let res = await fetch(detailsUrl, {
       cache: 'no-store',
       // @ts-ignore: undici agent supported in Node 18+ runtime
       dispatcher: keepAliveAgent,
     });
+    // console.log('res', res.ok);
+
     if (!res.ok) {
       const text = await res.text();
       return NextResponse.json(

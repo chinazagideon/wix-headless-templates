@@ -13,12 +13,8 @@ import Lines from '@app/components/Design/Lines';
 import routes from '@app/components/Layout/NavBarV2/routes';
 import { constants } from '@app/components/constants';
 import { useWixServices } from '@app/hooks/useWixServices';
-import ServiceListPreviewView from '@app/components/ServiceList/ServiceListPreview';
-import { Loader } from 'lucide-react';
 import WixMediaImage from '@app/components/Image/WixMediaImage';
 import HeroWidget from '@app/components/Widget/HeroWdget';
-// import GoogleReviews from '@app/components/Testimonials/GoogleReviews';
-import { useGoogleReviews } from '@app/hooks/useGoogleReviews';
 
 export default function Page() {
   const router = useRouter();
@@ -30,9 +26,7 @@ export default function Page() {
   }, [router]);
   // const { weatherData, loading, error } = useWeather();
   const { services, isLoading, error: wixError } = useWixServices();
-  const { data: reviewsData } = useGoogleReviews({
-    website: 'icanndomovers.ca',
-  });
+
   // const [items, setItems] = useState<any[]>([]);
   // useEffect(() => {
   //   fetchProductItems().then(setItems as any).catch(() => setItems([]));
@@ -166,7 +160,7 @@ export default function Page() {
               We offer a variety of moving services designed to make the process
               smoother and less stressful.
             </p>
-            <div className="flex flex-row gap-4 w-full justify-center md:justify-start lg:justify-start">
+            <div className="flex flex-row gap-4 w-full justify-center md:justify-center lg:justify-start">
               <div className="flex items-center gap-2 animate-slide-in-left">
                 <Link
                   href={routes.about}

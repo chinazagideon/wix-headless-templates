@@ -1,15 +1,14 @@
 'use client';
 import Lines from '@app/components/Design/Lines';
 import { useEffect, useRef, useState } from 'react';
-import { CheckCircleIcon, Loader } from 'lucide-react';
+import { CheckCircleIcon, Loader, PhoneIcon } from 'lucide-react';
 import { format } from 'date-fns';
 import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import ThemeButton from '../Button/ThemeButton';
 import AddressAutocomplete from '@app/components/AddressAutocomplete';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
-
-// import { constants } from '../constants';
+import { constants } from '@app/components/constants';
 
 const QuoteComponent = ({ services }: { services: any[] }) => {
   const {
@@ -57,8 +56,6 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       setErrors(rest);
     }
   };
-
-  // picker logic moved to reusable component
 
   const validateForm = (data: typeof formData) => {
     const newErrors: Partial<Record<keyof typeof formData, string>> = {};
@@ -183,18 +180,33 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       >
         <div className="z-10 w-full lg:w-[70%] mx-auto  flex lg:flex-row flex-col gap-4 lg:px-0 px-4 justify-center items-center gap-3">
           {/* <div className='flex lg:flex-row sm:flex-col gap-4 w-full justify-between'> */}
-          <div className="flex flex-col gap-4 w-full w-full">
-            <div className="flex flex-row gap-4 w-full justify-center items-center border-b border-theme-orange/20 pb-4">
-              <h1 className="text-white dark:text-white flex md:flex-row flex-col text-xl font-outfit font-thin normal-case text-center">
-                In a hurry?&nbsp;
-                <span className="text-white dark:text-white text-2xl font-outfit font-bold normal-case text-center">
-                  Fill out our quick quote form
+          <div className="flex flex-col gap-2 w-full w-full">
+            <div className="flex flex-col gap-2 w-full justify-center items-center border-b border-theme-orange/20 pb-4">
+              <div className="text-white dark:text-white flex flex-col lg:flex-row justify-center items-center gap-2 font-outfit font-thin normal-case text-center">
+                <p className="text-md font-light text-theme-orange">
+                  Need help moving?&nbsp;Call us today&nbsp;
+                </p>
+                <span className="flex flex-row items-center justify-center gap-0 text-white dark:text-white text-xl font-outfit font-bold normal-case text-center">
+                  {/* <span className="text-white dark:text-white text-xl font-outfit font-bold normal-case text-center"> */}
+                  <PhoneIcon className="w-4 h-4 pt-1 text-white" />
+                  <p className="text-2xl font-bold">
+                    {' '}
+                    {constants.companyPhone}&nbsp;
+                  </p>
+                  {/* <span className="font-thin">Or</span> */}
                 </span>
-              </h1>
+                {/* </span> */}
+              </div>
             </div>
-            <p className="text-theme-orange dark:text-white text-sm italic font-outfit font-light normal-case text-center">
-              Complete the form below to get a free quote.
-            </p>
+            <div className="flex flex-col gap-2 w-full justify-center items-center">
+              <p className="text-theme-orange dark:text-white text-sm font-outfit font-light normal-case text-center">
+                OR
+              </p>
+              <p className="text-white dark:text-white text-md font-outfit font-bold normal-case text-center mb-4">
+                fill out the form below to get a free quote
+              </p>
+            </div>
+
             {isCompleted && (
               <div
                 ref={successRef}
@@ -209,7 +221,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
             )}
             <form onSubmit={handleSubmit} id="quote-form">
               <div className="flex md:flex-row flex-col gap-2 w-full mt-2">
-                <div className="flex flex-col gap-2 w-full">
+                <div className="flex flex-col gap-2 w-full lg:mt-0 md:mt-2">
                   <label
                     htmlFor="name"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"

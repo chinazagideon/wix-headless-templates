@@ -145,22 +145,28 @@ const Page = () => {
                   </tr>
                 ))
               ) : (
-                <tr>
-                  <td colSpan={3} className="p-4 text-center">
-                    No data available
-                  </td>
-                </tr>
+                <>
+                  {!isFetching ||
+                    (!isLoading && data && data.length === 0 && (
+                      <tr>
+                        <td colSpan={3} className="p-4 text-center">
+                          No data available
+                        </td>
+                      </tr>
+                    ))}
+                </>
               )}
             </tbody>
           </table>
-          {isFetching && (
-            <div className="flex flex-col justify-center items-center h-full">
-              <div className="w-full h-full flex justify-center items-center">
-                <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
-                <span className="text-gray-600">Loading...</span>
+          {isFetching ||
+            (isLoading && (
+              <div className="flex flex-col justify-center items-center h-full px-10 py-10">
+                <div className="w-full h-full flex justify-center items-center">
+                  <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
+                  <span className="text-gray-600">Loading...</span>
+                </div>
               </div>
-            </div>
-          )}
+            ))}
         </div>
       </div>
     </>

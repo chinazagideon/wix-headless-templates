@@ -1,14 +1,26 @@
 import { useQuery } from '@tanstack/react-query';
 
 export type GoogleReview = {
-  author_name?: string;
+  authorAttribution: {
+    displayName: string;
+    photoUri: string;
+    uri: string;
+  };
+  name?: string;
   profile_photo_url?: string;
   rating?: number;
-  relative_time_description?: string;
-  text?: string;
+  relativePublishTimeDescription?: string;
+  text?: {
+    text?: string;
+    languageCode?: string;
+  };
+  publishTime?: string;
 };
 
 export type GoogleReviewsPayload = {
+  rating?: number;
+  userRatingCount?: number;
+  reviews?: GoogleReview[];
   result?: {
     name?: string;
     rating?: number;
@@ -50,7 +62,6 @@ export async function fetchGoogleReviews(
       }
     });
   }
-
   const res = await fetch(url.toString(), { cache: 'no-store' });
   if (!res.ok) {
     const text = await res.text();
@@ -63,12 +74,18 @@ export async function fetchGoogleReviews(
 }
 
 export function useGoogleReviews(params?: GoogleReviewsQuery) {
-  return useQuery(['googleReviews', params], () => fetchGoogleReviews(params), {
-    staleTime: 5 * 60 * 1000,
-    cacheTime: 15 * 60 * 1000,
-    refetchOnWindowFocus: false,
+  const queryResponse = useQuery(
+    ['googleReviews', params],
+    () => fetchGoogleReviews(params),
+    {
+      staleTime: 5 * 60 * 1000,
+      cacheTime: 15 * 60 * 1000,
+      refetchOnWindowFocus: false,
 
-    // refetchOnMount: 'always',
-    // keepPreviousData: true,
-  });
+      // refetchOnMount: 'always',
+      // keepPreviousData: true,
+    }
+  );
+
+  return queryResponse;
 }

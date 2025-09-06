@@ -21,13 +21,13 @@ const Footer = () => {
                 className="w-20 h-20 "
               />
             </div>
-            <div className="w-full flex flex-col gap-4 lg:justify-end lg:items-end py-0 lg:py-10 border-b-2 border-theme-orange/10 pb-4">
-              <div className="flex flex-row gap-4 ">
-                {/* <p className="font-outfit font-light  text-[#023465] text-xs capitalise flex flex-col lg:flex-row items-center gap-2 lg:pl-5 pl-0">
+            {/* <div className="w-full flex flex-col gap-4 lg:justify-end lg:items-end py-0 lg:py-10 border-b-2 border-theme-orange/10 pb-4"> */}
+            {/* <div className="flex flex-row gap-4 "> */}
+            {/* <p className="font-outfit font-light  text-[#023465] text-xs capitalise flex flex-col lg:flex-row items-center gap-2 lg:pl-5 pl-0">
                   Contact Information:
                 </p> */}
 
-                <div className="flex w-full flex-col lg:flex-row items-center lg:items-end lg:gap-6 gap-2 lg:mb-0 mb-4 ">
+            {/* <div className="flex w-full flex-col lg:flex-row items-center lg:items-end lg:gap-6 gap-2 lg:mb-0 mb-4 ">
                   <div className="flex lg:flex-col  flex-col items-center text-center lg:text-left lg:items-start gap-2 ">
                     <h4 className="font-outfit font-light text-[#023465] text-xs capitalise flex flex-col lg:flex-row items-center gap-2 lg:pl-5 pl-0">
                       Contact Information:
@@ -75,10 +75,9 @@ const Footer = () => {
                       </span>
                     </p>
                   </div>
-                  {/* </div> */}
-                </div>
-              </div>
-            </div>
+                </div> */}
+            {/* </div> */}
+            {/* </div> */}
           </div>
         </div>
         <div className="flex flex-col items-center gap-2 w-full ">
@@ -90,13 +89,13 @@ const Footer = () => {
                 </p>
               </div>
 
-              <div className="flex flex-row gap-2 justify-end ">
+              <div className="flex flex-row gap-2 justify-end hidden lg:block">
                 <div
                   onClick={() => window.open('https://evoocta.com', '_blank')}
                   className="flex flex-row items-center gap-2 w-full hover:text-theme-orange/60 transition-all duration-300 cursor-pointer"
                 >
-                  <p className="text-black text-xs font-outfit font-light normal-case  ">
-                    Web design by
+                  <p className="text-black text-xs font-outfit font-light ">
+                    Designed by
                   </p>
                   <Image
                     src={'/custom/evoocta.png'}
