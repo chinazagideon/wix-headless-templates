@@ -85,9 +85,10 @@ const Footer = () => {
             <div className="flex flex-col justify-between lg:flex-row items-center gap-2 w-full">
               <div className="align-start flex flex-row items-center gap-2 hidden lg:block justify-start">
                 <p className="text-black text-sm font-outfit font-light normal-case">
-                  &copy; 2025 {constants.companyName}. All rights reserved.
+                  &copy; {new Date().getFullYear()} {constants.companyName}. All rights reserved.
                 </p>
               </div>
+
 
               <div className="flex flex-row gap-2 justify-end hidden lg:block">
                 <div
