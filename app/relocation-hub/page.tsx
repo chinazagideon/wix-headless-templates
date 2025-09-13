@@ -1,14 +1,12 @@
 'use client';
-import { CalendarIcon } from '@heroicons/react/24/outline';
-import { PencilIcon } from 'lucide-react';
-import Image from 'next/image';
 import { usePaginatedPosts } from '@app/hooks/useBlog';
 import { formatDate } from '@app/utils/format-date';
 import PaginationLinks from '@app/components/pagination/PaginationLinks';
 import { useRouter } from 'next/navigation';
 // import { Loader2 } from 'lucide-react';
 import PageHeader from '@app/components/Layout/PageHeader';
-import { BinocularsIcon, Loader, Gauge } from 'lucide-react';
+import { Loader } from 'lucide-react';
+import PostThumb from '@app/components/Blog/PostThumb';
 
 const Page = () => {
   const router = useRouter();
@@ -64,69 +62,11 @@ const Page = () => {
           {!isLoading && !isFetching && !isError && posts.length > 0 && (
             <>
               {posts.map((post: any, index: number) => (
-                <div
+                <PostThumb
                   key={post?.id || post?._id || index}
-                  className="flex flex-col items-center justify-center gap-2 w-full"
-                >
-                  <span className="font-bold text-xl flex flex-row items-center justify-center gap-2 rounded-md overflow-hidden">
-                    {post?.media?.wixMedia?.image?.url ? (
-                      <>
-                        <Image
-                          src={post?.media?.wixMedia?.image?.url}
-                          alt={post?.title}
-                          width={440}
-                          height={480}
-                          className="rounded-md"
-                        />
-                      </>
-                    ) : null}
-                  </span>
-                  <div className="font-outfit text-sm text-center p-3 flex flex-col items-center justify-center">
-                    <div className="hover:text-gray-300 pb-3 transition-colors flex flex-col items-center justify-center">
-                      <div className="flex flex-col gap-2 items-start justify-start">
-                        <div className="flex flex-row justify-between gap-2 mb-2 border-b border-gray-200 pb-2 w-full">
-                          <div className="flex flex-row justify-start gap-2">
-                            <CalendarIcon className="h-4 w-4 text-theme-orange" />
-                            <p className="text-xs font-light font-outfit text-gray-500">
-                              {formatDate(
-                                post?.firstPublishedDate || post?.date
-                              )}
-                            </p>
-                          </div>
-                          <div className="flex flex-row justify-end gap-2">
-                            <PencilIcon className="h-4 w-4 text-theme-orange" />
-                            <p className="text-xs font-light font-outfit text-gray-500">
-                              {post?.location || 'Winnipeg, MB'}
-                            </p>
-                          </div>
-                        </div>
-                        <h1
-                          className="text-lg font-bold font-outfit text-black normal-case cursor-pointer hover:text-theme-orange transition-colors hover:underline"
-                          onClick={() =>
-                            router.push(`/relocation-hub/${post?.slug}`)
-                          }
-                        >
-                          {post?.title ||
-                            post?.title?.short?.replace(/<[^>]*>?/gm, '')}
-                        </h1>
-
-                        <p className="text-xs font-light text-wrap text-left font-outfit text-gray-500">
-                          {post?.excerpt || post?.subtitle || ''}
-                        </p>
-                        <a
-                          href={
-                            post?.slug
-                              ? `/relocation-hub/${post.slug}`
-                              : '/relocation-hub'
-                          }
-                          className="hover:underline text-theme-orange text-xs cursor-pointer"
-                        >
-                          Read More
-                        </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                  post={post}
+                  index={index}
+                />
               ))}
             </>
           )}

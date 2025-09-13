@@ -31,6 +31,8 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     unloading_address: '',
     service_type: '',
     moving_address_date_and_time: '',
+    // honeypot field: humans leave empty; bots often fill
+    hp_field: '',
   });
   const [errors, setErrors] = useState<
     Partial<Record<keyof typeof formData, string>>
@@ -127,13 +129,23 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       return;
     }
     try {
-      const sanitized = {
+      // Build sanitized payload with only allowed Wix field IDs (exclude honeypot)
+      const base = {
         ...formData,
         phone_9f17: normalizePhoneE164(String(formData.phone_9f17 || '')),
         moving_address_date_and_time: new Date(
           formData.moving_address_date_and_time
         ).toISOString(),
-      };
+      } as typeof formData;
+      const sanitized = Object.fromEntries(
+        Object.entries(base).filter(
+          ([key, value]) =>
+            (allowedWixFieldIds as string[]).includes(key) &&
+            value !== '' &&
+            value !== undefined &&
+            value !== null
+        )
+      );
       const success = await onSubmit(sanitized);
       if (success.status === 'PENDING') {
         // Reset controlled inputs and errors
@@ -146,6 +158,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
           unloading_address: '',
           service_type: '',
           moving_address_date_and_time: '',
+          hp_field: '',
         });
         setErrors({});
         // Optional scroll and native form reset
@@ -226,6 +239,17 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
             )}
             <form onSubmit={handleSubmit} id="quote-form">
               <div className="flex md:flex-row flex-col gap-2 w-full mt-2">
+                {/* Honeypot field (visually hidden) */}
+                <input
+                  type="text"
+                  name="hp_field"
+                  value={formData.hp_field}
+                  onChange={handleChange}
+                  autoComplete="off"
+                  tabIndex={-1}
+                  className="hidden"
+                  aria-hidden="true"
+                />
                 <div className="flex flex-col gap-2 w-full lg:mt-0 md:mt-2">
                   <label
                     htmlFor="name"
@@ -386,7 +410,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     })
                   }
                   placeholder="please enter the loading address"
-                  label={`Your Loading Address <span className="">*</span>`}
+                  label={`Your Loading Address<span className="">*</span>`}
                   className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                   fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"
@@ -421,7 +445,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     })
                   }
                   placeholder="please enter the unloading address"
-                  label={`Your Unloading Address <span className="">*</span>`}
+                  label={`Your Unloading Address<span className="">*</span>`}
                   className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                   fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"

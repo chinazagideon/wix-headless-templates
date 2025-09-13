@@ -4,7 +4,7 @@ import { useGoogleReviews } from '@app/hooks/useGoogleReviews';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ExternalLinkIcon } from 'lucide-react';
-
+import { constants } from '@app/components/constants';
 const TestimonialComponent = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const {
@@ -87,7 +87,7 @@ const TestimonialComponent = () => {
             <div className="flex flex-col justify-center items-center gap-2 mt-6">
               <div className="flex flex-row">
                 <Link
-                  href={'https://g.page/r/Ce3DH2bZSpGZEBM/review'}
+                  href={constants.googleReviewLink}
                   target="_blank"
                   className="text-theme-orange hover:text-theme-orange-dark transition-all duration-300 text-xs font-outfit font-bold pt-1 normal-case"
                 >

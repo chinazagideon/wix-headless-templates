@@ -128,7 +128,7 @@ const Header = () => {
                       key={item.name}
                       href={item.href}
                       prefetch
-                      className={`text-sm/6 font-light  md:text-xs/5 text-gray-900 dark:text-white font-outfit ${
+                      className={`text-sm/6 font-light  md:text-xs/5 lg:text-sm/10 text-gray-900 dark:text-white font-outfit ${
                         isActivePage(item.href)
                           ? 'text-theme-orange underline underline-offset-4'
                           : ''

@@ -24,4 +24,5 @@ export const constants = {
   serviceDescription: ` We offer a wide range of moving services, including local and long-distance moves,
   packing and unpacking, and storage. We are committed to providing the highest
    quality of service and are dedicated to making your move as stress-free as possible.`,
+  googleReviewLink: 'https://g.page/r/Ce3DH2bZSpGZEBM/review',
 };

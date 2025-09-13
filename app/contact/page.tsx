@@ -7,7 +7,7 @@ import { constants } from '@app/components/constants';
 import { MapPinIcon } from '@heroicons/react/24/outline';
 import { EnvelopeIcon } from '@heroicons/react/24/outline';
 import { PhoneIcon } from '@heroicons/react/24/outline';
-import QuoteComponent from '@app/components/Quote/QouteComponent';
+import QuoteComponent from '@app/components/Quote/QuoteComponent';
 import { useWixServices } from '@app/hooks/useWixServices';
 
 const Page = () => {

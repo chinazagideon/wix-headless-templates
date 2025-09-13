@@ -8,13 +8,14 @@ import { useRouter } from 'next/navigation';
 
 import { WeatherWidget, useWeather } from '@app/components/Weather';
 import TestimonialComponent from '@app/components/Testimonials/TestimonialComponent';
-import QuoteComponent from '@app/components/Quote/QouteComponent';
+import QuoteComponent from '@app/components/Quote/QuoteComponent';
 import Lines from '@app/components/Design/Lines';
 import routes from '@app/components/Layout/NavBarV2/routes';
 import { constants } from '@app/components/constants';
 import { useWixServices } from '@app/hooks/useWixServices';
 import WixMediaImage from '@app/components/Image/WixMediaImage';
 import HeroWidget from '@app/components/Widget/HeroWdget';
+import ServicesCarousel from '@app/components/Carousel/ServicesCarousel';
 
 export default function Page() {
   const router = useRouter();
@@ -182,13 +183,10 @@ export default function Page() {
           </div>
 
           <div className="flex  items-center justify-center w-full">
-            <Image
-              src="/custom/moving-elevator.jpg"
-              className="h-full rounded-lg w-full lg:w-3/3 "
-              alt="Movers"
-              width={500}
-              height={500}
-            />
+            <div className="w-full lg:p-8 p-0">
+              {/* Services Carousel */}
+              <ServicesCarousel services={services} />
+            </div>
           </div>
         </div>
       </div>

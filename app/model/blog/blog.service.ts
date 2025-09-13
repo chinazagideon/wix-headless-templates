@@ -74,3 +74,40 @@ export async function fetchPostBySlugAdminRaw(slug: string) {
   const items = await fetchAllPostsAdminRaw();
   return (items as any[]).find((p) => p?.slug === slug) ?? null;
 }
+
+// Fetch a single post by slug including full rich content
+export async function fetchPostBySlugAdminWithContent(slug: string) {
+  const client = getWixAdminClient();
+  const res = await client.posts.getPostBySlug(slug, {
+    fieldsets: ['RICH_CONTENT', 'CONTENT_TEXT'],
+  } as any);
+  const post = (res as any)?.post ?? null;
+  if (!post) return null;
+  const normalized = normalizePost(post);
+  return {
+    ...normalized,
+    richContent: post?.richContent,
+    contentText: post?.contentText,
+  } as any;
+}
+
+// Fetch most-read posts (sorted by view count)
+export async function fetchMostReadPosts(limit: number = 4) {
+  const client = getWixAdminClient();
+  // Sort by view count descending if supported; fallback to published date desc
+  try {
+    const res = await client.posts.listPosts({
+      sort: 'VIEW_COUNT' as any,
+      paging: { limit },
+    } as any);
+    const items = (res as any)?.posts ?? [];
+    return (items ?? []).map(normalizePost);
+  } catch (e) {
+    const res = await client.posts.listPosts({
+      sort: 'PUBLISHED_DATE_DESC' as any,
+      paging: { limit },
+    } as any);
+    const items = (res as any)?.posts ?? [];
+    return (items ?? []).map(normalizePost);
+  }
+}
