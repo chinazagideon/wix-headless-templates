@@ -58,7 +58,7 @@ const PostThumb = ({ post, index }: { post: any; index: number }) => {
                     Read More
                   </Link>
                   <div className="flex flex-row justify-end gap-2">
-                    <CalendarIcon className="h-3 w-3  text-gray-500" />
+                    <CalendarIcon className="h-3 w-3  text-gray-500 mt-0.5" />
                     <p className="text-xs font-light font-outfit text-gray-500">
                       {formatDate(post?.firstPublishedDate || post?.date)}
                     </p>

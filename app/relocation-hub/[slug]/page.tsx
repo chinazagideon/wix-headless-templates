@@ -12,6 +12,7 @@ import {
   fetchPostBySlugAdminWithContent,
   fetchMostReadPosts,
 } from '@app/model/blog/blog.service';
+import PageHeader from '@app/components/Layout/PageHeader';
 
 export const revalidate = 3600; // Disable ISR temporarily for live testing
 export const dynamic = 'force-dynamic'; // Force SSR to avoid serving old SSG HTML
@@ -47,14 +48,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-2 lg:px-20 py-10 lg:py-auto justify-center items-center">
+      <PageHeader title={post.title} description={post.excerpt} />
+      {/* <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-2 lg:px-20 py-10 lg:py-auto justify-center items-center">
         <div className="flex flex-col items-start lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
           <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
             <span className="text-theme-orange font-bold">{post.title}</span>
           </h1>
-          {/* <p className="text-gray-500 text-sm">{post.excerpt}</p> */}
+          <p className="text-gray-500 text-sm">{post.excerpt}</p>
         </div>
-      </div>
+      </div> */}
       <div className="min-h-screen bg-white text-black justify-center items-center px-4 py-10">
         <div className="max-w-3xl mx-auto px-4 py-10">
           {/* <h1 className="text-3xl font-bold mb-3">{post.title}</h1> */}

@@ -30,7 +30,11 @@ const Header = () => {
   ];
   const quotation_url = routes.quotation;
 
-  const isActivePage = (path: string) => path === pathname;
+  const isActivePage = (path: string) => {
+    if (!path) return false;
+    if (path === '/') return pathname === '/';
+    return pathname === path || pathname.startsWith(`${path}/`);
+  };
 
   return (
     <>
