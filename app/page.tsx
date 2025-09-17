@@ -3,7 +3,7 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { WeatherWidget, useWeather } from '@app/components/Weather';
@@ -19,12 +19,54 @@ import ServicesCarousel from '@app/components/Carousel/ServicesCarousel';
 
 export default function Page() {
   const router = useRouter();
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [showVideo, setShowVideo] = useState(false);
   useEffect(() => {
     // Prefetch high-traffic routes
     router.prefetch(routes.quotation);
     router.prefetch(routes.services);
     router.prefetch(routes.about);
   }, [router]);
+
+  // Attempt to autoplay background video on mount (especially for iOS/Android mobile)
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    // Ensure muted/inline before attempting to play
+    video.muted = true;
+    video.defaultMuted = true;
+    // Some browsers require an explicit play() call after setting props
+    const tryPlay = async () => {
+      try {
+        await video.play();
+        setShowVideo(true);
+      } catch (_err) {
+        setShowVideo(false);
+      }
+    };
+    const onCanPlay = () => {
+      if (video.paused) {
+        void tryPlay();
+      }
+    };
+    video.addEventListener('canplay', onCanPlay);
+    void tryPlay();
+
+    // As a fallback, attempt play on first user interaction
+    const onUserInteract = () => {
+      void tryPlay();
+      window.removeEventListener('touchstart', onUserInteract);
+      window.removeEventListener('click', onUserInteract);
+    };
+    window.addEventListener('touchstart', onUserInteract, { once: true });
+    window.addEventListener('click', onUserInteract, { once: true });
+
+    return () => {
+      video.removeEventListener('canplay', onCanPlay);
+      window.removeEventListener('touchstart', onUserInteract);
+      window.removeEventListener('click', onUserInteract);
+    };
+  }, []);
   // const { weatherData, loading, error } = useWeather();
   const { services, isLoading, error: wixError } = useWixServices();
 
@@ -51,25 +93,25 @@ export default function Page() {
 
             {/* Video Background */}
             <video
+              ref={videoRef}
               autoPlay
               loop
               muted
               playsInline
-              preload="metadata"
+              preload="auto"
               poster="/custom/icando-move-truck.jpg"
               crossOrigin="anonymous"
-              className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-1000"
+              controls={false}
+              disablePictureInPicture
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 pointer-events-none"
+              style={{
+                display: showVideo ? 'block' : 'none',
+                opacity: showVideo ? 1 : 0,
+              }}
               aria-hidden="true"
               role="presentation"
-              onLoadedData={(e) => {
-                const video = e.target as HTMLVideoElement;
-                video.classList.remove('opacity-0');
-                video.classList.add('opacity-100');
-              }}
-              onError={(e) => {
-                // Hide video on error, fallback image will show
-                const video = e.target as HTMLVideoElement;
-                video.style.display = 'none';
+              onError={() => {
+                setShowVideo(false);
               }}
             >
               <source src="/custom/videos/icandomovers.mp4" type="video/mp4" />
