@@ -5,6 +5,17 @@ import { MapPinIcon } from '@heroicons/react/24/outline';
 import { useGoogleAutocomplete } from '../hooks/useGoogleAutocomplete';
 import { GoogleAutocompleteResponse } from '../api/google-autocomplete/route';
 
+/**
+ * AddressAutocompleteProps interface
+ * @param value - The value of the address autocomplete
+ * @param onChange - The function to call when the value changes
+ * @param placeholder - The placeholder for the address autocomplete
+ * @param label - The label for the address autocomplete
+ * @param className - The class name for the address autocomplete
+ * @param fieldClassName - The class name for the address autocomplete field
+ * @param labelClassName - The class name for the address autocomplete label
+ * @param showLabel - Whether to show the label
+ */
 interface AddressAutocompleteProps {
   value: string;
   onChange: (value: string) => void;
@@ -13,8 +24,17 @@ interface AddressAutocompleteProps {
   className?: string;
   fieldClassName?: string;
   labelClassName?: string;
+  showLabel?: boolean;
 }
 
+/**
+ * NominatimResult interface
+ * @param place_id - The place id
+ * @param display_name - The display name
+ * @param lat - The latitude
+ * @param lon - The longitude
+ * @param address - The address
+ */
 interface NominatimResult {
   place_id: number;
   display_name: string;
@@ -28,6 +48,17 @@ interface NominatimResult {
   };
 }
 
+/**
+ * AddressAutocomplete component
+ * @param value - The value of the address autocomplete
+ * @param onChange - The function to call when the value changes
+ * @param placeholder - The placeholder for the address autocomplete
+ * @param label - The label for the address autocomplete
+ * @param className - The class name for the address autocomplete
+ * @param fieldClassName - The class name for the address autocomplete field
+ * @param labelClassName - The class name for the address autocomplete label
+ * @param showLabel - Whether to show the label
+ */
 export default function AddressAutocomplete({
   value,
   onChange,
@@ -36,6 +67,7 @@ export default function AddressAutocomplete({
   className = '',
   fieldClassName = '',
   labelClassName = '',
+  showLabel = true,
 }: AddressAutocompleteProps) {
   // const [suggestions, setSuggestions] = useState<GoogleAutocompleteResponse[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -62,6 +94,11 @@ export default function AddressAutocomplete({
     }
   }, [googleSuggestionsData]);
 
+  /**
+   * searchAddresses function
+   * @param query - The query to search for
+   * @returns {void}
+   */
   const searchAddresses = async (query: string) => {
     if (!query.trim() || query.trim().length < 3) {
       setGoogleSuggestions([]);
@@ -121,6 +158,11 @@ export default function AddressAutocomplete({
     //   }
   };
 
+  /**
+   * handleInputChange function
+   * @param inputValue - The input value
+   * @returns {void}
+   */
   const handleInputChange = (inputValue: string) => {
     setSearchGoogleQuery(inputValue ?? null);
     onChange(inputValue);
@@ -136,6 +178,11 @@ export default function AddressAutocomplete({
     }, 500); // 500ms delay
   };
 
+  /**
+   * handleSuggestionClick function
+   * @param placePrediction - The place prediction
+   * @returns {void}
+   */
   const handleSuggestionClick = (placePrediction: any) => {
     // console.log(suggestion);
     onChange(placePrediction.text.text);
@@ -143,6 +190,10 @@ export default function AddressAutocomplete({
     setGoogleSuggestions([]); // Clear suggestions after selection
   };
 
+  /**
+   * handleInputFocus function
+   * @returns {void}
+   */
   const handleInputFocus = () => {
     // Only show suggestions if we have them and the input has content
     if (googleSuggestions.length > 0 && value.trim().length >= 3) {
@@ -150,6 +201,10 @@ export default function AddressAutocomplete({
     }
   };
 
+  /**
+   * handleInputBlur function
+   * @returns {void}
+   */
   const handleInputBlur = () => {
     // Delay hiding suggestions to allow clicking on them
     setTimeout(() => {
@@ -157,7 +212,10 @@ export default function AddressAutocomplete({
     }, 200);
   };
 
-  // Clear suggestions when input is cleared
+  /**
+   * useEffect to clear suggestions when input is cleared
+   * @returns {void}
+   */
   useEffect(() => {
     if (!value || value.trim().length < 3) {
       setGoogleSuggestions([]);
@@ -165,7 +223,10 @@ export default function AddressAutocomplete({
     }
   }, [value]);
 
-  // Cleanup timeout on unmount
+  /**
+   * useEffect to cleanup timeout on unmount
+   * @returns {void}
+   */
   useEffect(() => {
     return () => {
       if (searchTimeout.current) {
@@ -177,10 +238,12 @@ export default function AddressAutocomplete({
   return (
     <div className={`relative ${className}`}>
       <label className="block">
-        <span
-          className={`font-medium ${labelClassName}`}
-          dangerouslySetInnerHTML={{ __html: label || '' }}
-        />
+        {showLabel && (
+          <span
+            className={`font-medium ${labelClassName}`}
+            dangerouslySetInnerHTML={{ __html: label || '' }}
+          />
+        )}
         <div className="relative mt-2">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <MapPinIcon className="h-5 w-5 text-gray-400" />
