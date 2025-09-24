@@ -207,7 +207,9 @@ export default function Page() {
 
               {currentStep < 5 ? (
                 <button
-                  onClick={() => nextStep()}
+                  onClick={() => {
+                    nextStep();
+                  }}
                   // onClick={() => handleStepValidation(currentStep)}
                   disabled={!isStepValid(currentStep)}
                   className={`flex items-center px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
@@ -222,7 +224,9 @@ export default function Page() {
               ) : (
                 <button
                   // onClick={() => { }}
-                  onClick={() => handleStepValidation(currentStep)}
+                  onClick={() => {
+                    handleStepValidation(currentStep);
+                  }}
                   disabled={!isStepValid(currentStep) || isSubmitting}
                   className={`flex items-center px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
                     isStepValid(currentStep)

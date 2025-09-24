@@ -79,7 +79,13 @@ export const useBookingForm = () => {
    * @returns {void}
    */
   const nextStep = useCallback(() => {
-    if (currentStep < 5) setCurrentStep(currentStep + 1);
+    if (currentStep < 5) {
+      setCurrentStep(currentStep + 1);
+      // Smooth scroll to top of page after DOM update
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
   }, [currentStep]);
 
   /**
@@ -87,7 +93,13 @@ export const useBookingForm = () => {
    * @returns {void}
    */
   const prevStep = useCallback(() => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+      // Smooth scroll to top of page after DOM update
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
   }, [currentStep]);
 
   /**

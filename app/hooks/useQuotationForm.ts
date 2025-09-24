@@ -118,11 +118,23 @@ export const useQuotationForm = () => {
   );
 
   const nextStep = useCallback(() => {
-    if (currentStep < 3) setCurrentStep(currentStep + 1);
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+      // Smooth scroll to top of page after DOM update
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
   }, [currentStep]);
 
   const prevStep = useCallback(() => {
-    if (currentStep > 1) setCurrentStep(currentStep - 1);
+    if (currentStep > 1) {
+      setCurrentStep(currentStep - 1);
+      // Smooth scroll to top of page after DOM update
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 100);
+    }
   }, [currentStep]);
 
   const isEmailOrPhone = useCallback((value: string) => {
