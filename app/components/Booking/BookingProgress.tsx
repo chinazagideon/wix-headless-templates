@@ -60,6 +60,7 @@ const BookingProgress = ({ currentStep }: BookingProgressProps) => {
       <div className="flex justify-between text-sm text-gray-500 text-center">
         {steps.map((step) => (
           <span
+            key={step.level}
             className={
               currentStep >= step.level ? 'text-theme-orange font-medium' : ''
             }
