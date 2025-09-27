@@ -118,6 +118,7 @@ const BillingAddress = ({
 
         <div className="flex flex-col gap-0 w-full">
           <label className="block">
+            
             <span className="text-gray-700 text-xs flex items-center gap-2">
               <MapPin className="w-3 h-3" />
               ZIP/Postal Code
