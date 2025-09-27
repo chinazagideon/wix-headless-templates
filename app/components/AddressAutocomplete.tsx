@@ -15,6 +15,7 @@ import { GoogleAutocompleteResponse } from '../api/google-autocomplete/route';
  * @param fieldClassName - The class name for the address autocomplete field
  * @param labelClassName - The class name for the address autocomplete label
  * @param showLabel - Whether to show the label
+ * @param all - Whether to return all suggestions without filtering
  */
 interface AddressAutocompleteProps {
   value: string;
@@ -25,6 +26,7 @@ interface AddressAutocompleteProps {
   fieldClassName?: string;
   labelClassName?: string;
   showLabel?: boolean;
+  all?: boolean;
 }
 
 /**
@@ -68,6 +70,7 @@ export default function AddressAutocomplete({
   fieldClassName = '',
   labelClassName = '',
   showLabel = true,
+  all = false,
 }: AddressAutocompleteProps) {
   // const [suggestions, setSuggestions] = useState<GoogleAutocompleteResponse[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -86,7 +89,7 @@ export default function AddressAutocomplete({
     isLoading: isGoogleLoading,
     isError: isGoogleError,
     isFetching: isGoogleFetching,
-  } = useGoogleAutocomplete(searchGoogleQuery ?? '');
+  } = useGoogleAutocomplete({ q: searchGoogleQuery ?? '', all });
   useEffect(() => {
     if (googleSuggestionsData) {
       setGoogleSuggestions(googleSuggestionsData);

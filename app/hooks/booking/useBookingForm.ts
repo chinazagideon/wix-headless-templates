@@ -1,5 +1,8 @@
 import { useForms } from '../useForms';
 import { useCallback, useState } from 'react';
+import { PricingCalculator } from '@app/services/PricingCalculator';
+
+// import {  } from '@app/services/PricingCalculator';
 
 /**
  * FormData interface
@@ -16,7 +19,8 @@ export interface FormData {
   moveCategory: string;
 
   // Step 2: Move Size
-  move_size: string;
+  pickup_room_size: string;
+  destination_room_size: string;
   rooms: string;
   special_items: Record<string, number>;
 
@@ -25,7 +29,6 @@ export interface FormData {
   destination_address: string;
   destination_building_type: string;
   destination_has_elevator: string;
-  destination_stairs_count: string;
   move_date: string;
   additional_info?: string;
   pickup_building_type: string;
@@ -34,8 +37,28 @@ export interface FormData {
   phone_9f17: string;
   moving_address_date_and_time: string;
   has_elevator?: string;
-  stairs_count?: string;
+  stairs_count?: number;
   addons: string[];
+
+  // Pricing & Booking Details
+  mover_count: number; // 2 or 3 movers
+  selected_hours: number; // minimum 2, user can increase
+  service_id?: string; // Wix service ID for appointment
+  selected_time_slot?: any; // Time slot from availability
+  appointment_date?: string; // Selected appointment date
+
+  // Distance calculation (for travel fees)
+  distance_miles?: number;
+
+  // Stairs calculation
+  pickup_stairs_count?: number;
+  destination_stairs_count?: number;
+
+  // Billing Address
+  billing_country: string;
+  billing_address: string;
+  billing_city: string;
+  billing_zip: string;
 }
 
 /**
@@ -54,14 +77,15 @@ export const useBookingForm = () => {
     last_name: '',
     service_type: '',
     moveCategory: '',
-    move_size: '',
+    pickup_room_size: '',
+    destination_room_size: '',
     rooms: '',
     special_items: {},
     pickup_address: '',
     destination_address: '',
     destination_building_type: '',
     destination_has_elevator: '',
-    destination_stairs_count: '',
+    destination_stairs_count: 0,
     move_date: '',
     additional_info: '',
     pickup_building_type: '',
@@ -70,9 +94,35 @@ export const useBookingForm = () => {
     phone_9f17: '',
     moving_address_date_and_time: '',
     has_elevator: '',
-    stairs_count: '',
+    stairs_count: 0,
     addons: [],
+    // New pricing fields
+    mover_count: 2, // Default to 2 movers
+    selected_hours: 2, // Minimum 2 hours
+    service_id: '',
+    selected_time_slot: null,
+    appointment_date: '',
+    distance_miles: 0,
+    pickup_stairs_count: 0,
+    // Billing Address defaults
+    billing_country: '',
+    billing_address: '',
+    billing_city: '',
+    billing_zip: '',
   });
+
+  /**
+   * isRelocationService function
+   * @returns {boolean} - Whether the service type is a residential or commercial service
+   */
+  const isRelocationService = useCallback(() => {
+    // Check if service type is NOT residential or commercial (non-truck services)
+    // Return true for non-relocation services (labour, furniture, packing) that need destination flow
+    return (
+      !formData.service_type?.toLowerCase().includes('residential') &&
+      !formData.service_type?.toLowerCase().includes('commercial')
+    );
+  }, [formData.service_type]);
 
   /**
    * nextStep function
@@ -80,13 +130,17 @@ export const useBookingForm = () => {
    */
   const nextStep = useCallback(() => {
     if (currentStep < 5) {
-      setCurrentStep(currentStep + 1);
+      if (currentStep === 2 && isRelocationService()) {
+        setCurrentStep(currentStep + 2);
+      } else {
+        setCurrentStep(currentStep + 1);
+      }
       // Smooth scroll to top of page after DOM update
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100);
     }
-  }, [currentStep]);
+  }, [currentStep, isRelocationService]);
 
   /**
    * prevStep function
@@ -94,13 +148,18 @@ export const useBookingForm = () => {
    */
   const prevStep = useCallback(() => {
     if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
+      if (currentStep === 4 && isRelocationService()) {
+        setCurrentStep(currentStep - 2);
+      } else {
+        setCurrentStep(currentStep - 1);
+      }
+
       // Smooth scroll to top of page after DOM update
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100);
     }
-  }, [currentStep]);
+  }, [currentStep, isRelocationService]);
 
   /**
    * updateFormData function
@@ -130,8 +189,8 @@ export const useBookingForm = () => {
     if (!data.service_type || !data.service_type.trim()) {
       newErrors.service_type = 'Please select a service';
     }
-    if (!data.move_size || !data.move_size.trim()) {
-      newErrors.move_size = 'Please select move size';
+    if (!data.pickup_room_size || !data.pickup_room_size.trim()) {
+      newErrors.pickup_room_size = 'Please select move size';
     }
     if (!data.pickup_building_type || !data.pickup_building_type.trim()) {
       newErrors.pickup_building_type = 'Please select building type';
@@ -149,10 +208,7 @@ export const useBookingForm = () => {
       newErrors.destination_has_elevator =
         'Please select if you have an elevator';
     }
-    if (
-      !data.destination_stairs_count ||
-      !data.destination_stairs_count.trim()
-    ) {
+    if (!data.destination_stairs_count || !data.destination_stairs_count) {
       newErrors.destination_stairs_count =
         'Please select how many stairs you have';
     }
@@ -179,6 +235,20 @@ export const useBookingForm = () => {
     }
     if (!data.destination_address || !data.destination_address.trim()) {
       newErrors.destination_address = 'Final destination is required';
+    }
+
+    // Billing Address validation
+    if (!data.billing_country || !data.billing_country.trim()) {
+      newErrors.billing_country = 'Country is required';
+    }
+    if (!data.billing_address || !data.billing_address.trim()) {
+      newErrors.billing_address = 'Address is required';
+    }
+    if (!data.billing_city || !data.billing_city.trim()) {
+      newErrors.billing_city = 'City is required';
+    }
+    if (!data.billing_zip || !data.billing_zip.trim()) {
+      newErrors.billing_zip = 'ZIP/Postal code is required';
     }
 
     if (
@@ -215,15 +285,31 @@ export const useBookingForm = () => {
       }
       if (step === 2) {
         const stepErrors: Partial<Record<keyof FormData, string>> = {};
-        if (validationErrors.move_size)
-          stepErrors.move_size = validationErrors.move_size;
+        if (validationErrors.pickup_room_size)
+          stepErrors.pickup_room_size = validationErrors.pickup_room_size;
         if (validationErrors.pickup_building_type)
           stepErrors.pickup_building_type =
             validationErrors.pickup_building_type;
         setErrors(stepErrors);
         if (
-          !validationErrors.move_size &&
+          !validationErrors.pickup_room_size &&
           !validationErrors.pickup_building_type
+        )
+          setCurrentStep(step + 1);
+        return;
+      }
+      if (step === 3) {
+        const stepErrors: Partial<Record<keyof FormData, string>> = {};
+        if (validationErrors.destination_room_size)
+          stepErrors.destination_room_size =
+            validationErrors.destination_room_size;
+        if (validationErrors.destination_building_type)
+          stepErrors.destination_building_type =
+            validationErrors.destination_building_type;
+        setErrors(stepErrors);
+        if (
+          !validationErrors.destination_room_size &&
+          !validationErrors.destination_building_type
         )
           setCurrentStep(step + 1);
         return;
@@ -231,6 +317,15 @@ export const useBookingForm = () => {
     },
     [formData, validateForm]
   );
+
+  /**
+   * gotoStep function
+   * @param {number} step - The step to go to
+   * @returns {void}
+   */
+  const gotoStep = useCallback((step: number) => {
+    setCurrentStep(step);
+  }, []);
 
   /**
    * isStepValid function
@@ -252,8 +347,9 @@ export const useBookingForm = () => {
             validateBuildingType(
               formData.pickup_building_type,
               formData.has_elevator || '',
-              formData.stairs_count || ''
-            )
+              formData.stairs_count || 0
+            ) &&
+            formData.pickup_room_size
           );
 
         case 3:
@@ -263,7 +359,7 @@ export const useBookingForm = () => {
             validateBuildingType(
               formData.destination_building_type,
               formData.destination_has_elevator || '',
-              formData.destination_stairs_count || ''
+              formData.destination_stairs_count || 0
             )
           );
         case 4:
@@ -274,7 +370,11 @@ export const useBookingForm = () => {
             formData.last_name &&
             formData.email_e1ca &&
             formData.phone_9f17 &&
-            formData.moving_address_date_and_time
+            formData.moving_address_date_and_time &&
+            formData.billing_country &&
+            formData.billing_address &&
+            formData.billing_city &&
+            formData.billing_zip
           );
         default:
           return false;
@@ -291,7 +391,7 @@ export const useBookingForm = () => {
   const validateBuildingType = (
     field: string,
     hasElevator: string,
-    stairsCount: string
+    stairsCount: number
   ) => {
     if (field === 'Apartment') {
       if (hasElevator?.toLowerCase() === 'yes') {
@@ -321,7 +421,7 @@ export const useBookingForm = () => {
     isCompleted,
     formHasError,
     errors,
-
+    isRelocationService,
     // Actions
     updateFormData,
     nextStep,
@@ -329,5 +429,6 @@ export const useBookingForm = () => {
     isStepValid,
     onClickHasElevator,
     handleStepValidation,
+    gotoStep,
   };
 };

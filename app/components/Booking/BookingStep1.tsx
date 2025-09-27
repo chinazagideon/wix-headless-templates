@@ -15,6 +15,7 @@ export interface BookingStep1Props {
   updateFormData: (field: string, value: any) => void;
   visibleServices: any;
   getIconForService: (name: string) => any;
+  isRelocationService: () => boolean;
 }
 
 /**
@@ -31,6 +32,7 @@ const BookingStep1 = ({
   updateFormData,
   visibleServices,
   getIconForService,
+  isRelocationService,
 }: BookingStep1Props) => {
   return (
     <div className="space-y-8 animate-fade-in">

@@ -38,17 +38,14 @@ export default function Page() {
     formData,
     isCompleted,
     errors,
-    // isSubmitting,
-    // isFetching,
-    // visibleServices,
     updateFormData,
     nextStep,
     prevStep,
-    // handleSubmit,
-    // handleStepValidation,
     isStepValid,
     onClickHasElevator,
     handleStepValidation,
+    gotoStep,
+    isRelocationService,
   } = useBookingForm();
 
   const { visibleServices, isFetching, isSubmitting } = useQuotationForm();
@@ -94,7 +91,7 @@ export default function Page() {
     include: 'buildingType',
   });
 
-  console.log(service_rates.data, fees.data);
+  // console.log(service_rates.data, fees.data);
 
   /**
    * Page
@@ -128,7 +125,10 @@ export default function Page() {
             {/* Header */}
 
             {/* Progress Bar */}
-            <BookingProgress currentStep={currentStep} />
+            <BookingProgress
+              currentStep={currentStep}
+              isRelocationService={isRelocationService}
+            />
 
             {/* Form Container */}
             <div className="bg-white rounded-2xl shadow-xl p-4 lg:p-8 mb-8">
@@ -138,6 +138,7 @@ export default function Page() {
                   <span className="text-gray-600">Loading...</span>
                 </div>
               )}
+              {/* { JSON.stringify(visibleServices)} */}
               {/* Step 1: Move Type */}
               {currentStep === 1 && !isFetching && (
                 <BookingStep1
@@ -146,6 +147,7 @@ export default function Page() {
                   updateFormData={updateFormData as any}
                   visibleServices={visibleServices}
                   getIconForService={getIconForService}
+                  isRelocationService={isRelocationService}
                 />
               )}
 
@@ -158,6 +160,7 @@ export default function Page() {
                   building_type={building_type}
                   getIconFromKey={getIconFromKey}
                   onClickHasElevator={onClickHasElevator}
+                  isRelocationService={isRelocationService}
                 />
               )}
               {/* Step 3: Location & Details */}
@@ -186,6 +189,8 @@ export default function Page() {
                   formData={formData}
                   errors={errors}
                   updateFormData={updateFormData as any}
+                  gotoStep={gotoStep}
+                  isRelocationService={isRelocationService}
                 />
               )}
             </div>
@@ -210,7 +215,6 @@ export default function Page() {
                   onClick={() => {
                     nextStep();
                   }}
-                  // onClick={() => handleStepValidation(currentStep)}
                   disabled={!isStepValid(currentStep)}
                   className={`flex items-center px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
                     isStepValid(currentStep)

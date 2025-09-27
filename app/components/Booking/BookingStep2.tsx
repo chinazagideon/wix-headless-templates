@@ -9,6 +9,7 @@ export interface BookingStep2Props {
   building_type: any;
   getIconFromKey: (key: string) => any;
   onClickHasElevator: (field: any, value: string) => void;
+  isRelocationService: () => boolean;
 }
 
 const BookingStep2 = ({
@@ -18,24 +19,39 @@ const BookingStep2 = ({
   building_type,
   getIconFromKey,
   onClickHasElevator,
+  isRelocationService,
 }: BookingStep2Props) => {
   return (
     <>
       <div className="space-y-4 animate-fade-in">
         <div className="text-center">
           <h2 className="text-lg font-outfit font-semibold text-gray-900">
-            Pickup Location
+            {!isRelocationService()
+              ? 'Pickup Location'
+              : ' Address Information'}
           </h2>
-          <p className="text-gray-600 text-sm ">
-            Please enter the pickup location
-          </p>
+          {!isRelocationService() ? (
+            <p className="text-gray-600 text-sm ">
+              Please enter your address information
+            </p>
+          ) : (
+            <p className="text-gray-600 text-sm ">
+              Please enter the pickup address
+            </p>
+          )}
         </div>
         <div className="flex flex-col">
           <AddressAutocomplete
             value={formData.pickup_address}
             onChange={(address) => updateFormData('pickup_address', address)}
-            placeholder="please enter your loading address"
-            label="Loading address"
+            placeholder={
+              !isRelocationService()
+                ? 'please enter your pickup address'
+                : 'please enter your address information'
+            }
+            label={
+              !isRelocationService() ? 'Pickup address' : 'Address Information'
+            }
             fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
             className="block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
             labelClassName="text-gray-700 font-medium"
@@ -48,7 +64,9 @@ const BookingStep2 = ({
         <div className="flex flex-col w-full items-center justify-center mt-2">
           <div className="text-center">
             <h2 className="text-lg font-outfit font-semibold text-gray-900">
-              Building Type
+              {!isRelocationService()
+                ? 'Pickup Building Type'
+                : 'Building Type'}
             </h2>
             <p className="text-gray-600 text-sm">Select the building type</p>
           </div>
@@ -138,6 +156,51 @@ const BookingStep2 = ({
                 </div>
               </div>
             )}
+          <div className="flex lg:flex-row flex-col gap-2 w-full items-center justify-center px-4 mt-2">
+            <div className="flex items-center justify-center mb-2 ">
+              <p className="text-gray-700 font-medium w-full text-center lg:pt-2 pt-0">
+                Select the number of rooms&nbsp;&nbsp;
+              </p>
+            </div>
+            <div className="flex flex-row items-center justify-center gap-3">
+              <div
+                className={`px-4 border border-gray-200 p-2 hover:bg-orange-50 hover:border-theme-orange rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg 
+                                                    ${
+                                                      formData.pickup_room_size ===
+                                                      'studio'
+                                                        ? 'border-theme-orange bg-orange-50'
+                                                        : 'border-gray-200 hover:border-gray-300'
+                                                    }`}
+                onClick={() => updateFormData('pickup_room_size', 'studio')}
+              >
+                <p className="text-gray-700 font-medium">Studio</p>
+              </div>
+              <div
+                className={`px-4 border border-gray-200 p-2 hover:bg-orange-50 hover:border-theme-orange rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg 
+                                                    ${
+                                                      formData.pickup_room_size ===
+                                                      '2-4'
+                                                        ? 'border-theme-orange bg-orange-50'
+                                                        : 'border-gray-200 hover:border-gray-300'
+                                                    }`}
+                onClick={() => updateFormData('pickup_room_size', '2-4')}
+              >
+                <p className="text-gray-700 font-medium">2 - 4 rooms</p>
+              </div>
+              <div
+                className={`px-4 border border-gray-200 p-2 hover:bg-orange-50 hover:border-theme-orange rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg 
+                                                    ${
+                                                      formData.pickup_room_size ===
+                                                      '5+'
+                                                        ? 'border-theme-orange bg-orange-50'
+                                                        : 'border-gray-200 hover:border-gray-300'
+                                                    }`}
+                onClick={() => updateFormData('pickup_room_size', '5+')}
+              >
+                <p className="text-gray-700 font-xs"> 5+ rooms</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </>

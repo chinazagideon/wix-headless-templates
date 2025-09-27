@@ -1,6 +1,10 @@
 'use client';
 
 import { FormData } from '../../hooks/booking/useBookingForm';
+import { useEnhancedPricing } from '../../hooks/booking/useEnhancedPricing';
+import PricingBreakdown from './PricingBreakdown';
+import BillingAddress from './BillingAddress';
+import { useSearchParams } from 'next/navigation';
 import {
   MapPin,
   Building2,
@@ -25,6 +29,8 @@ export interface BookingStep5Props {
   formData: FormData;
   errors: any;
   updateFormData: (field: string, value: any) => void;
+  gotoStep: (step: number) => void;
+  isRelocationService: () => boolean;
 }
 
 /**
@@ -37,7 +43,7 @@ export interface BookingStep5Props {
 interface SummaryCardProps {
   icon: React.ReactNode;
   label: string;
-  value: string;
+  value: string | number;
   className?: string;
 }
 
@@ -80,7 +86,7 @@ interface LocationSummaryProps {
   address: string;
   buildingType: string;
   hasElevator?: string;
-  stairsCount?: string;
+  stairsCount?: number | string;
 }
 
 /**
@@ -145,7 +151,60 @@ const BookingStep5 = ({
   formData,
   errors,
   updateFormData,
+  gotoStep,
+  isRelocationService,
 }: BookingStep5Props) => {
+  // Get search params to check for 'all' parameter
+  const searchParams = useSearchParams();
+  // const allSuggestions = searchParams.get('all') === 'true';
+  const allSuggestions = true;
+
+  // Use enhanced pricing system
+  const {
+    calculatedPricing,
+    isLoading: pricingLoading,
+    error: pricingError,
+    availableMoverCounts,
+    minimumHours,
+    maximumHours,
+  } = useEnhancedPricing(formData);
+
+  // Handle mover count change
+  const handleMoverCountChange = (count: number) => {
+    updateFormData('mover_count', count);
+  };
+
+  // Handle hours change
+  const handleHoursChange = (hours: number) => {
+    updateFormData('selected_hours', hours);
+  };
+
+  // Show loading state
+  if (pricingLoading) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-orange"></div>
+        <p className="mt-4 text-gray-600">Loading pricing information...</p>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (pricingError) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12">
+        <p className="text-red-600 mb-4">
+          Error loading pricing: {pricingError as string}
+        </p>
+        <button
+          onClick={() => window.location.reload()}
+          className="px-4 py-2 bg-theme-orange text-white rounded-lg hover:bg-orange-600"
+        >
+          Retry
+        </button>
+      </div>
+    );
+  }
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Booking Summary Section */}
@@ -160,10 +219,6 @@ const BookingStep5 = ({
                 Review your booking details below
               </p>
             </div>
-            <button className="flex flex-row gap-2 border border-theme-orange hover:bg-theme-orange hover:text-white rounded-lg p-2 text-xs font-outfit font-semibold text-gray-900 mb-2">
-              <ArrowLeft className="w-4 h-4" />
-              Edit Booking
-            </button>
           </div>
           {/* Service Details */}
           <div className="space-y-1">
@@ -191,25 +246,39 @@ const BookingStep5 = ({
 
             {/* Pickup Location */}
             <LocationSummary
-              title="Pickup Location"
+              title={
+                !isRelocationService()
+                  ? 'Pickup Location'
+                  : 'Address Information'
+              }
               address={formData.pickup_address}
               buildingType={formData.pickup_building_type}
               hasElevator={formData.has_elevator}
-              stairsCount={formData.stairs_count}
+              stairsCount={formData.stairs_count || 0}
             />
           </div>
 
           {/* Destination & Contact */}
-          <div className="space-y-4">
-            {/* Destination Location */}
-            <LocationSummary
-              title="Destination Location"
-              address={formData.destination_address}
-              buildingType={formData.destination_building_type}
-              hasElevator={formData.destination_has_elevator}
-              stairsCount={formData.destination_stairs_count}
-            />
-          </div>
+          {!isRelocationService() && (
+            <div className="space-y-4">
+              {/* Destination Location */}
+              <LocationSummary
+                title="Destination Location"
+                address={formData.destination_address}
+                buildingType={formData.destination_building_type}
+                hasElevator={formData.destination_has_elevator}
+                stairsCount={formData.destination_stairs_count || 0}
+              />
+            </div>
+          )}
+          <div className="mt-4"></div>
+          <button
+            onClick={() => gotoStep(2)}
+            className="flex flex-row gap-2 border border-theme-orange bg-theme-orange hover:bg-orange-600 hover:text-white rounded-lg p-2 text-xs font-outfit font-semibold text-white mb-2"
+          >
+            <ArrowLeft className="w-4 h-4 text-white" />
+            Edit Booking
+          </button>
         </div>
 
         <div className="w-full border border-gray-200 rounded-lg p-4">
@@ -223,32 +292,18 @@ const BookingStep5 = ({
             </p>
           </div>
 
-          <div className="space-y-4 border border-gray-600 rounded-lg p-2 hidden">
-            <div className="flex flex-row justify-between text-center px-4">
-              <h4 className="text-sm font-outfit font-semibold text-gray-900 text-left">
-                Travel Fee{' '}
-                <span className="text-sm font-outfit font-normal text-gray-500">
-                  (2 movers)
-                </span>
-              </h4>
-
-              <p className="text-gray-600 text-xs align-start">$150</p>
-            </div>
-            <div className="flex flex-row justify-between text-center px-4">
-              <h4 className="text-sm font-outfit font-semibold text-gray-900 text-left">
-                Truck Fee
-              </h4>
-
-              <p className="text-gray-600 text-xs align-start">$100</p>
-            </div>
-            <div className="flex flex-row justify-between text-center px-4">
-              <h4 className="text-sm font-outfit font-semibold text-gray-900 text-left">
-                Truck Fee
-              </h4>
-
-              <p className="text-gray-600 text-xs">$100</p>
-            </div>
-          </div>
+          {/* Enhanced Pricing Breakdown */}
+          {calculatedPricing && (
+            <PricingBreakdown
+              pricing={calculatedPricing}
+              formData={formData}
+              onHoursChange={handleHoursChange}
+              onMoverCountChange={handleMoverCountChange}
+              availableMoverCounts={availableMoverCounts}
+              minimumHours={minimumHours}
+              maximumHours={maximumHours}
+            />
+          )}
 
           <div className="text-center mb-6 mt-4">
             <h4 className="text-xs font-outfit font-semibold text-gray-900 mb-2 text-left">
@@ -256,75 +311,89 @@ const BookingStep5 = ({
             </h4>
             <p className="text-gray-600 text-xs"></p>
           </div>
-          <div className="flex flex-col gap-4">
-            <label className="block">
-              <span className="text-gray-700 text-xs flex items-center gap-2">
-                <User className="w-3 h-3" />
-                First Name
-              </span>
+          <div className="flex lg:flex-row flex-col gap-2 w-full">
+            <div className="flex flex-col gap-0 w-1/2">
+              <label className="block">
+                <span className="text-gray-700 text-xs flex items-center gap-2">
+                  <User className="w-3 h-3" />
+                  First Name
+                </span>
+              </label>
               <input
                 type="text"
                 value={formData.first_name}
                 placeholder="Enter your first name"
                 onChange={(e) => updateFormData('first_name', e.target.value)}
-                className="mt-2 block w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                className="mt-1.5 block w-full px-2 text-sm py-2 rounded-md border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
               />
               {errors.first_name && (
                 <p className="mt-1 text-red-500 text-xs">{errors.first_name}</p>
               )}
-            </label>
+            </div>
 
-            <label className="block">
-              <span className="text-gray-700 text-xs flex items-center gap-2">
-                <User className="w-3 h-3" />
-                Last Name
-              </span>
+            <div className="flex flex-col gap-0 w-1/2">
+              <label className="block">
+                <span className="text-gray-700 text-xs flex items-center gap-2">
+                  <User className="w-3 h-3" />
+                  Last Name
+                </span>
+              </label>
               <input
                 type="text"
                 value={formData.last_name}
                 placeholder="Enter your last name"
                 onChange={(e) => updateFormData('last_name', e.target.value)}
-                className="mt-2 block w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                className="mt-1.5 block w-full px-2 text-sm py-2 rounded-md border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
               />
               {errors.last_name && (
                 <p className="mt-1 text-red-500 text-xs">{errors.last_name}</p>
               )}
-            </label>
-
-            <label className="block">
-              <span className="text-gray-700 text-xs flex items-center gap-2">
+              {/* </label> */}
+            </div>
+          </div>
+          <div className="flex lg:flex-row flex-col gap-2 w-full mt-4">
+            <div className="flex flex-col gap-0 w-1/2">
+              <label className="text-gray-700 text-xs flex items-center gap-2">
                 <Phone className="w-3 h-3" />
                 Phone Number
-              </span>
+              </label>
               <input
                 type="tel"
                 value={formData.phone_9f17}
                 placeholder="Enter your phone number"
                 onChange={(e) => updateFormData('phone_9f17', e.target.value)}
-                className="mt-2 block w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                className="mt-1.5 block w-full px-2 text-sm py-2 rounded-md border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
               />
               {errors.phone_9f17 && (
                 <p className="mt-1 text-red-500 text-xs">{errors.phone_9f17}</p>
               )}
-            </label>
+            </div>
 
-            <label className="block">
-              <span className="text-gray-700 text-xs flex items-center gap-2">
+            <div className="flex flex-col gap-0 w-1/2">
+              <label className="text-gray-700 text-xs flex items-center gap-2">
                 <Mail className="w-3 h-3" />
                 Email Address
-              </span>
+              </label>
               <input
                 type="email"
                 value={formData.email_e1ca}
                 placeholder="Enter your email address"
                 onChange={(e) => updateFormData('email_e1ca', e.target.value)}
-                className="mt-2 block w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                className="mt-1.5 block w-full px-2 text-sm py-2 rounded-md border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
               />
               {errors.email_e1ca && (
                 <p className="mt-1 text-red-500 text-xs">{errors.email_e1ca}</p>
               )}
-            </label>
+            </div>
           </div>
+
+          {/* Billing Address Section */}
+          <BillingAddress
+            formData={formData}
+            errors={errors}
+            updateFormData={updateFormData}
+            all={allSuggestions}
+          />
 
           <div className="mt-6">
             <label className="block">
@@ -343,6 +412,20 @@ const BookingStep5 = ({
                 className="mt-2 block w-full px-4 py-3 rounded-lg border border-gray-300 text-gray-700 focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200 resize-none"
               />
             </label>
+          </div>
+
+          {/* Checkout Button */}
+          <div className="mt-8 pt-6 border-t border-gray-200">
+            <button
+              type="button"
+              className="w-full bg-theme-orange hover:bg-orange-600 text-white font-outfit font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+            >
+              Proceed to Payment - $
+              {calculatedPricing?.finalTotal.toFixed(2) || '0.00'}
+            </button>
+            <p className="text-xs text-gray-500 text-center mt-2">
+              You will be redirected to our secure payment processor
+            </p>
           </div>
         </div>
       </div>

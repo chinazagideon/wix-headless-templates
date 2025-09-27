@@ -39,7 +39,10 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const query = searchParams.get('q') || '';
-    const region = 'CA';
+    const all = searchParams.get('all') || 'false';
+    const region = searchParams.get('region') || 'CA';
+    // const region = 'CA';
+
     const apiKey = process.env.GOOGLE_PLACES_API_KEY || '';
     const res = await fetch(baseUrl, {
       method: 'POST',
@@ -50,6 +53,8 @@ export async function GET(request: Request) {
         'X-Goog-FieldMask':
           'suggestions.placePrediction.placeId,suggestions.placePrediction.text.text,suggestions.placePrediction.structuredFormat',
       },
+      // const formatBody = {
+
       body: JSON.stringify({
         input: query,
         regionCode: region,
@@ -81,6 +86,11 @@ export async function GET(request: Request) {
     const rawSuggestions = Array.isArray(data?.suggestions)
       ? data.suggestions
       : [];
+
+    // If all=true, return all suggestions without filtering
+    if (all === 'true') {
+      return NextResponse.json(rawSuggestions);
+    }
 
     // 1) Fast textual filter (keeps Canadian-looking suggestions, drops obvious US)
     const provinceTokens = [

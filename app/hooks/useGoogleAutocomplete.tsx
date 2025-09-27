@@ -1,9 +1,10 @@
 // import { getAutocompleteSuggestions } from "@app/api/google-place-autocomplete/route";
 import { useQuery } from '@tanstack/react-query';
 
-const fetchGoogleAutocomplete = async (query: string) => {
+const fetchGoogleAutocomplete = async (query: string, all: boolean = false) => {
   const url = new URL('api/google-autocomplete', window.location.origin);
   url.searchParams.set('q', query ?? '');
+  url.searchParams.set('all', all.toString());
   const res = await fetch(url.toString(), { cache: 'no-store' });
   if (!res.ok) {
     const text = await res.text();
@@ -17,11 +18,12 @@ const fetchGoogleAutocomplete = async (query: string) => {
 
 export function useGoogleAutocomplete(params?: any) {
   const textQuery = typeof params === 'string' ? params ?? '' : params?.q ?? '';
+  const all = typeof params === 'object' ? params?.all ?? false : false;
   const enabled = (textQuery?.length ?? 0) >= 3;
 
   return useQuery(
-    ['googleAutocomplete', textQuery],
-    () => fetchGoogleAutocomplete(textQuery),
+    ['googleAutocomplete', textQuery, all],
+    () => fetchGoogleAutocomplete(textQuery, all),
     {
       enabled,
       staleTime: 5 * 60 * 1000,

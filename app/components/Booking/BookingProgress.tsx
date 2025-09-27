@@ -1,5 +1,6 @@
 export interface BookingProgressProps {
   currentStep: number;
+  isRelocationService: () => boolean;
 }
 
 const steps = [
@@ -8,7 +9,7 @@ const steps = [
     level: 1,
   },
   {
-    label: 'Pickup',
+    label: 'Location',
     level: 2,
   },
   {
@@ -25,7 +26,10 @@ const steps = [
   },
 ];
 
-const BookingProgress = ({ currentStep }: BookingProgressProps) => {
+const BookingProgress = ({
+  currentStep,
+  isRelocationService,
+}: BookingProgressProps) => {
   const max_step = steps.length;
 
   return (
@@ -36,6 +40,7 @@ const BookingProgress = ({ currentStep }: BookingProgressProps) => {
             currentStep === steps.length ? 'bg-theme-orange' : 'bg-gray-200'
           }`}
         ></div>
+
         {steps.map((step) => (
           <div key={step.level} className="flex items-center">
             <div
