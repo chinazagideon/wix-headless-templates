@@ -107,7 +107,7 @@ export default function InlineDateTimePicker({
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {/* Calendar (same as popover DateTimePicker, but inline) */}
         <div className="bg-white justify-center items-right lg:px-16 px-0">
           <DayPicker
