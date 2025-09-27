@@ -97,7 +97,7 @@ const BillingAddress = ({
 
       {/* City and ZIP Code */}
       <div className="flex lg:flex-row flex-col gap-2 w-full">
-        <div className="flex flex-col gap-0 w-1/2">
+        <div className="flex flex-col gap-0 w-full">
           <label className="block">
             <span className="text-gray-700 text-xs flex items-center gap-2">
               <MapPin className="w-3 h-3" />
@@ -116,7 +116,7 @@ const BillingAddress = ({
           </label>
         </div>
 
-        <div className="flex flex-col gap-0 w-1/2">
+        <div className="flex flex-col gap-0 w-full">
           <label className="block">
             <span className="text-gray-700 text-xs flex items-center gap-2">
               <MapPin className="w-3 h-3" />
