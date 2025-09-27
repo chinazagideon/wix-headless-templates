@@ -16,6 +16,7 @@ export interface FormData {
   first_name: string;
   last_name: string;
   service_type: string;
+  service_id: string;
   moveCategory: string;
 
   // Step 2: Move Size
@@ -43,7 +44,6 @@ export interface FormData {
   // Pricing & Booking Details
   mover_count: number; // 2 or 3 movers
   selected_hours: number; // minimum 2, user can increase
-  service_id?: string; // Wix service ID for appointment
   selected_time_slot?: any; // Time slot from availability
   appointment_date?: string; // Selected appointment date
 
@@ -76,6 +76,7 @@ export const useBookingForm = () => {
     first_name: '',
     last_name: '',
     service_type: '',
+    service_id: '',
     moveCategory: '',
     pickup_room_size: '',
     destination_room_size: '',
@@ -99,7 +100,6 @@ export const useBookingForm = () => {
     // New pricing fields
     mover_count: 2, // Default to 2 movers
     selected_hours: 2, // Minimum 2 hours
-    service_id: '',
     selected_time_slot: null,
     appointment_date: '',
     distance_miles: 0,
@@ -338,6 +338,7 @@ export const useBookingForm = () => {
         case 1:
           return (
             Boolean(formData.service_type) &&
+            Boolean(formData.service_id) &&
             formData.moving_address_date_and_time
           );
         case 2:
