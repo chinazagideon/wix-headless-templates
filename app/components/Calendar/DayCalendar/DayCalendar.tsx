@@ -89,9 +89,12 @@ export function CalendarView({ service }: { service: ServiceInfoViewModel }) {
   const nextAvailableDate = useMemo(
     () =>
       rangeData?.availabilityEntries
-        ?.filter(({ bookable }) => bookable)
-        .map(({ slot }) => new Date(slot!.startDate!))
-        .find((dateWithSlots) => dateWithSlots > selectedDate),
+        ?.filter(({ bookable }: { bookable: boolean }) => bookable)
+        .map(
+          ({ slot }: { slot: { startDate: string } }) =>
+            new Date(slot!.startDate!)
+        )
+        .find((dateWithSlots: Date) => dateWithSlots > selectedDate),
     [selectedDate, rangeData]
   );
 
@@ -109,8 +112,9 @@ export function CalendarView({ service }: { service: ServiceInfoViewModel }) {
             <DayPicker
               modifiers={{
                 daysWithSlots: (date: Date | number) =>
-                  !!rangeData?.availabilityEntries?.some(({ slot }) =>
-                    isSameDay(date, new Date(slot!.startDate!))
+                  !!rangeData?.availabilityEntries?.some(
+                    ({ slot }: { slot: { startDate: string } }) =>
+                      isSameDay(date, new Date(slot!.startDate!))
                   ),
               }}
               modifiersClassNames={{

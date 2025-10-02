@@ -1,6 +1,7 @@
 import { createClient, OAuthStrategy } from '@wix/sdk';
 import {
   availabilityCalendar,
+  availabilityTimeSlots,
   services,
   extendedBookings,
   bookings,
@@ -10,6 +11,7 @@ import { members } from '@wix/members';
 import { plans, orders } from '@wix/pricing-plans';
 import { reviews } from '@wix/reviews';
 import { redirects } from '@wix/redirects';
+import { checkout } from '@wix/ecom';
 import { WIX_REFRESH_TOKEN } from '@app/model/auth/auth.const';
 import { PHASE_PRODUCTION_BUILD } from 'next/constants';
 import { submissions } from '@wix/forms';
@@ -40,6 +42,7 @@ export const getWixClient = ({ cookieStore }: { cookieStore: CookieStore }) =>
     ? createClient({
         modules: {
           availabilityCalendar,
+          availabilityTimeSlots,
           redirects,
           services,
           posts,
@@ -52,6 +55,7 @@ export const getWixClient = ({ cookieStore }: { cookieStore: CookieStore }) =>
           submissions,
           collections: dataCollections,
           items: dataItems,
+          checkout,
         },
         auth: OAuthStrategy({
           clientId: process.env.NEXT_PUBLIC_WIX_CLIENT_ID!,

@@ -18,6 +18,12 @@ import {
   ArrowLeft,
 } from 'lucide-react';
 import { formatDateForDisplay } from '@app/utils/wix-date-converter';
+import { useCreateBooking } from '@app/hooks/booking/useCreateBooking';
+import { useBookingCheckout } from '@app/hooks/booking/useBookingCheckout';
+import { LocationSummary } from './LocationSummary';
+import { SummaryCard } from './SummaryCard';
+import { useBookingAvailability } from '@app/hooks/useAvailability';
+import { useMemo, useState } from 'react';
 
 /**
  * BookingStep5Props interface
@@ -32,114 +38,6 @@ export interface BookingStep5Props {
   gotoStep: (step: number) => void;
   isRelocationService: () => boolean;
 }
-
-/**
- * SummaryCardProps interface
- * @param icon - The icon
- * @param label - The label
- * @param value - The value
- * @param className - The class name
- */
-interface SummaryCardProps {
-  icon: React.ReactNode;
-  label: string;
-  value: string | number;
-  className?: string;
-}
-
-/**
- * SummaryCard component
- * @param icon - The icon
- * @param label - The label
- * @param value - The value
- * @param className - The class name
- */
-const SummaryCard = ({
-  icon,
-  label,
-  value,
-  className = '',
-}: SummaryCardProps) => (
-  <div
-    className={`flex items-center space-x-1 p-2 bg-white rounded-lg border border-gray-200 ${className}`}
-  >
-    <div className="text-theme-orange">{icon}</div>
-    <div className="flex-1 min-w-0">
-      <small className="text-xs text-gray-500">{label}</small>
-      <p className="text-xs font-outfit font-semibold text-gray-900 truncate">
-        {value}
-      </p>
-    </div>
-  </div>
-);
-
-/**
- * LocationSummaryProps interface
- * @param title - The title
- * @param address - The address
- * @param buildingType - The building type
- * @param hasElevator - The has elevator
- * @param stairsCount - The stairs count
- */
-interface LocationSummaryProps {
-  title: string;
-  address: string;
-  buildingType: string;
-  hasElevator?: string;
-  stairsCount?: number | string;
-}
-
-/**
- * LocationSummary component
- * @param title - The title
- * @param address - The address
- * @param buildingType - The building type
- * @param hasElevator - The has elevator
- * @param stairsCount - The stairs count
- */
-const LocationSummary = ({
-  title,
-  address,
-  buildingType,
-  hasElevator,
-  stairsCount,
-}: LocationSummaryProps) => (
-  <div className="bg-white space-y-1 p-1">
-    <small className="text-xs font-outfit font-semibold text-gray-900 my-4">
-      {title}
-    </small>
-    <div className="space-y-2">
-      <SummaryCard
-        icon={<MapPin className="w-5 h-5" />}
-        label="Address"
-        value={address}
-      />
-      <SummaryCard
-        icon={<Building2 className="w-5 h-5" />}
-        label="Building Type"
-        value={buildingType}
-      />
-      {buildingType === 'Apartment' && (
-        <>
-          <div className="flex flex-row gap-2 w-full">
-            <SummaryCard
-              icon={<ArrowUpDown className="w-5 h-5" />}
-              label="Elevator Available"
-              value={hasElevator?.toUpperCase() || 'N/A'}
-              className="w-1/2"
-            />
-            <SummaryCard
-              icon={<MoveVertical className="w-5 h-5" />}
-              label="Flight of Stairs"
-              value={stairsCount || 'N/A'}
-              className="w-1/2"
-            />
-          </div>
-        </>
-      )}
-    </div>
-  </div>
-);
 
 /**
  * BookingStep5 component
@@ -176,7 +74,147 @@ const BookingStep5 = ({
 
   // Handle hours change
   const handleHoursChange = (hours: number) => {
-    updateFormData('selected_hours', hours);
+    updateFormData('selected_hours', Math.max(2, hours));
+  };
+
+  // Booking creation and checkout hooks - MUST be declared before any conditional returns
+  const {
+    mutate: createBooking,
+    isLoading: isCreatingBooking,
+    error: bookingError,
+  } = useCreateBooking();
+  const {
+    mutate: checkout,
+    isLoading: isCheckingOut,
+    error: checkoutError,
+  } = useBookingCheckout();
+
+  // Alternative slots UI state
+  const [showAlternatives, setShowAlternatives] = useState(false);
+
+  // Helper to extract YYYY-MM-DD from datetime
+  const appointmentDateOnly = useMemo(() => {
+    const dt = formData.moving_address_date_and_time;
+    if (!dt) return '';
+    try {
+      const d = new Date(dt);
+      if (isNaN(d.getTime())) return '';
+      return d.toISOString().split('T')[0];
+    } catch {
+      return '';
+    }
+  }, [formData.moving_address_date_and_time]);
+
+  // Fetch availability for the selected date to surface alternatives on failure
+  const { slots: alternativeSlots } = useBookingAvailability(
+    formData.service_id,
+    appointmentDateOnly
+  );
+
+  // Handle complete booking flow (create booking + redirect to payment)
+  const handleProceedToPayment = () => {
+    console.log('🎯 Proceeding to payment with form data:', {
+      service_id: formData.service_id,
+      first_name: formData.first_name,
+      last_name: formData.last_name,
+      email: formData.email_e1ca,
+      phone: formData.phone_9f17,
+      moving_date: formData.moving_address_date_and_time,
+      mover_count: formData.mover_count,
+      selected_hours: formData.selected_hours,
+      pickup_address: formData.pickup_address,
+      destination_address: formData.destination_address,
+      billing_address: formData.billing_address,
+      billing_city: formData.billing_city,
+      billing_zip: formData.billing_zip,
+      billing_country: formData.billing_country,
+    });
+
+    // Check for missing required fields
+    const requiredFields = [
+      'service_id',
+      'first_name',
+      'last_name',
+      'email_e1ca',
+      'phone_9f17',
+      'moving_address_date_and_time',
+      'pickup_address',
+      'destination_address',
+      'billing_address',
+      'billing_city',
+      'billing_zip',
+      'billing_country',
+    ];
+
+    const missingFields = requiredFields.filter(
+      (field) => !formData[field as keyof FormData]
+    );
+    if (missingFields.length > 0) {
+      console.error('❌ Missing required fields:', missingFields);
+      alert(`Missing required fields: ${missingFields.join(', ')}`);
+      return;
+    }
+
+    // First create the booking
+    createBooking(formData, {
+      onSuccess: (bookingResponse) => {
+        if (bookingResponse.success && bookingResponse.booking) {
+          console.log(
+            'Booking created successfully:',
+            bookingResponse.booking.id
+          );
+
+          // Then redirect to checkout
+          checkout(
+            {
+              bookingId: bookingResponse.booking.id,
+              serviceId: bookingResponse.booking.serviceId,
+              startDate: bookingResponse.booking.startDate,
+              endDate: bookingResponse.booking.endDate,
+              totalAmount: calculatedPricing?.finalTotal,
+            },
+            {
+              onSuccess: (checkoutResponse) => {
+                if (checkoutResponse.success && checkoutResponse.checkoutUrl) {
+                  console.log(
+                    'Redirecting to checkout:',
+                    checkoutResponse.checkoutUrl
+                  );
+                  console.log('Checkout ID:', checkoutResponse.checkoutId);
+                  // Redirect to Wix payment page
+                  window.location.href = checkoutResponse.checkoutUrl;
+                }
+              },
+              onError: (error) => {
+                console.error('Checkout failed:', error);
+                alert('Failed to create checkout session. Please try again.');
+              },
+            }
+          );
+        } else {
+          console.error('Booking creation failed:', bookingResponse.error);
+          alert(`Booking creation failed: ${bookingResponse.error}`);
+        }
+      },
+      onError: (error) => {
+        console.error('❌ Booking creation failed in component:', error);
+        console.error('❌ Error details:', {
+          message: error.message,
+          stack: error.stack,
+          name: error.name,
+        });
+        // Detect slot unavailability and show alternatives UI
+        const msg = (error?.message || '').toLowerCase();
+        const isSlotUnavailable =
+          msg.includes('no available slot') ||
+          msg.includes('slot_not_available');
+        if (isSlotUnavailable) {
+          setShowAlternatives(true);
+        } else {
+          alert(`Booking creation failed: ${error.message}`);
+        }
+      },
+    });
   };
 
   // Show loading state
@@ -253,7 +291,7 @@ const BookingStep5 = ({
               }
               address={formData.pickup_address}
               buildingType={formData.pickup_building_type}
-              hasElevator={formData.has_elevator}
+              hasElevator={formData.has_elevator || ''}
               stairsCount={formData.stairs_count || 0}
             />
           </div>
@@ -418,15 +456,100 @@ const BookingStep5 = ({
           <div className="mt-8 pt-6 border-t border-gray-200">
             <button
               type="button"
-              className="w-full bg-theme-orange hover:bg-orange-600 text-white font-outfit font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              onClick={handleProceedToPayment}
+              disabled={isCreatingBooking || isCheckingOut}
+              className="w-full bg-theme-orange hover:bg-orange-600 disabled:bg-gray-400 text-white font-outfit font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
             >
-              Proceed to Payment - $
-              {calculatedPricing?.finalTotal.toFixed(2) || '0.00'}
+              {isCreatingBooking
+                ? 'Creating Booking...'
+                : isCheckingOut
+                ? 'Redirecting to Payment...'
+                : `Proceed to Payment - $${
+                    calculatedPricing?.finalTotal.toFixed(2) || '0.00'
+                  }`}
             </button>
             <p className="text-xs text-gray-500 text-center mt-2">
-              You will be redirected to our secure payment processor
+              {isCreatingBooking
+                ? 'Please wait while we create your booking...'
+                : isCheckingOut
+                ? 'Redirecting to secure payment processor...'
+                : 'You will be redirected to our secure payment processor'}
             </p>
           </div>
+
+          {/* Error Messages */}
+          {(bookingError || checkoutError) && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <p className="text-red-800 font-semibold mb-2">Error:</p>
+              {bookingError && (
+                <p className="text-red-700 text-sm">
+                  Booking: {bookingError.message}
+                </p>
+              )}
+              {checkoutError && (
+                <p className="text-red-700 text-sm">
+                  Checkout: {checkoutError.message}
+                </p>
+              )}
+            </div>
+          )}
+
+          {/* Alternative Slots Suggestion */}
+          {showAlternatives && (
+            <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+              <p className="text-blue-900 font-semibold mb-2">
+                The selected time isn’t available.
+              </p>
+              <p className="text-blue-800 text-sm mb-3">
+                Suggested alternative times for your chosen date:
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {(alternativeSlots || []).slice(0, 6).map((slot) => (
+                  <button
+                    key={`${slot.startDate}-${slot.endDate}`}
+                    type="button"
+                    onClick={() => {
+                      // Apply suggested start time and go back to Step 1 to re-validate exact slot
+                      updateFormData(
+                        'moving_address_date_and_time',
+                        slot.startDate as any
+                      );
+                      setShowAlternatives(false);
+                      gotoStep(1);
+                    }}
+                    className="w-full text-left px-3 py-2 bg-white border border-blue-200 rounded-md hover:bg-blue-100 text-blue-900 text-sm"
+                  >
+                    {formatDateForDisplay(new Date(slot.startDate))}
+                  </button>
+                ))}
+              </div>
+              {(!alternativeSlots || alternativeSlots.length === 0) && (
+                <p className="text-blue-700 text-sm">
+                  No alternative times found for this date. Please try a
+                  different day or request to book.
+                </p>
+              )}
+              <div className="mt-3 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => gotoStep(1)}
+                  className="px-3 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
+                >
+                  Pick another time
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Simple fallback path: route to contact page to submit request
+                    window.location.href = '/contact';
+                  }}
+                  className="px-3 py-2 bg-gray-600 text-white text-sm rounded-md hover:bg-gray-700"
+                >
+                  Request to book
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
