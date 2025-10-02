@@ -10,18 +10,19 @@ async function getAvailabilityTimeSlot(
   localEndDate: string,
   timeZone: string,
   location: any,
-  options: any,
+  options: any
 ) {
   const mySiteProperties = await useGetMySitePropertiesFunction();
   console.log('mySiteProperties', mySiteProperties);
-  const response = await wixClient.availabilityTimeSlots.getAvailabilityTimeSlot(
-    serviceId,
-    localStartDate,
-    localEndDate,
-    timeZone,
-    location,
-    options,
-  );
+  const response =
+    await wixClient.availabilityTimeSlots.getAvailabilityTimeSlot(
+      serviceId,
+      localStartDate,
+      localEndDate,
+      timeZone,
+      location,
+      options
+    );
   return response;
 }
 // export const useAvailability = ({

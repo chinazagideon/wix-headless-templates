@@ -4,15 +4,8 @@ import {
   ChevronRightIcon,
   ChevronLeftIcon,
   HomeIcon,
-  BuildingOfficeIcon,
 } from '@heroicons/react/24/outline';
-import {
-  BoxIcon,
-  CheckCircleIcon,
-  HandHelping,
-  Loader,
-  SofaIcon,
-} from 'lucide-react';
+import { CheckCircleIcon, Loader, SofaIcon } from 'lucide-react';
 import PageHeader from '@app/components/Layout/PageHeader';
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
 import { useBookingCollection } from '@app/hooks/booking/useBookingCollection';
@@ -25,6 +18,7 @@ import BookingProgress from '@app/components/Booking/BookingProgress';
 import BookingStep4 from '@app/components/Booking/BookingStep4';
 import { addons, special_items, items } from '@app/book/BookingProps';
 import { getIconFromKey, getIconForService } from '@app/book/IconProps';
+import { useBusinessDefaults } from '@app/hooks/booking/useBusinessDefaults';
 
 export type IconType = typeof HomeIcon; // compatible with your current usage
 
@@ -49,22 +43,9 @@ export default function Page() {
   } = useBookingForm();
 
   const { visibleServices, isFetching, isSubmitting } = useQuotationForm();
-
-  type IconType = typeof HomeIcon;
-
-  /**
-   * iconByKeyword
-   */
-  const iconByKeyword: Record<string, IconType> = {
-    residential: HomeIcon,
-    commercial: BuildingOfficeIcon,
-    moving: HandHelping,
-    furniture: SofaIcon,
-    warehousing: HomeIcon,
-    packing: BoxIcon,
-    unpacking: BoxIcon,
-  };
-
+  // const { data: businessDefaults, loading, error } = useBusinessDefaults();
+  // data.timeZone, data.currency, data.country, data.locale
+  // console.log(businessDefaults);
   /**
    * building_type
    */
@@ -72,26 +53,6 @@ export default function Page() {
     collectionName: 'BuildingTypes',
     queryKey: 'building-types-items',
   });
-
-  /**
-   * service_rates
-   */
-  const service_rates = useBookingCollection({
-    collectionName: 'ServiceRates',
-    queryKey: 'service-rates-items',
-    include: 'parentService',
-  });
-
-  /**
-   * fees
-   */
-  const fees = useBookingCollection({
-    collectionName: 'Fees',
-    queryKey: 'fees-items-100',
-    include: 'buildingType',
-  });
-
-  // console.log(service_rates.data, fees.data);
 
   /**
    * Page
@@ -138,7 +99,6 @@ export default function Page() {
                   <span className="text-gray-600">Loading...</span>
                 </div>
               )}
-              {/* { JSON.stringify(visibleServices)} */}
               {/* Step 1: Move Type */}
               {currentStep === 1 && !isFetching && (
                 <BookingStep1

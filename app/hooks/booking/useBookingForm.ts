@@ -336,10 +336,12 @@ export const useBookingForm = () => {
     (step: number) => {
       switch (step) {
         case 1:
+          // Allow proceeding even without availability check
+          // Business owner will approve/reject booking manually
           return (
             Boolean(formData.service_type) &&
             Boolean(formData.service_id) &&
-            formData.moving_address_date_and_time
+            Boolean(formData.moving_address_date_and_time)
           );
         case 2:
           return (

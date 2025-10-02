@@ -2,6 +2,8 @@ import { FormData } from '../../hooks/booking/useBookingForm';
 import InlineDateTimePicker from '../DateTimePicker/InlineDateTimePicker';
 import { useBookingAvailability } from '../../hooks/useAvailability';
 import { Clock, Loader } from 'lucide-react';
+import { useAvailabilityTimeSlot } from '@app/hooks/booking/useAvailabilityTimeSlot';
+import { useEffect } from 'react';
 
 /**
  * BookingStep1Props interface
@@ -54,27 +56,38 @@ const BookingStep1 = ({
     }
   };
 
-  const appointmentDate = getDateFromDateTime(formData.moving_address_date_and_time);
-
-  // Use availability hook
-  const { slots, loading: availabilityLoading, error: availabilityError, isDateAvailable } = useBookingAvailability(
-    serviceId,
-    appointmentDate
+  const appointmentDate = getDateFromDateTime(
+    formData.moving_address_date_and_time
   );
 
-  // Debug logging
-  if (serviceId && appointmentDate) {
-    console.log('BookingStep1 Debug:', {
-      serviceId,
-      appointmentDate,
-      serviceType: formData.service_type,
-      selectedService,
-      slots: slots?.length || 0,
-      loading: availabilityLoading,
-      error: availabilityError,
-      isDateAvailable
-    });
-  }
+  // Use availability hook
+  const {
+    slots,
+    loading: availabilityLoading,
+    error: availabilityError,
+    isDateAvailable,
+  } = useBookingAvailability(serviceId, appointmentDate);
+
+  // Validate exact time slot using getAvailabilityTimeSlot for the selected time
+  const localStartForSlot = formData.moving_address_date_and_time || undefined;
+  const {
+    ok: slotOk,
+    loading: slotLoading,
+    error: slotError,
+    details: slotDetails,
+  } = useAvailabilityTimeSlot(
+    serviceId,
+    localStartForSlot as any,
+    formData.selected_hours || 2,
+    'CUSTOM'
+  );
+
+  // Persist the validated slot details for later booking/checkout
+  useEffect(() => {
+    if (slotDetails) {
+      updateFormData('selected_time_slot', slotDetails);
+    }
+  }, [slotDetails, updateFormData]);
 
   // Handle service selection
   const handleServiceChange = (service: any) => {
@@ -143,46 +156,67 @@ const BookingStep1 = ({
         error={errors.moving_address_date_and_time}
       />
 
-      {/* Simplified Availability Check Section */}
-      {formData.service_type && appointmentDate && appointmentDate.trim() !== '' && (
-        <div className="space-y-4">
-          {availabilityLoading ? (
-            <div className="flex items-center justify-center py-6">
-              <Loader className="w-5 h-5 animate-spin text-theme-orange mr-2" />
-              <span className="text-gray-600">Checking availability...</span>
-            </div>
-          ) : isDateAvailable === true ? (
-            <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-green-600" />
-                <span className="text-green-800 font-medium">
-                  ✓ {appointmentDate} is available for booking
-                </span>
+      {/* Availability Check Section - Simplified with exact-slot validation */}
+      {formData.service_type &&
+        appointmentDate &&
+        appointmentDate.trim() !== '' && (
+          <div className="space-y-4 mt-6">
+            {availabilityLoading ? (
+              <div className="flex items-center justify-center py-6">
+                <Loader className="w-5 h-5 animate-spin text-theme-orange mr-2" />
+                <span className="text-gray-600">Checking availability...</span>
               </div>
-            </div>
-          ) : isDateAvailable === false ? (
-            <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-red-600" />
-                <span className="text-red-800 font-medium">
-                  ✗ {appointmentDate} is not available for booking
-                </span>
+            ) : (
+              <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-5 h-5 text-blue-600" />
+                  <span className="text-blue-800 font-medium">
+                    ✓ Request submitted for review
+                  </span>
+                </div>
+                <p className="text-blue-700 text-sm mt-2">
+                  Your booking request will be reviewed and confirmed by our
+                  team within 24 hours.
+                  {slots &&
+                    slots.length > 0 &&
+                    ` (${slots.length} potential slot${
+                      slots.length > 1 ? 's' : ''
+                    } found)`}
+                </p>
+                {isDateAvailable === false && (
+                  <p className="text-blue-600 text-sm mt-1">
+                    ⚠️ Limited availability on this date. We&apos;ll contact you
+                    to confirm or suggest alternatives.
+                  </p>
+                )}
+                {/* Exact slot check indicator */}
+                <div className="mt-2 text-xs">
+                  {slotLoading && (
+                    <span className="text-gray-600">
+                      Validating your selected time…
+                    </span>
+                  )}
+                  {!slotLoading && slotOk === true && (
+                    <span className="text-green-700">
+                      Selected time looks available.
+                    </span>
+                  )}
+                  {!slotLoading && slotOk === false && (
+                    <span className="text-orange-700">
+                      Selected time may be unavailable. You can submit and
+                      we&apos;ll confirm or offer alternatives.
+                    </span>
+                  )}
+                  {!slotLoading && slotError && (
+                    <span className="text-yellow-700">
+                      Unable to validate time: {slotError}
+                    </span>
+                  )}
+                </div>
               </div>
-              <p className="text-red-600 text-sm mt-2">Please select a different date</p>
-            </div>
-          ) : availabilityError ? (
-            <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <div className="flex items-center gap-2">
-                <Clock className="w-5 h-5 text-yellow-600" />
-                <span className="text-yellow-800 font-medium">
-                  Unable to check availability
-                </span>
-              </div>
-              <p className="text-yellow-600 text-sm mt-2">Please try again or select a different date</p>
-            </div>
-          ) : null}
-        </div>
-      )}
+            )}
+          </div>
+        )}
     </div>
   );
 };

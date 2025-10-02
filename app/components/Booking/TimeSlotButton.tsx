@@ -11,7 +11,11 @@ interface TimeSlotButtonProps {
 /**
  * TimeSlotButton component for displaying available time slots
  */
-const TimeSlotButton: React.FC<TimeSlotButtonProps> = ({ slot, selected, onClick }) => {
+const TimeSlotButton: React.FC<TimeSlotButtonProps> = ({
+  slot,
+  selected,
+  onClick,
+}) => {
   const formatTime = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleTimeString('en-US', {
