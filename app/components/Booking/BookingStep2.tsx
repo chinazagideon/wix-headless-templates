@@ -167,37 +167,37 @@ const BookingStep2 = ({
                 className={`px-4 border border-gray-200 p-2 hover:bg-orange-50 hover:border-theme-orange rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg 
                                                     ${
                                                       formData.pickup_room_size ===
-                                                      'studio'
+                                                      'studio/1 bedroom'
                                                         ? 'border-theme-orange bg-orange-50'
                                                         : 'border-gray-200 hover:border-gray-300'
                                                     }`}
-                onClick={() => updateFormData('pickup_room_size', 'studio')}
+                onClick={() => updateFormData('pickup_room_size', 'studio/1 bedroom')}
               >
-                <p className="text-gray-700 font-medium">Studio</p>
+                <p className="text-gray-700 font-medium">Studio/1 bedroom</p>
               </div>
               <div
                 className={`px-4 border border-gray-200 p-2 hover:bg-orange-50 hover:border-theme-orange rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg 
                                                     ${
                                                       formData.pickup_room_size ===
-                                                      '2-4'
+                                                      '2 bedrooms'
                                                         ? 'border-theme-orange bg-orange-50'
                                                         : 'border-gray-200 hover:border-gray-300'
                                                     }`}
-                onClick={() => updateFormData('pickup_room_size', '2-4')}
+                onClick={() => updateFormData('pickup_room_size', '2 bedrooms')}
               >
-                <p className="text-gray-700 font-medium">2 - 4 rooms</p>
+                <p className="text-gray-700 font-medium">2 bedrooms</p>
               </div>
               <div
                 className={`px-4 border border-gray-200 p-2 hover:bg-orange-50 hover:border-theme-orange rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg 
                                                     ${
                                                       formData.pickup_room_size ===
-                                                      '5+'
+                                                      '3 bedrooms+'
                                                         ? 'border-theme-orange bg-orange-50'
                                                         : 'border-gray-200 hover:border-gray-300'
                                                     }`}
-                onClick={() => updateFormData('pickup_room_size', '5+')}
+                onClick={() => updateFormData('pickup_room_size', '3 bedrooms+')}
               >
-                <p className="text-gray-700 font-xs"> 5+ rooms</p>
+                <p className="text-gray-700 font-xs"> 3 bedrooms+</p>
               </div>
             </div>
           </div>

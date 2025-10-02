@@ -109,7 +109,7 @@ export default function InlineDateTimePicker({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {/* Calendar (same as popover DateTimePicker, but inline) */}
-        <div className="bg-white justify-center items-right lg:px-16 px-0">
+        <div className="flex lg:flex-row flex-col bg-white justify-center items-right lg:px-16 px-0">
           <DayPicker
             mode="single"
             selected={selectedDate ?? undefined}
@@ -128,7 +128,7 @@ export default function InlineDateTimePicker({
         </div>
 
         {/* Time Picker */}
-        <div className="bg-white lg:mt-6 ml-0">
+        <div className="flex lg:flex-row flex-col bg-white lg:mt-6 ml-0">
           <h3 className="text-gray-900 text-base font-medium mb-5 text-center">
             {/* {selectedDate ? formatDateForDisplay(selectedDate) : ''} */}
           </h3>
