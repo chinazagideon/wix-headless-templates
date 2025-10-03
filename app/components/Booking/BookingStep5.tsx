@@ -113,7 +113,6 @@ const BookingStep5 = ({
 
   // Handle complete booking flow (create booking + redirect to payment)
   const handleProceedToPayment = () => {
-
     // Check for missing required fields
     const requiredFields = [
       'service_id',
@@ -180,7 +179,6 @@ const BookingStep5 = ({
         }
       },
       onError: (error) => {
-       
         // Detect slot unavailability and show alternatives UI
         const msg = (error?.message || '').toLowerCase();
         const isSlotUnavailable =
