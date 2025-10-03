@@ -42,9 +42,7 @@ export async function POST(request: NextRequest) {
 
     // Validate the booking data
     const validation = validateBookingData(formData);
-    console.log('📝 Validation result:', validation);
     if (!validation.isValid) {
-      console.log('❌ Validation failed:', validation.errors);
       const fieldViolations = validation.errors.map((error) => ({
         field: error,
         description: `Validation failed for field: ${error}`,
@@ -56,7 +54,6 @@ export async function POST(request: NextRequest) {
         'Booking data validation failed',
         fieldViolations
       );
-      console.log('📝 Returning validation error:', errorResponse);
       return NextResponse.json(errorResponse, { status: 400 });
     }
 
