@@ -2163,6 +2163,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@wix/auto_sdk_redirects_redirects@npm:1.0.25":
+  version: 1.0.25
+  resolution: "@wix/auto_sdk_redirects_redirects@npm:1.0.25"
+  dependencies:
+    "@wix/sdk-runtime": ^0.3.55
+    "@wix/sdk-types": ^1.13.35
+  checksum: 797d114643bc3b438d874da3cc1e881d91025fe1d95a7daa16241df075939b98dee4350fb71f170f6a64465471b9c7702cb4c99e879d448a16c1bba82af3880a
+  languageName: node
+  linkType: hard
+
 "@wix/auto_sdk_reviews_review-requests@npm:1.0.13":
   version: 1.0.13
   resolution: "@wix/auto_sdk_reviews_review-requests@npm:1.0.13"
@@ -2737,12 +2747,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@wix/redirects@npm:^1.0.13, @wix/redirects@npm:^1.0.70, @wix/redirects@npm:^1.0.83":
+"@wix/redirects@npm:^1.0.70, @wix/redirects@npm:^1.0.83":
   version: 1.0.93
   resolution: "@wix/redirects@npm:1.0.93"
   dependencies:
     "@wix/auto_sdk_redirects_redirects": 1.0.21
   checksum: 369cde5c21e9368ae80338747e2a5301069a14c0430fb6393c05567f070c8fcca9d24c2e10f5b06d99bfeabc72cb625630aea0b927a67d94d3b55c953be30db9
+  languageName: node
+  linkType: hard
+
+"@wix/redirects@npm:^1.0.97":
+  version: 1.0.97
+  resolution: "@wix/redirects@npm:1.0.97"
+  dependencies:
+    "@wix/auto_sdk_redirects_redirects": 1.0.25
+  checksum: a6584da91e4af64d777145046bb35a407dc6965217ec06deca133c817b29a556499ae66c25192c4763588dca1f97916ecd92814bd62d2736dfe6a01dc46829df
   languageName: node
   linkType: hard
 
@@ -4724,7 +4743,7 @@ __metadata:
     "@wix/forms": ^1.0.287
     "@wix/members": ^1.0.38
     "@wix/pricing-plans": ^1.0.17
-    "@wix/redirects": ^1.0.13
+    "@wix/redirects": ^1.0.97
     "@wix/reviews": ^1.0.90
     "@wix/sdk": ^1.15.27
     "@wix/stores": ^1.0.507

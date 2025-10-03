@@ -22,7 +22,7 @@
     "@wix/forms": "^1.0.287",
     "@wix/members": "^1.0.38",
     "@wix/pricing-plans": "^1.0.17",
-    "@wix/redirects": "^1.0.13",
+    "@wix/redirects": "^1.0.97",
     "@wix/sdk": "^1.15.27",
     "@wix/stores": "^1.0.507",
     "cookie": "^0.5.0",

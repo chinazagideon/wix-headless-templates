@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 import { formatDateForDisplay } from '@app/utils/wix-date-converter';
 import { useCreateBooking } from '@app/hooks/booking/useCreateBooking';
-import { useBookingCheckout } from '@app/hooks/booking/useBookingCheckout';
+import { useCheckoutUrl } from '@app/hooks/booking/useCheckoutUrl';
 import { LocationSummary } from './LocationSummary';
 import { SummaryCard } from './SummaryCard';
 import { useBookingAvailability } from '@app/hooks/useAvailability';
@@ -84,10 +84,10 @@ const BookingStep5 = ({
     error: bookingError,
   } = useCreateBooking();
   const {
-    mutate: checkout,
-    isLoading: isCheckingOut,
+    mutate: generateCheckoutUrl,
+    isLoading: isGeneratingCheckoutUrl,
     error: checkoutError,
-  } = useBookingCheckout();
+  } = useCheckoutUrl();
 
   // Alternative slots UI state
   const [showAlternatives, setShowAlternatives] = useState(false);
@@ -146,30 +146,23 @@ const BookingStep5 = ({
             bookingResponse.booking.id
           );
 
-          // Then redirect to checkout
-          checkout(
+          // Then generate checkout URL with retry logic
+          generateCheckoutUrl(
             {
               bookingId: bookingResponse.booking.id,
-              serviceId: bookingResponse.booking.serviceId,
-              startDate: bookingResponse.booking.startDate,
-              endDate: bookingResponse.booking.endDate,
-              totalAmount: calculatedPricing?.finalTotal,
             },
             {
               onSuccess: (checkoutResponse) => {
-                if (checkoutResponse.success && checkoutResponse.checkoutUrl) {
-                  console.log(
-                    'Redirecting to checkout:',
-                    checkoutResponse.checkoutUrl
-                  );
+                if (checkoutResponse.success && checkoutResponse.url) {
+                  console.log('Redirecting to checkout:', checkoutResponse.url);
                   console.log('Checkout ID:', checkoutResponse.checkoutId);
                   // Redirect to Wix payment page
-                  window.location.href = checkoutResponse.checkoutUrl;
+                  window.location.href = checkoutResponse.url;
                 }
               },
               onError: (error) => {
-                console.error('Checkout failed:', error);
-                alert('Failed to create checkout session. Please try again.');
+                console.error('Checkout URL generation failed:', error);
+                alert('Failed to generate checkout URL. Please try again.');
               },
             }
           );
@@ -194,11 +187,15 @@ const BookingStep5 = ({
   };
 
   // Show loading state
-  if (pricingLoading) {
+  if (pricingLoading || isCreatingBooking || isGeneratingCheckoutUrl) {
     return (
       <div className="flex flex-col items-center justify-center py-12">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-theme-orange"></div>
-        <p className="mt-4 text-gray-600">Loading pricing information...</p>
+        <p className="mt-4 text-gray-600">
+          {pricingLoading && 'Loading pricing information...'}
+          {isCreatingBooking && 'Creating your booking...'}
+          {isGeneratingCheckoutUrl && 'Preparing payment...'}
+        </p>
       </div>
     );
   }
@@ -433,13 +430,13 @@ const BookingStep5 = ({
             <button
               type="button"
               onClick={handleProceedToPayment}
-              disabled={isCreatingBooking || isCheckingOut}
+              disabled={isCreatingBooking || isGeneratingCheckoutUrl}
               className="w-full bg-theme-orange hover:bg-orange-600 disabled:bg-gray-400 text-white font-outfit font-semibold py-4 px-6 rounded-lg transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none"
             >
               {isCreatingBooking
                 ? 'Creating Booking...'
-                : isCheckingOut
-                ? 'Redirecting to Payment...'
+                : isGeneratingCheckoutUrl
+                ? 'Preparing Payment...'
                 : `Proceed to Payment - $${
                     calculatedPricing?.finalTotal.toFixed(2) || '0.00'
                   }`}
@@ -447,7 +444,7 @@ const BookingStep5 = ({
             <p className="text-xs text-gray-500 text-center mt-2">
               {isCreatingBooking
                 ? 'Please wait while we create your booking...'
-                : isCheckingOut
+                : isGeneratingCheckoutUrl
                 ? 'Redirecting to secure payment processor...'
                 : 'You will be redirected to our secure payment processor'}
             </p>
