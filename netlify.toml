@@ -4,6 +4,9 @@
   # Remove functions directory since we're not using it
   # functions = "netlify/functions"
 
+  [build.environment]
+    NODE_VERSION = "18"
+
 [[headers]]
   for = "/*"
   [headers.values]

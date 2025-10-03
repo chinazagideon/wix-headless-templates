@@ -171,7 +171,9 @@ const BookingStep2 = ({
                                                         ? 'border-theme-orange bg-orange-50'
                                                         : 'border-gray-200 hover:border-gray-300'
                                                     }`}
-                onClick={() => updateFormData('pickup_room_size', 'studio/1 bedroom')}
+                onClick={() =>
+                  updateFormData('pickup_room_size', 'studio/1 bedroom')
+                }
               >
                 <p className="text-gray-700 font-medium">Studio/1 bedroom</p>
               </div>
@@ -195,7 +197,9 @@ const BookingStep2 = ({
                                                         ? 'border-theme-orange bg-orange-50'
                                                         : 'border-gray-200 hover:border-gray-300'
                                                     }`}
-                onClick={() => updateFormData('pickup_room_size', '3 bedrooms+')}
+                onClick={() =>
+                  updateFormData('pickup_room_size', '3 bedrooms+')
+                }
               >
                 <p className="text-gray-700 font-xs"> 3 bedrooms+</p>
               </div>
