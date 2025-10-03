@@ -18,6 +18,6 @@
 
 # Configure secret scanning to ignore expected environment variables
 [build.environment]
-  SECRETS_SCAN_ENABLED = false
+  SECRETS_SCAN_ENABLED = "false"
   # Or use this to ignore specific keys:
   # SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_WIX_CLIENT_ID,NEXT_PUBLIC_SITE_URL"
