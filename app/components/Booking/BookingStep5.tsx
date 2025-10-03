@@ -113,22 +113,6 @@ const BookingStep5 = ({
 
   // Handle complete booking flow (create booking + redirect to payment)
   const handleProceedToPayment = () => {
-    console.log('🎯 Proceeding to payment with form data:', {
-      service_id: formData.service_id,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
-      email: formData.email_e1ca,
-      phone: formData.phone_9f17,
-      moving_date: formData.moving_address_date_and_time,
-      mover_count: formData.mover_count,
-      selected_hours: formData.selected_hours,
-      pickup_address: formData.pickup_address,
-      destination_address: formData.destination_address,
-      billing_address: formData.billing_address,
-      billing_city: formData.billing_city,
-      billing_zip: formData.billing_zip,
-      billing_country: formData.billing_country,
-    });
 
     // Check for missing required fields
     const requiredFields = [
@@ -150,7 +134,6 @@ const BookingStep5 = ({
       (field) => !formData[field as keyof FormData]
     );
     if (missingFields.length > 0) {
-      console.error('❌ Missing required fields:', missingFields);
       alert(`Missing required fields: ${missingFields.join(', ')}`);
       return;
     }
@@ -197,12 +180,7 @@ const BookingStep5 = ({
         }
       },
       onError: (error) => {
-        console.error('❌ Booking creation failed in component:', error);
-        console.error('❌ Error details:', {
-          message: error.message,
-          stack: error.stack,
-          name: error.name,
-        });
+       
         // Detect slot unavailability and show alternatives UI
         const msg = (error?.message || '').toLowerCase();
         const isSlotUnavailable =
