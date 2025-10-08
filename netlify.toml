@@ -1,6 +1,6 @@
 [build]
   command = "npm run build"
-  publish = "out"
+  publish = ".next"
   # Remove functions directory since we're not using it
   # functions = "netlify/functions"
 
