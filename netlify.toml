@@ -1,5 +1,5 @@
 [build]
-  command = "npm run build"
+  command = "yarn build"
   publish = ".next"
   # Remove functions directory since we're not using it
   # functions = "netlify/functions"
@@ -21,25 +21,3 @@
   SECRETS_SCAN_ENABLED = "false"
   # Or use this to ignore specific keys:
   # SECRETS_SCAN_OMIT_KEYS = "NEXT_PUBLIC_WIX_CLIENT_ID,NEXT_PUBLIC_SITE_URL"
-
-# Wix redirect link handling
-# Redirects payment links and other Wix-generated redirects to Wix's secure checkout
-[[redirects]]
-  from = "/_paylink/*"
-  to = "https://secure.wix.com/checkout/purchase?token=:splat"
-  status = 302
-  force = true
-
-# Generic redirect for other Wix redirect patterns (future-proofing)
-[[redirects]]
-  from = "/_checkout/*"
-  to = "https://secure.wix.com/checkout/purchase?token=:splat"
-  status = 302
-  force = true
-
-# Catch-all for any other underscore-prefixed paths that might be Wix redirects
-[[redirects]]
-  from = "/_*"
-  to = "https://secure.wix.com/checkout/purchase?token=:splat"
-  status = 302
-  force = true
