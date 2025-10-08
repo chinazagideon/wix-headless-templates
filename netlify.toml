@@ -1,5 +1,5 @@
 [build]
-  command = "yarn build"
+  command = "npm run build"
   publish = ".next"
   # Remove functions directory since we're not using it
   # functions = "netlify/functions"
