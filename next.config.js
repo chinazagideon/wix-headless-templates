@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  trailingSlash: true,
   async rewrites() {
     return [
       {
@@ -18,6 +20,7 @@ const nextConfig = {
   images: {
     domains: ['fakeimg.pl', 'static.wixstatic.com', 'fonts.cdnfonts.com', 'lh3.googleusercontent.com'],
     formats: ['image/webp'],
+    unoptimized: true, // Required for static export
   },
 };
 
