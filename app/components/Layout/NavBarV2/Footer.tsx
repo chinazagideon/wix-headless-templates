@@ -98,12 +98,12 @@ const Footer = () => {
                     className="hover:opacity-80 transition-all duration-300 flex lg:flex-row flex-col items-center gap-2"
                   >
                     <p className="text-black text-xs font-outfit font-light normal-case">
-                      BBB Accredited Business
+                      {/* BBB Accredited Business */}
                     </p>
                     <Image
-                      src="/blue-badge-184-70-blue-bbb-1000009479.png"
+                      src="/blue-seal-250-52-bbb-1000009479.png"
                       alt="Icando Movers BBB Business Review"
-                      width={92}
+                      width={150}
                       height={35}
                       className="border-0"
                     />
