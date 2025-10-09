@@ -6,14 +6,11 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { WeatherWidget, useWeather } from '@app/components/Weather';
 import TestimonialComponent from '@app/components/Testimonials/TestimonialComponent';
 import QuoteComponent from '@app/components/Quote/QuoteComponent';
 import Lines from '@app/components/Design/Lines';
 import routes from '@app/components/Layout/NavBarV2/routes';
-import { constants } from '@app/components/constants';
 import { useWixServices } from '@app/hooks/useWixServices';
-import WixMediaImage from '@app/components/Image/WixMediaImage';
 import HeroWidget from '@app/components/Widget/HeroWdget';
 import ServicesCarousel from '@app/components/Carousel/ServicesCarousel';
 

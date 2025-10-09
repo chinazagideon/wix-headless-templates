@@ -36,7 +36,7 @@ export const useDirectCheckout = () => {
       slotAvailability,
       timezone = 'America/Winnipeg',
     }: DirectCheckoutRequest) => {
-      console.log('🔄 Creating direct checkout redirect...', {
+      console.log('Creating direct checkout redirect...', {
         serviceId: slotAvailability.slot.serviceId,
         startDate: slotAvailability.slot.startDate,
         endDate: slotAvailability.slot.endDate,
@@ -56,18 +56,18 @@ export const useDirectCheckout = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('❌ Direct checkout redirect failed:', errorData);
+        console.error('Direct checkout redirect failed:', errorData);
         throw new Error(
           errorData.error || 'Failed to create checkout redirect'
         );
       }
 
       const result = await response.json();
-      console.log('✅ Direct checkout redirect created successfully:', result);
+      console.log('Direct checkout redirect created successfully:', result);
       return result;
     },
     onError: (error) => {
-      console.error('❌ Direct checkout redirect error:', error);
+      console.error('Direct checkout redirect error:', error);
     },
   });
 };

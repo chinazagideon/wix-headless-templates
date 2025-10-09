@@ -112,7 +112,7 @@ const Footer = () => {
               </div>
               <div className="flex flex-row gap-4 justify-end hidden lg:block">
                 <div
-                  onClick={() => window.open('https://evoocta.com', '_blank')}
+                  onClick={() => window.open(constants.designer, '_blank')}
                   className="flex flex-row items-center gap-2 w-full hover:text-theme-orange/60 transition-all duration-300 cursor-pointer lg:w-auto"
                 >
                   <p className="text-black text-xs font-outfit font-light ">

@@ -27,4 +27,6 @@ export const constants = {
   googleReviewLink: 'https://g.page/r/Ce3DH2bZSpGZEBM/review',
   bbbReviewLink:
     'https://www.bbb.org/centralcanada/quote/request-icando-movers-1000009479/#buttonclick',
+  designer: 'https://evoocta.com/',
+  designerLogo: '/custom/evoocta.png',
 };
