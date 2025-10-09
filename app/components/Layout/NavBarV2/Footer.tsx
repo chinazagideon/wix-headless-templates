@@ -83,17 +83,37 @@ const Footer = () => {
         <div className="flex flex-col items-center gap-2 w-full ">
           <div className="flex lg:flex-row flex-col items-center lg:items-end justify-between gap-2 w-full mt-4">
             <div className="flex flex-col justify-between lg:flex-row items-center gap-2 w-full">
-              <div className="align-start flex flex-row items-center gap-2 hidden lg:block justify-start">
+              <div className="align-start flex flex-row items-center gap-2 hidden lg:block justify-start lg:w-auto">
                 <p className="text-black text-sm font-outfit font-light normal-case">
                   &copy; {new Date().getFullYear()} {constants.companyName}. All
                   rights reserved.
                 </p>
               </div>
-
-              <div className="flex flex-row gap-2 justify-end hidden lg:block">
+              <div className="flex flex-row justify-center items-center gap-2 w-full hover:text-theme-orange/60 transition-all duration-300 cursor-pointer lg:w-auto">
+                <div className="flex lg:flex-row flex-col justify-between items-center gap-2 w-full">
+                  <a
+                    href={constants.bbbReviewLink}
+                    target="_blank"
+                    rel="nofollow"
+                    className="hover:opacity-80 transition-all duration-300 flex lg:flex-row flex-col items-center gap-2"
+                  >
+                    <p className="text-black text-xs font-outfit font-light normal-case">
+                      BBB Accredited Business
+                    </p>
+                    <Image
+                      src="/blue-badge-184-70-blue-bbb-1000009479.png"
+                      alt="Icando Movers BBB Business Review"
+                      width={92}
+                      height={35}
+                      className="border-0"
+                    />
+                  </a>
+                </div>
+              </div>
+              <div className="flex flex-row gap-4 justify-end hidden lg:block">
                 <div
                   onClick={() => window.open('https://evoocta.com', '_blank')}
-                  className="flex flex-row items-center gap-2 w-full hover:text-theme-orange/60 transition-all duration-300 cursor-pointer"
+                  className="flex flex-row items-center gap-2 w-full hover:text-theme-orange/60 transition-all duration-300 cursor-pointer lg:w-auto"
                 >
                   <p className="text-black text-xs font-outfit font-light ">
                     Designed by

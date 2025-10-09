@@ -25,4 +25,6 @@ export const constants = {
   packing and unpacking, and storage. We are committed to providing the highest
    quality of service and are dedicated to making your move as stress-free as possible.`,
   googleReviewLink: 'https://g.page/r/Ce3DH2bZSpGZEBM/review',
+  bbbReviewLink:
+    'https://www.bbb.org/centralcanada/quote/request-icando-movers-1000009479/#buttonclick',
 };
