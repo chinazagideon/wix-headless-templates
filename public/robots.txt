@@ -1,0 +1,12 @@
+User-agent: *
+Allow: /
+
+# Disallow admin and API routes from being crawled
+Disallow: /api/
+Disallow: /auth/
+Disallow: /account/
+Disallow: /booking/cancel/
+Disallow: /booking/success/
+
+# Allow sitemap
+Sitemap: https://icandomovers.ca/sitemap.xml

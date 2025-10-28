@@ -6,6 +6,7 @@ import { WixBookingsClientProvider } from '@app/components/Provider/WixBookingsC
 import React from 'react';
 import type { Metadata } from 'next';
 import { constants } from '@app/components/constants';
+import StructuredData from '@app/components/SEO/StructuredData';
 
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.
@@ -22,6 +23,11 @@ export const metadata: Metadata = {
   },
   description:
     'Affordable, reliable moving services in Winnipeg and across Manitoba.',
+  keywords:
+    'movers, moving services, Winnipeg movers, Manitoba moving, residential moving, commercial moving, packing services, storage, local movers',
+  authors: [{ name: 'ICANDO Movers' }],
+  creator: 'ICANDO Movers',
+  publisher: 'ICANDO Movers',
   alternates: {
     canonical: '/',
   },
@@ -36,6 +42,20 @@ export const metadata: Metadata = {
     siteName: 'ICANDO Movers — Redefining the neighborhood moving services',
     type: 'website',
     locale: 'en_CA',
+    images: [
+      {
+        url: '/custom/icando-move-truck.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ICANDO Movers',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ICANDO Movers',
+    description:
+      'Affordable, reliable moving services in Winnipeg and across Manitoba.',
   },
   robots: {
     index: true,
@@ -48,13 +68,19 @@ export const metadata: Metadata = {
       'max-video-preview': -1,
     },
   },
+  verification: {
+    // Uncomment and add your verification codes when ready:
+    // google: 'your-google-verification-code',
+    // yandex: 'your-yandex-verification-code',
+    // bing: 'your-bing-verification-code',
+  },
 };
 
 export const viewport = {
   width: 'device-width',
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default function RootLayout(layoutProps: any) {
@@ -64,6 +90,7 @@ export default function RootLayout(layoutProps: any) {
   return (
     <html lang="en">
       <head>
+        <StructuredData />
         {/* Preload hero background video and poster for faster start */}
         <link rel="preload" as="image" href="/custom/icando-move-truck.jpg" />
         <link

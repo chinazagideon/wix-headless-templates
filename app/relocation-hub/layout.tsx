@@ -11,6 +11,19 @@ export const metadata: Metadata = {
     url: '/relocation-hub',
     siteName: constants.companyName,
     type: 'website',
+    images: [
+      {
+        url: '/custom/icando-move-truck.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Relocation Hub',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Relocation Hub',
+    description: 'Read blog posts about our relocation stories',
   },
 };
 

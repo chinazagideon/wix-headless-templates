@@ -13,6 +13,20 @@ export const metadata: Metadata = {
     url: '/services',
     siteName: constants.companyName,
     type: 'website',
+    images: [
+      {
+        url: '/custom/icando-move-truck.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ICANDO Movers Services',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Moving Services in Winnipeg',
+    description:
+      'Residential and commercial moving, packing, storage, and long-distance services by ICANDO Movers.',
   },
 };
 

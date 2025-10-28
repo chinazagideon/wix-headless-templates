@@ -13,6 +13,20 @@ export const metadata: Metadata = {
     url: '/pricing',
     siteName: constants.companyName,
     type: 'website',
+    images: [
+      {
+        url: '/custom/icando-move-truck.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ICANDO Movers Pricing',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Pricing — Winnipeg Moving Rates',
+    description:
+      'Affordable local and long-distance moving prices from ICANDO Movers.',
   },
 };
 

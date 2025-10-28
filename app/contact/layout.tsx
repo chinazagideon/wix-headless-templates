@@ -13,6 +13,20 @@ export const metadata: Metadata = {
     url: '/contact',
     siteName: constants.companyName,
     type: 'website',
+    images: [
+      {
+        url: '/custom/icando-move-truck.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'ICANDO Movers',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Contact ICANDO Movers',
+    description:
+      'Contact ICANDO Movers — Send us a message or call us for a free quote.',
   },
 };
 
