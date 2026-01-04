@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import Lines from '../Design/Lines';
-import { useGoogleReviews } from '@app/hooks/useGoogleReviews';
+import { useGoogleReviews, GoogleReview } from '@app/hooks/useGoogleReviews';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ExternalLinkIcon } from 'lucide-react';
@@ -134,8 +134,8 @@ const TestimonialComponent = () => {
     reviewsData.reviews.length === 0 ||
     reviewsData.error;
 
-  const allReviews = shouldUseFallback
-    ? fallbackReviewsData
+  const allReviews: GoogleReview[] = shouldUseFallback
+    ? (fallbackReviewsData as unknown as GoogleReview[])
     : reviewsData?.reviews ?? [];
 
   const getReviewTime = (r: any) => {
