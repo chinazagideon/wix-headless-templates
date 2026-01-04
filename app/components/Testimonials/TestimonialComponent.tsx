@@ -161,8 +161,8 @@ const TestimonialComponent = () => {
     }, 5000);
     return () => clearInterval(intervalId);
   }, [totalSlides]);
-  const overallRating = reviewsData?.rating;
-  const totalRatings = reviewsData?.userRatingCount;
+  const overallRating = reviewsData?.rating ?? 4.5;
+  const totalRatings = reviewsData?.userRatingCount ?? 4.5;
   // const overallRating = reviewsData?.result?.rating ?? undefined;
   // const totalRatings = reviewsData?.result?.user_ratings_total ?? undefined;
 
