@@ -120,7 +120,7 @@ const Header = () => {
                   <button
                     type="button"
                     onClick={() => setMobileMenuOpen(true)}
-                    className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
+                    className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 cursor-pointer"
                   >
                     <span className="sr-only">Open main menu</span>
                     <Bars3Icon aria-hidden="true" className="size-6" />
@@ -132,7 +132,7 @@ const Header = () => {
                       key={item.name}
                       href={item.href}
                       prefetch
-                      className={`text-sm/6 font-light  md:text-xs/5 lg:text-sm/10 text-gray-900 dark:text-white font-outfit ${
+                      className={`cursor-pointer text-sm/6 font-light  md:text-xs/5 lg:text-sm/10 text-gray-900 dark:text-white font-outfit ${
                         isActivePage(item.href)
                           ? 'text-theme-orange underline underline-offset-4'
                           : ''
@@ -146,7 +146,7 @@ const Header = () => {
                   <Link
                     href={quotation_url}
                     prefetch
-                    className={`text-xs font-light md:text-xs/5 lg:text-sm text-gray-900 dark:text-white font-outfit ${
+                    className={`cursor-pointer text-xs font-light md:text-xs/5 lg:text-sm text-gray-900 dark:text-white font-outfit ${
                       isActivePage(quotation_url)
                         ? 'text-theme-orange underline underline-offset-4'
                         : ''
