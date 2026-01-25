@@ -28,7 +28,7 @@ const PostThumb = ({ post, index }: { post: any; index: number }) => {
               <div className="flex flex-col gap-2 items-start justify-start">
                 <div className="flex flex-row justify-between gap-2 mb-2 border-b border-gray-200 pb-2 w-full">
                   <Link
-                  className='cursor-pointer'
+                  className="cursor-pointer"
                     prefetch={true}
                     href={
                       post?.slug
