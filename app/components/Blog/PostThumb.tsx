@@ -54,7 +54,7 @@ const PostThumb = ({ post, index }: { post: any; index: number }) => {
                         ? `${routes.relocation_hub}/${post.slug}`
                         : routes.relocation_hub
                     }
-                    className="hover:underline text-theme-orange text-xs cursor-pointer"
+                    className="hover:underline text-theme-orange text-xs hover:cursor-pointer"
                   >
                     Read More
                   </Link>
