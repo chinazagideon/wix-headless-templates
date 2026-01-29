@@ -7,6 +7,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { constants } from '@app/components/constants';
 import StructuredData from '@app/components/SEO/StructuredData';
+import CrispChat from './components/livechat/crisp-chat';
 
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.
@@ -118,6 +119,7 @@ export default function RootLayout(layoutProps: any) {
           <WixBookingsClientProvider>
             <PreloaderWrapper>{children}</PreloaderWrapper>
           </WixBookingsClientProvider>
+          <CrispChat />
           {/* <Footer /> */}
         </body>
       ) : (
