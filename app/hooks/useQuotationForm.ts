@@ -13,7 +13,7 @@ export interface FormData {
   // Step 2: Move Size
   move_size_str: string;
   rooms: string;
-  special_items_str: any;
+  special_items_str: any[];
 
   // Step 3: Location & Details
   moving_address: string;
@@ -38,7 +38,7 @@ export const useQuotationForm = () => {
     moveCategory: '',
     move_size_str: '',
     rooms: '',
-    special_items_str: {},
+    special_items_str: [],
     moving_address: '',
     unloading_address: '',
     move_date: '',
