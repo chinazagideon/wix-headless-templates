@@ -142,7 +142,7 @@ export async function POST(request: NextRequest) {
       'moving_address',
       'unloading_address',
       'building_type_str',
-      'special_items_str', 
+      'special_items_str',
       'moving_address_date_and_time',
     ]);
     const submissionValues = Object.fromEntries(
