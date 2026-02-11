@@ -256,9 +256,15 @@ export default function QuotationPage() {
                     {move_sizes.map((size) => (
                       <div
                         key={size.id}
-                        onClick={() => updateFormData('move_size_str', (size.label + ' ' + size.description))}
+                        onClick={() =>
+                          updateFormData(
+                            'move_size_str',
+                            size.label + ' ' + size.description
+                          )
+                        }
                         className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                          formData.move_size_str === (size.label + ' ' + size.description)
+                          formData.move_size_str ===
+                          size.label + ' ' + size.description
                             ? 'border-theme-orange bg-orange-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
