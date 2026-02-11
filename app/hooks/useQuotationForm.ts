@@ -273,7 +273,10 @@ export const useQuotationForm = () => {
         if (validationErrors.building_type_str)
           stepErrors.building_type_str = validationErrors.building_type_str;
         setErrors(stepErrors);
-        if (!validationErrors.move_size_str && !validationErrors.building_type_str)
+        if (
+          !validationErrors.move_size_str &&
+          !validationErrors.building_type_str
+        )
           setCurrentStep(step + 1);
         return;
       }

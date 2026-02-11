@@ -278,7 +278,9 @@ export default function QuotationPage() {
                     ))}
                   </div>
                   {errors.move_size_str && (
-                    <p className="text-red-500 text-xs">{errors.move_size_str}</p>
+                    <p className="text-red-500 text-xs">
+                      {errors.move_size_str}
+                    </p>
                   )}
 
                   <div className="space-y-4">
@@ -322,7 +324,9 @@ export default function QuotationPage() {
                           >
                             <input
                               type="checkbox"
-                              checked={formData.special_items_str.includes(item)}
+                              checked={formData.special_items_str.includes(
+                                item
+                              )}
                               onChange={(e) => {
                                 if (e.target.checked) {
                                   updateFormData('special_items_str', [
