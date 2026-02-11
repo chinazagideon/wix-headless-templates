@@ -138,8 +138,11 @@ export async function POST(request: NextRequest) {
       'email_e1ca',
       'phone_9f17',
       'service_type',
+      'move_size_str',
       'moving_address',
       'unloading_address',
+      'building_type_str',
+      'special_items_str', 
       'moving_address_date_and_time',
     ]);
     const submissionValues = Object.fromEntries(
