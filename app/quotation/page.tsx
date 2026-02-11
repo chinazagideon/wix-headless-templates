@@ -256,9 +256,9 @@ export default function QuotationPage() {
                     {move_sizes.map((size) => (
                       <div
                         key={size.id}
-                        onClick={() => updateFormData('move_size', size.id)}
+                        onClick={() => updateFormData('move_size_str', size.id)}
                         className={`p-6 rounded-xl border-2 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                          formData.move_size === size.id
+                          formData.move_size_str === size.id
                             ? 'border-theme-orange bg-orange-50'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
@@ -277,8 +277,8 @@ export default function QuotationPage() {
                       </div>
                     ))}
                   </div>
-                  {errors.move_size && (
-                    <p className="text-red-500 text-xs">{errors.move_size}</p>
+                  {errors.move_size_str && (
+                    <p className="text-red-500 text-xs">{errors.move_size_str}</p>
                   )}
 
                   <div className="space-y-4">
@@ -287,9 +287,9 @@ export default function QuotationPage() {
                         Building type{' '}
                       </span>
                       <select
-                        value={formData.building_type}
+                        value={formData.building_type_str}
                         onChange={(e) =>
-                          updateFormData('building_type', e.target.value)
+                          updateFormData('building_type_str', e.target.value)
                         }
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       >
@@ -301,9 +301,9 @@ export default function QuotationPage() {
                         <option value="other">Other</option>
                       </select>
                     </label>
-                    {errors.building_type && (
+                    {errors.building_type_str && (
                       <p className="text-red-500 text-xs">
-                        {errors.building_type}
+                        {errors.building_type_str}
                       </p>
                     )}
 
@@ -322,18 +322,18 @@ export default function QuotationPage() {
                           >
                             <input
                               type="checkbox"
-                              checked={formData.special_items.includes(item)}
+                              checked={formData.special_items_str.includes(item)}
                               onChange={(e) => {
                                 if (e.target.checked) {
-                                  updateFormData('special_items', [
-                                    ...formData.special_items,
+                                  updateFormData('special_items_str', [
+                                    ...formData.special_items_str,
                                     item,
                                   ]);
                                 } else {
                                   updateFormData(
-                                    'special_items',
-                                    formData.special_items.filter(
-                                      (i) => i !== item
+                                    'special_items_str',
+                                    formData.special_items_str.filter(
+                                      (i: any) => i !== item
                                     )
                                   );
                                 }

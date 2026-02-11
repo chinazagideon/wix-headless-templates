@@ -11,16 +11,16 @@ export interface FormData {
   moveCategory: string;
 
   // Step 2: Move Size
-  move_size: string;
+  move_size_str: string;
   rooms: string;
-  special_items: string[];
+  special_items_str: any;
 
   // Step 3: Location & Details
   moving_address: string;
   unloading_address: string;
   move_date: string;
   additional_info?: string;
-  building_type: string;
+  building_type_str: string;
   move_time: string;
   email_e1ca: string;
   phone_9f17: string;
@@ -36,14 +36,14 @@ export const useQuotationForm = () => {
     last_name: '',
     service_type: '',
     moveCategory: '',
-    move_size: '',
+    move_size_str: '',
     rooms: '',
-    special_items: [],
+    special_items_str: {},
     moving_address: '',
     unloading_address: '',
     move_date: '',
     additional_info: '',
-    building_type: '',
+    building_type_str: '',
     move_time: '',
     email_e1ca: '',
     phone_9f17: '',
@@ -71,11 +71,11 @@ export const useQuotationForm = () => {
     'email_e1ca',
     'phone_9f17',
     'service_type',
-    'move_size',
+    'move_size_str',
     'moving_address',
     'unloading_address',
-    'building_type',
-    'special_items',
+    'building_type_str',
+    'special_items_str',
     'moving_address_date_and_time',
   ];
 
@@ -147,11 +147,11 @@ export const useQuotationForm = () => {
     if (!data.service_type || !data.service_type.trim()) {
       newErrors.service_type = 'Please select a service';
     }
-    if (!data.move_size || !data.move_size.trim()) {
-      newErrors.move_size = 'Please select move size';
+    if (!data.move_size_str || !data.move_size_str.trim()) {
+      newErrors.move_size_str = 'Please select move size';
     }
-    if (!data.building_type || !data.building_type.trim()) {
-      newErrors.building_type = 'Please select building type';
+    if (!data.building_type_str || !data.building_type_str.trim()) {
+      newErrors.building_type_str = 'Please select building type';
     }
 
     if (!data.first_name || !data.first_name.trim()) {
@@ -237,7 +237,7 @@ export const useQuotationForm = () => {
         case 1:
           return Boolean(formData.service_type);
         case 2:
-          return Boolean(formData.move_size && formData.building_type);
+          return Boolean(formData.move_size_str && formData.building_type_str);
         case 3:
           return (
             formData.moving_address &&
@@ -268,12 +268,12 @@ export const useQuotationForm = () => {
       }
       if (step === 2) {
         const stepErrors: Partial<Record<keyof FormData, string>> = {};
-        if (validationErrors.move_size)
-          stepErrors.move_size = validationErrors.move_size;
-        if (validationErrors.building_type)
-          stepErrors.building_type = validationErrors.building_type;
+        if (validationErrors.move_size_str)
+          stepErrors.move_size_str = validationErrors.move_size_str;
+        if (validationErrors.building_type_str)
+          stepErrors.building_type_str = validationErrors.building_type_str;
         setErrors(stepErrors);
-        if (!validationErrors.move_size && !validationErrors.building_type)
+        if (!validationErrors.move_size_str && !validationErrors.building_type_str)
           setCurrentStep(step + 1);
         return;
       }
