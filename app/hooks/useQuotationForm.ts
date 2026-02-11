@@ -207,7 +207,9 @@ export const useQuotationForm = () => {
           } else if (key === 'moving_address_date_and_time') {
             sanitized[key] = new Date(String(value)).toISOString();
           } else if (key === 'special_items_str') {
-            sanitized[key] = Array.isArray(value) ? value.join(', ') : String(value);
+            sanitized[key] = Array.isArray(value)
+              ? value.join(', ')
+              : String(value);
           } else {
             sanitized[key] = value;
           }
