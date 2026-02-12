@@ -5,7 +5,7 @@ const routes = {
   pricing: '/pricing',
   relocation_hub: '/relocation-hub',
   contact: '/contact',
-  quotation: '/quotation',
+  quotation: '/quote',
 };
 
 export default routes;
