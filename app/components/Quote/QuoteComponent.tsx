@@ -31,7 +31,6 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     unloading_address: '',
     service_type: '',
     moving_address_date_and_time: '',
-    // honeypot field: humans leave empty; bots often fill
     hp_field: '',
   });
   const [errors, setErrors] = useState<
@@ -133,7 +132,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       const base = {
         ...formData,
         phone_9f17: normalizePhoneE164(String(formData.phone_9f17 || '')),
-        moving_address_date_and_time:  zonedTimeToUtc(
+        moving_address_date_and_time: zonedTimeToUtc(
           formData.moving_address_date_and_time,
           'America/Winnipeg'
         ).toISOString(),
