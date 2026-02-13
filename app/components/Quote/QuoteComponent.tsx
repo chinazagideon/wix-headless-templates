@@ -2,7 +2,7 @@
 import Lines from '@app/components/Design/Lines';
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircleIcon, Loader, PhoneIcon } from 'lucide-react';
-import { format } from 'date-fns';
+import { zonedTimeToUtc } from 'date-fns-tz';
 import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import ThemeButton from '../Button/ThemeButton';
@@ -133,8 +133,9 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       const base = {
         ...formData,
         phone_9f17: normalizePhoneE164(String(formData.phone_9f17 || '')),
-        moving_address_date_and_time: new Date(
-          formData.moving_address_date_and_time
+        moving_address_date_and_time:  zonedTimeToUtc(
+          formData.moving_address_date_and_time,
+          'America/Winnipeg'
         ).toISOString(),
       } as typeof formData;
       const sanitized = Object.fromEntries(
