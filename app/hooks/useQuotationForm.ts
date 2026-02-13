@@ -2,6 +2,7 @@ import { useState, useCallback } from 'react';
 import { useWixServices } from './useWixServices';
 import { useForms } from './useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
+import { zonedTimeToUtc } from 'date-fns-tz';
 
 export interface FormData {
   // Step 1: Move Type
@@ -205,19 +206,9 @@ export const useQuotationForm = () => {
           if (key === 'phone_9f17') {
             sanitized[key] = normalizePhoneE164(String(value));
           } else if (key === 'moving_address_date_and_time') {
-            sanitized[key] = new Date(String(value)).toISOString();
-
-            // sanitized[key] = data.moving_address_date_and_time;
-            const winnipegString = sanitized[key].toLocaleString('en-CA', {
-              timeZone: 'America/Winnipeg',
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              hour: '2-digit',
-              minute: '2-digit',
-              hour12: false,
-            });
-            sanitized[key] = winnipegString;
+            const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
+            sanitized[key] = utcDate.toISOString();
+            // sanitized[key] = new Date(String(value)).toISOString();
           } else if (key === 'special_items_str') {
             sanitized[key] = Array.isArray(value)
               ? value.join(', ')
