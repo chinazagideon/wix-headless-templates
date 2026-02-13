@@ -24,7 +24,7 @@ export interface FormData {
   move_time: string;
   email_e1ca: string;
   phone_9f17: string;
-  moving_date_and_time: string;
+  moving_address_date_and_time: string;
   has_elevator?: string;
   stairs_count?: string;
 }
@@ -47,7 +47,7 @@ export const useQuotationForm = () => {
     move_time: '',
     email_e1ca: '',
     phone_9f17: '',
-    moving_date_and_time: '',
+    moving_address_date_and_time: '',
     has_elevator: '',
     stairs_count: '',
   });
@@ -76,7 +76,7 @@ export const useQuotationForm = () => {
     'unloading_address',
     'building_type_str',
     'special_items_str',
-    'moving_date_and_time',
+    'moving_address_date_and_time',
   ];
 
   const updateFormData = useCallback(
@@ -98,14 +98,19 @@ export const useQuotationForm = () => {
         const hasTime = Boolean(next.move_time);
         if (hasDate && hasTime) {
           const localString = `${next.move_date}T${next.move_time}`;
-          next.moving_date_and_time = localString;
+          next.moving_address_date_and_time = localString;
         } else {
-          next.moving_date_and_time = '';
+          next.moving_address_date_and_time = '';
         }
         return next;
       });
-      if (errors.move_date || errors.move_time || errors.moving_date_and_time) {
-        const { move_date, move_time, moving_date_and_time, ...rest } = errors;
+      if (
+        errors.move_date ||
+        errors.move_time ||
+        errors.moving_address_date_and_time
+      ) {
+        const { move_date, move_time, moving_address_date_and_time, ...rest } =
+          errors;
         setErrors(rest);
       }
     },
@@ -174,12 +179,16 @@ export const useQuotationForm = () => {
       newErrors.unloading_address = 'Final destination is required';
     }
 
-    if (!data.moving_date_and_time || !data.moving_date_and_time.trim()) {
-      newErrors.moving_date_and_time = 'Moving date and time is required';
+    if (
+      !data.moving_address_date_and_time ||
+      !data.moving_address_date_and_time.trim()
+    ) {
+      newErrors.moving_address_date_and_time =
+        'Moving date and time is required';
     } else {
-      const parsed = new Date(data.moving_date_and_time);
+      const parsed = new Date(data.moving_address_date_and_time);
       if (isNaN(parsed.getTime())) {
-        newErrors.moving_date_and_time = 'Enter a valid date and time';
+        newErrors.moving_address_date_and_time = 'Enter a valid date and time';
       }
     }
 
@@ -195,7 +204,7 @@ export const useQuotationForm = () => {
         if (value !== undefined && value !== null && value !== '') {
           if (key === 'phone_9f17') {
             sanitized[key] = normalizePhoneE164(String(value));
-          } else if (key === 'moving_date_and_time') {
+          } else if (key === 'moving_address_date_and_time') {
             sanitized[key] = new Date(String(value)).toISOString();
 
             // sanitized[key] = data.moving_address_date_and_time;
@@ -253,7 +262,7 @@ export const useQuotationForm = () => {
             formData.last_name &&
             formData.email_e1ca &&
             formData.phone_9f17 &&
-            formData.moving_date_and_time
+            formData.moving_address_date_and_time
           );
         default:
           return false;
