@@ -104,13 +104,8 @@ export const useQuotationForm = () => {
         }
         return next;
       });
-      if (
-        errors.move_date ||
-        errors.move_time ||
-        errors.moving_date_and_time
-      ) {
-        const { move_date, move_time, moving_date_and_time, ...rest } =
-          errors;
+      if (errors.move_date || errors.move_time || errors.moving_date_and_time) {
+        const { move_date, move_time, moving_date_and_time, ...rest } = errors;
         setErrors(rest);
       }
     },
@@ -179,12 +174,8 @@ export const useQuotationForm = () => {
       newErrors.unloading_address = 'Final destination is required';
     }
 
-    if (
-      !data.moving_date_and_time ||
-      !data.moving_date_and_time.trim()
-    ) {
-      newErrors.moving_date_and_time =
-        'Moving date and time is required';
+    if (!data.moving_date_and_time || !data.moving_date_and_time.trim()) {
+      newErrors.moving_date_and_time = 'Moving date and time is required';
     } else {
       const parsed = new Date(data.moving_date_and_time);
       if (isNaN(parsed.getTime())) {
