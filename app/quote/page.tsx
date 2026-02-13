@@ -501,16 +501,16 @@ export default function QuotationPage() {
                       Moving Date & Time<span className=""></span>
                     </label>
                     <DateTimePicker
-                      value={formData.moving_date_and_time}
+                      value={formData.moving_address_date_and_time}
                       onChange={(val) =>
-                        updateFormData('moving_date_and_time', val)
+                        updateFormData('moving_address_date_and_time', val)
                       }
                       placeholder="select moving date and time"
                       inputClassName="w-full pr-10 py-3 rounded-lg border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange cursor-pointer"
                     />
-                    {errors.moving_date_and_time && (
+                    {errors.moving_address_date_and_time && (
                       <p className="text-red-500 text-xs">
-                        {errors.moving_date_and_time}
+                        {errors.moving_address_date_and_time}
                       </p>
                     )}
                   </div>
