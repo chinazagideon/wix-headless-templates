@@ -28,6 +28,7 @@ export interface FormData {
   moving_address_date_and_time: string;
   has_elevator?: string;
   stairs_count?: string;
+  moving_date_and_time?: string;
 }
 
 export const useQuotationForm = () => {
@@ -51,6 +52,7 @@ export const useQuotationForm = () => {
     moving_address_date_and_time: '',
     has_elevator: '',
     stairs_count: '',
+    moving_date_and_time: '',
   });
   const [isCompleted, setIsCompleted] = useState(false);
   const [formHasError, setFormHasError] = useState<boolean>(false);
@@ -78,6 +80,7 @@ export const useQuotationForm = () => {
     'building_type_str',
     'special_items_str',
     'moving_address_date_and_time',
+    'moving_date_and_time'
   ];
 
   const updateFormData = useCallback(
@@ -206,9 +209,10 @@ export const useQuotationForm = () => {
           if (key === 'phone_9f17') {
             sanitized[key] = normalizePhoneE164(String(value));
           } else if (key === 'moving_address_date_and_time') {
-            // const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
-            // sanitized[key] = utcDate.toISOString();
-            sanitized[key] = new Date(String(value)).toISOString();
+            const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
+            sanitized[key] = utcDate.toISOString();
+            // sanitized[key] = new Date(String(value)).toISOString();
+            sanitized['moving_date_and_time'] = new Date(String(value)).toLocaleString('en-US', { timeZone: 'America/Winnipeg' });
           } else if (key === 'special_items_str') {
             sanitized[key] = Array.isArray(value)
               ? value.join(', ')
