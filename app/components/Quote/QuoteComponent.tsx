@@ -132,10 +132,13 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       const base = {
         ...formData,
         phone_9f17: normalizePhoneE164(String(formData.phone_9f17 || '')),
-        moving_address_date_and_time: zonedTimeToUtc(
-          formData.moving_address_date_and_time,
-          'America/Winnipeg'
-        ).toISOString(),
+        // moving_address_date_and_time: zonedTimeToUtc(
+        //   formData.moving_address_date_and_time,
+        //   'America/Winnipeg'
+        // ).toISOString(),
+        moving_address_date_and_time: new Date(
+          formData.moving_address_date_and_time
+        ).toUTCString(),
       } as typeof formData;
       const sanitized = Object.fromEntries(
         Object.entries(base).filter(

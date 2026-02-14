@@ -5,6 +5,7 @@ import { Calendar as CalendarIcon, X as CloseIcon } from 'lucide-react';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { format } from 'date-fns';
+import TimePickerDropdown from './TimePickerDropdown';
 
 type DateTimePickerProps = {
   value?: string;
@@ -137,14 +138,23 @@ export default function DateTimePicker(props: DateTimePickerProps) {
               }}
             />
             <div className="mt-2">
-              <label className="block text-xs text-gray-300 mb-1">Time</label>
+              <TimePickerDropdown
+                value={tempTime}
+                onChange={setTempTime}
+                disabled={!tempDate}
+                minTime="08:00"
+                maxTime="18:00"
+                interval={30}
+              />
+            </div>
+            {/* <label className="block text-xs text-gray-300 mb-1">Time</label>
               <input
                 type="time"
                 value={tempTime}
                 onChange={(e) => setTempTime(e.target.value)}
                 className="w-full py-2 px-3 rounded border border-theme-orange/30 bg-[#011a34] text-gray-200 focus:border-theme-orange"
               />
-            </div>
+              */}
           </div>
           <div className="flex items-center justify-end gap-2 p-3 border-t border-theme-orange/20">
             <button

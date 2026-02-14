@@ -19,6 +19,7 @@ import {
 import PageHeader from '@app/components/Layout/PageHeader';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
+import InlineDateTimePicker from '@app/components/DateTimePicker/InlineDateTimePicker';
 
 const move_sizes = [
   {
@@ -189,6 +190,12 @@ export default function QuotationPage() {
                   <span className="text-gray-600">Loading...</span>
                 </div>
               )}
+              {!isFetching && (
+                <p className="text-red-500 text-xs text-center mb-4">
+                  {' '}
+                  required fields are marked with an asterisk (*)
+                </p>
+              )}
               {/* Step 1: Move Type */}
               {currentStep === 1 && !isFetching && (
                 <div className="space-y-8 animate-fade-in">
@@ -198,6 +205,7 @@ export default function QuotationPage() {
                     </h2>
                     <p className="text-gray-600">
                       Select the service type that best describes your move
+                      <span className="text-red-500 text-xs ml-1">*</span>
                     </p>
                   </div>
 
@@ -249,6 +257,7 @@ export default function QuotationPage() {
                     </h2>
                     <p className="text-gray-600">
                       Help us understand the scope of your move
+                      <span className="text-red-500 text-xs ml-1">*</span>
                     </p>
                   </div>
 
@@ -292,7 +301,10 @@ export default function QuotationPage() {
                   <div className="space-y-4">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Building type{' '}
+                        Building type
+                        <span className="text-red-500 text-xs ml-1">
+                          *
+                        </span>{' '}
                       </span>
                       <select
                         value={formData.building_type_str}
@@ -376,12 +388,15 @@ export default function QuotationPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        First name{' '}
+                        First name
+                        <span className="text-red-500 text-xs ml-1">
+                          *
+                        </span>{' '}
                       </span>
                       <input
                         type="text"
                         value={formData.first_name}
-                        placeholder="please enter your first name"
+                        placeholder="Please enter your first name"
                         onChange={(e) =>
                           updateFormData('first_name', e.target.value)
                         }
@@ -395,11 +410,14 @@ export default function QuotationPage() {
                     </label>
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Last name{' '}
+                        Last name
+                        <span className="text-red-500 text-xs ml-1">
+                          *
+                        </span>{' '}
                       </span>
                       <input
                         type="text"
-                        placeholder="please enter your last name"
+                        placeholder="Please enter your last name"
                         value={formData.last_name}
                         onChange={(e) =>
                           updateFormData('last_name', e.target.value)
@@ -416,11 +434,14 @@ export default function QuotationPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
                       <span className="text-gray-700 font-medium">
-                        Phone number{' '}
+                        Phone number
+                        <span className="text-red-500 text-xs ml-1">
+                          *
+                        </span>{' '}
                       </span>
                       <input
                         type="text"
-                        placeholder="please enter your phone number"
+                        placeholder="Please enter your phone number"
                         value={formData.phone_9f17}
                         onChange={(e) =>
                           updateFormData('phone_9f17', e.target.value)
@@ -436,10 +457,13 @@ export default function QuotationPage() {
                     <label className="block">
                       <span className="text-gray-700 font-medium">
                         Email address
+                        <span className="text-red-500 text-xs ml-1">
+                          *
+                        </span>{' '}
                       </span>
                       <input
                         type="text"
-                        placeholder="please enter your email address"
+                        placeholder="Please enter your email address"
                         value={formData.email_e1ca}
                         onChange={(e) =>
                           updateFormData('email_e1ca', e.target.value)
@@ -460,8 +484,8 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('moving_address', address)
                         }
-                        placeholder="please enter your loading address"
-                        label="Loading address"
+                        placeholder="Please enter your loading address"
+                        label="Loading address*"
                         fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium"
@@ -479,8 +503,8 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('unloading_address', address)
                         }
-                        placeholder="please enter your unloading address"
-                        label="Unloading address"
+                        placeholder="Please enter your unloading address"
+                        label="Unloading address*"
                         fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium"
@@ -498,8 +522,15 @@ export default function QuotationPage() {
                       htmlFor="moving_datetime"
                       className="text-gray-700 font-medium"
                     >
-                      Moving Date & Time<span className=""></span>
+                      Moving Date & Time
+                      <span className="text-red-500 text-xs ml-1">*</span>{' '}
                     </label>
+                    {/* <InlineDateTimePicker 
+                      value={formData.moving_address_date_and_time}
+                      onChange={(val) =>
+                        updateFormData('moving_address_date_and_time', val)
+                      }
+                    /> */}
                     <DateTimePicker
                       value={formData.moving_address_date_and_time}
                       onChange={(val) =>
@@ -538,6 +569,13 @@ export default function QuotationPage() {
             </div>
 
             {/* Navigation Buttons */}
+            <div className="flex flex-col gap-2 items-center justify-center w-full mb-4">
+              <p className="text-red-500 text-xs">
+                {!isStepValid(currentStep)
+                  ? 'please fill all required fields (* marked) to get a quote'
+                  : ''}
+              </p>
+            </div>
             <div className="flex justify-between items-center">
               <button
                 onClick={prevStep}
@@ -553,35 +591,39 @@ export default function QuotationPage() {
               </button>
 
               {currentStep < 3 ? (
-                <button
-                  onClick={() => handleStepValidation(currentStep)}
-                  disabled={!isStepValid(currentStep)}
-                  className={`flex items-center px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
-                    isStepValid(currentStep)
-                      ? 'bg-theme-orange text-white hover:bg-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
-                >
-                  Next
-                  <ChevronRightIcon className="w-5 h-5 ml-2" />
-                </button>
+                <>
+                  <button
+                    onClick={() => handleStepValidation(currentStep)}
+                    disabled={!isStepValid(currentStep)}
+                    className={`flex items-center px-8 py-3 rounded-lg text-sm md:text-md transition-all duration-200 ${
+                      isStepValid(currentStep)
+                        ? 'bg-theme-orange text-white hover:bg-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                  >
+                    Next
+                    <ChevronRightIcon className="w-5 h-5 ml-2" />
+                  </button>
+                </>
               ) : (
-                <button
-                  onClick={handleSubmit}
-                  disabled={!isStepValid(currentStep) || isSubmitting}
-                  className={`flex items-center px-8 py-3 rounded-lg font-medium transition-all duration-200 ${
-                    isStepValid(currentStep)
-                      ? 'bg-theme-orange text-white hover:bg-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <Loader className="w-5 h-5 mr-2" />
-                  ) : (
-                    'Get Quote'
-                  )}
-                  <ChevronRightIcon className="w-5 h-5 ml-2" />
-                </button>
+                <>
+                  <button
+                    onClick={handleSubmit}
+                    disabled={!isStepValid(currentStep) || isSubmitting}
+                    className={`flex items-center px-8 py-3 rounded-lg text-sm md:text-md transition-all duration-200 ${
+                      isStepValid(currentStep)
+                        ? 'bg-theme-orange text-white hover:bg-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                    }`}
+                  >
+                    {isSubmitting ? (
+                      <Loader className="w-5 h-5 mr-2" />
+                    ) : (
+                      'Get Quote'
+                    )}
+                    <ChevronRightIcon className="w-5 h-5 ml-2" />
+                  </button>
+                </>
               )}
             </div>
           </div>

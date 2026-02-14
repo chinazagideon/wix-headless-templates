@@ -206,9 +206,9 @@ export const useQuotationForm = () => {
           if (key === 'phone_9f17') {
             sanitized[key] = normalizePhoneE164(String(value));
           } else if (key === 'moving_address_date_and_time') {
-            const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
-            sanitized[key] = utcDate.toISOString();
-            // sanitized[key] = new Date(String(value)).toISOString();
+            // const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
+            // sanitized[key] = utcDate.toISOString();
+            sanitized[key] = new Date(String(value)).toISOString();
           } else if (key === 'special_items_str') {
             sanitized[key] = Array.isArray(value)
               ? value.join(', ')
