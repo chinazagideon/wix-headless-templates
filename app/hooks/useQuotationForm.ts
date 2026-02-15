@@ -29,6 +29,7 @@ export interface FormData {
   has_elevator?: string;
   stairs_count?: string;
   moving_date_and_time?: string;
+  destination_building_type?: string;
 }
 
 export const useQuotationForm = () => {
@@ -53,6 +54,7 @@ export const useQuotationForm = () => {
     has_elevator: '',
     stairs_count: '',
     moving_date_and_time: '',
+    destination_building_type: '',
   });
   const [isCompleted, setIsCompleted] = useState(false);
   const [formHasError, setFormHasError] = useState<boolean>(false);
@@ -80,7 +82,8 @@ export const useQuotationForm = () => {
     'building_type_str',
     'special_items_str',
     'moving_address_date_and_time',
-    'moving_date_and_time'
+    'moving_date_and_time',
+    'destination_building_type',
   ];
 
   const updateFormData = useCallback(
@@ -155,7 +158,13 @@ export const useQuotationForm = () => {
       newErrors.move_size_str = 'Please select move size';
     }
     if (!data.building_type_str || !data.building_type_str.trim()) {
-      newErrors.building_type_str = 'Please select building type';
+      newErrors.building_type_str = 'Please select current building type';
+    }
+    if (
+      !data.destination_building_type ||
+      !data.destination_building_type.trim()
+    ) {
+      newErrors.destination_building_type = 'Please select new building type';
     }
 
     if (!data.first_name || !data.first_name.trim()) {
@@ -212,7 +221,9 @@ export const useQuotationForm = () => {
             const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
             sanitized[key] = utcDate.toISOString();
             // sanitized[key] = new Date(String(value)).toISOString();
-            sanitized['moving_date_and_time'] = new Date(String(value)).toLocaleString('en-US', { timeZone: 'America/Winnipeg' });
+            sanitized['moving_date_and_time'] = new Date(
+              String(value)
+            ).toLocaleString('en-US', { timeZone: 'America/Winnipeg' });
           } else if (key === 'special_items_str') {
             sanitized[key] = Array.isArray(value)
               ? value.join(', ')
@@ -248,7 +259,11 @@ export const useQuotationForm = () => {
         case 1:
           return Boolean(formData.service_type);
         case 2:
-          return Boolean(formData.move_size_str && formData.building_type_str);
+          return Boolean(
+            formData.move_size_str &&
+              formData.building_type_str &&
+              formData.destination_building_type
+          );
         case 3:
           return (
             formData.moving_address &&
@@ -283,10 +298,14 @@ export const useQuotationForm = () => {
           stepErrors.move_size_str = validationErrors.move_size_str;
         if (validationErrors.building_type_str)
           stepErrors.building_type_str = validationErrors.building_type_str;
+        if (validationErrors.destination_building_type)
+          stepErrors.destination_building_type =
+            validationErrors.destination_building_type;
         setErrors(stepErrors);
         if (
           !validationErrors.move_size_str &&
-          !validationErrors.building_type_str
+          !validationErrors.building_type_str &&
+          !validationErrors.destination_building_type
         )
           setCurrentStep(step + 1);
         return;

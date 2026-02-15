@@ -19,7 +19,6 @@ import {
 import PageHeader from '@app/components/Layout/PageHeader';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
-import InlineDateTimePicker from '@app/components/DateTimePicker/InlineDateTimePicker';
 
 const move_sizes = [
   {
@@ -48,12 +47,12 @@ const items = [
   'Large Appliances',
   'Artwork',
   'Antiques',
-  'Exercise Equipment',
-  'Floor runners',
-  'Tall Furniture',
-  'Heavy Items',
-  'Fragile Items',
-  'Electronics',
+  // 'Exercise Equipment',
+  // 'Floor runners',
+  // 'Tall Furniture',
+  // 'Heavy Items',
+  // 'Fragile Items',
+  // 'Electronics',
   'Other',
 ];
 
@@ -298,14 +297,17 @@ export default function QuotationPage() {
                     </p>
                   )}
 
-                  <div className="space-y-4">
-                    <label className="block">
-                      <span className="text-gray-700 font-medium">
-                        Building type
-                        <span className="text-red-500 text-xs ml-1">
-                          *
-                        </span>{' '}
-                      </span>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                    <div className="space-y-4">
+                      <label className="block">
+                        <span className="text-gray-700 font-medium">
+                          Current Building
+                          <span className="text-red-500 text-xs ml-1">
+                            *
+                          </span>{' '}
+                        </span>
+                      </label>
+
                       <select
                         value={formData.building_type_str}
                         onChange={(e) =>
@@ -320,54 +322,80 @@ export default function QuotationPage() {
                         <option value="Condo">Condo</option>
                         <option value="other">Other</option>
                       </select>
-                    </label>
-                    {errors.building_type_str && (
-                      <p className="text-red-500 text-xs">
-                        {errors.building_type_str}
-                      </p>
-                    )}
-
-                    <div>
-                      <span className="text-gray-700 font-medium block mb-3">
-                        Special items{' '}
-                        <span className="text-gray-500 text-sm">
-                          (Optional)
+                      {errors.building_type_str && (
+                        <p className="text-red-500 text-xs">
+                          {errors.building_type_str}
+                        </p>
+                      )}
+                    </div>
+                    <div className="space-y-4">
+                      <label className="block">
+                        <span className="text-gray-700 font-medium">
+                          New Building
+                          <span className="text-red-500 text-xs ml-1">
+                            *
+                          </span>{' '}
                         </span>
-                      </span>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {items.map((item) => (
-                          <label
-                            key={item}
-                            className="flex items-center space-x-2 cursor-pointer"
-                          >
-                            <input
-                              type="checkbox"
-                              checked={formData.special_items_str.includes(
-                                item
-                              )}
-                              onChange={(e) => {
-                                if (e.target.checked) {
-                                  updateFormData('special_items_str', [
-                                    ...formData.special_items_str,
-                                    item,
-                                  ]);
-                                } else {
-                                  updateFormData(
-                                    'special_items_str',
-                                    formData.special_items_str.filter(
-                                      (i: any) => i !== item
-                                    )
-                                  );
-                                }
-                              }}
-                              className="w-4 h-4 text-theme-orange border-gray-300 rounded focus:ring-theme-orange"
-                            />
-                            <span className="text-sm text-gray-700">
-                              {item}
-                            </span>
-                          </label>
-                        ))}
-                      </div>
+                      </label>
+
+                      <select
+                        value={formData.destination_building_type}
+                        onChange={(e) =>
+                          updateFormData(
+                            'destination_building_type',
+                            e.target.value
+                          )
+                        }
+                        className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                      >
+                        <option value="">Select building type</option>
+                        <option value="Apartment">Apartment</option>
+                        <option value="House">House</option>
+                        <option value="Office">Office</option>
+                        <option value="Condo">Condo</option>
+                        <option value="other">Other</option>
+                      </select>
+                      {errors.destination_building_type && (
+                        <p className="text-red-500 text-xs">
+                          {errors.destination_building_type}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-col space-y-4 w-full">
+                    <span className="text-gray-700 font-medium block mb-3">
+                      Special items{' '}
+                      <span className="text-gray-500 text-sm">(Optional)</span>
+                    </span>
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                      {items.map((item) => (
+                        <label
+                          key={item}
+                          className="flex items-center space-x-2 cursor-pointer"
+                        >
+                          <input
+                            type="checkbox"
+                            checked={formData.special_items_str.includes(item)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                updateFormData('special_items_str', [
+                                  ...formData.special_items_str,
+                                  item,
+                                ]);
+                              } else {
+                                updateFormData(
+                                  'special_items_str',
+                                  formData.special_items_str.filter(
+                                    (i: any) => i !== item
+                                  )
+                                );
+                              }
+                            }}
+                            className="w-4 h-4 text-theme-orange border-gray-300 rounded focus:ring-theme-orange"
+                          />
+                          <span className="text-sm text-gray-700">{item}</span>
+                        </label>
+                      ))}
                     </div>
                   </div>
                 </div>
@@ -484,8 +512,8 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('moving_address', address)
                         }
-                        placeholder="Please enter your loading address"
-                        label="Loading address*"
+                        placeholder="Please enter your current address"
+                        label="Current address*"
                         fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium"
@@ -503,8 +531,8 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('unloading_address', address)
                         }
-                        placeholder="Please enter your unloading address"
-                        label="Unloading address*"
+                        placeholder="Please enter your new address"
+                        label="New address*"
                         fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium"

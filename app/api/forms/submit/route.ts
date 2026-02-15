@@ -145,6 +145,7 @@ export async function POST(request: NextRequest) {
       'special_items_str',
       'moving_address_date_and_time',
       'moving_date_and_time',
+      'destination_building_type',
     ]);
     const submissionValues = Object.fromEntries(
       Object.entries(submissionValuesRaw).filter(([k]) => allowedKeys.has(k))
