@@ -208,7 +208,7 @@ export default function QuotationPage() {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                     {visibleServices?.map((service) => {
                       const Icon = getIconForService(service.info?.name);
                       return (
