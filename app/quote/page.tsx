@@ -106,7 +106,7 @@ export default function QuotationPage() {
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
         {isCompleted && (
           <>
-            <div className="max-w-4xl mx-auto justify-center flex flex-col items-center justify-center text-center py-16 pt-4">
+            <div className="max-w-4xl mx-auto justify-center flex flex-col items-center justify-center text-center py-16 pt-24">
               <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
                 <CheckCircleIcon className="w-14 h-14 text-theme-orange mb-6" />
                 <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
@@ -615,7 +615,7 @@ export default function QuotationPage() {
             {/* Navigation Buttons */}
             <div className="flex flex-col gap-2 items-center justify-center w-full mb-4">
               <p className="text-red-500 text-xs">
-                {!isStepValid(currentStep)
+                {!isStepValid(currentStep) || !isFetching
                   ? 'please fill all required fields (* marked) to get a quote'
                   : ''}
               </p>
