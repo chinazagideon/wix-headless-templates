@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+import { fireQuoteLeadConversion } from '@app/lib/track-google-ads-conversion';
 import { useWixServices } from './useWixServices';
 import { useForms } from './useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
@@ -247,6 +248,7 @@ export const useQuotationForm = () => {
     try {
       await onSubmit(formData);
       setIsCompleted(true);
+      fireQuoteLeadConversion();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e) {
       console.error(e);

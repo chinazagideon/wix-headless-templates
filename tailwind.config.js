@@ -37,10 +37,7 @@ module.exports = {
         },
       },
       fontFamily: {
-        'outfit': [
-          'Outfit',
-          ...defaultTheme.fontFamily.sans,
-        ],
+        outfit: ['Outfit', ...defaultTheme.fontFamily.sans],
         'open-sans-condensed': [
           'Open Sans Condensed',
           ...defaultTheme.fontFamily.sans,

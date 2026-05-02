@@ -14,106 +14,236 @@
     line-height: 120%;
   }
 
-  h1, .mil-h1 {
+  h1,
+  .mil-h1 {
     font-size: 86px;
     font-weight: 500;
     line-height: 120%;
   }
 
-  h2, .mil-h2 {
+  h2,
+  .mil-h2 {
     font-size: 68px;
     line-height: 120%;
   }
 
-  h3, .mil-h3 {
+  h3,
+  .mil-h3 {
     font-size: 42px;
   }
 
-  h4, .mil-h4 {
+  h4,
+  .mil-h4 {
     font-size: 28px;
   }
 
-  h5, .mil-h5 {
+  h5,
+  .mil-h5 {
     font-size: 20px;
     line-height: 150%;
   }
 
-  h6, .mil-h6 {
+  h6,
+  .mil-h6 {
     font-size: 18px;
     line-height: 150%;
   }
 
   /* Responsive Typography */
   @media screen and (max-width: 1400px) {
-    h1, .mil-h1 { font-size: 74px; }
+    h1,
+    .mil-h1 {
+      font-size: 74px;
+    }
   }
 
   @media screen and (max-width: 1200px) {
-    h1, .mil-h1 { font-size: 72px; }
-    h2, .mil-h2 { font-size: 56px; }
-    h3, .mil-h3 { font-size: 39px; }
-    h4, .mil-h4 { font-size: 26px; }
-    h6, .mil-h6 { font-size: 17px; }
+    h1,
+    .mil-h1 {
+      font-size: 72px;
+    }
+    h2,
+    .mil-h2 {
+      font-size: 56px;
+    }
+    h3,
+    .mil-h3 {
+      font-size: 39px;
+    }
+    h4,
+    .mil-h4 {
+      font-size: 26px;
+    }
+    h6,
+    .mil-h6 {
+      font-size: 17px;
+    }
   }
 
   @media screen and (max-width: 992px) {
-    h1, .mil-h1 { font-size: 58px; }
-    h2, .mil-h2 { font-size: 44px; }
-    h3, .mil-h3 { font-size: 36px; }
-    h4, .mil-h4 { font-size: 24px; }
-    h6, .mil-h6 { font-size: 16px; }
+    h1,
+    .mil-h1 {
+      font-size: 58px;
+    }
+    h2,
+    .mil-h2 {
+      font-size: 44px;
+    }
+    h3,
+    .mil-h3 {
+      font-size: 36px;
+    }
+    h4,
+    .mil-h4 {
+      font-size: 24px;
+    }
+    h6,
+    .mil-h6 {
+      font-size: 16px;
+    }
   }
 
   @media screen and (max-width: 768px) {
-    h1, .mil-h1 { font-size: 34px; }
-    h2, .mil-h2 { font-size: 36px; }
-    h3, .mil-h3 { font-size: 30px; }
-    h4, .mil-h4 { font-size: 22px; }
-    h5, .mil-h5 { font-size: 18px; }
-    h6, .mil-h6 { font-size: 21px; }
+    h1,
+    .mil-h1 {
+      font-size: 34px;
+    }
+    h2,
+    .mil-h2 {
+      font-size: 36px;
+    }
+    h3,
+    .mil-h3 {
+      font-size: 30px;
+    }
+    h4,
+    .mil-h4 {
+      font-size: 22px;
+    }
+    h5,
+    .mil-h5 {
+      font-size: 18px;
+    }
+    h6,
+    .mil-h6 {
+      font-size: 21px;
+    }
   }
 }
 
 /* Custom font weight utilities */
 @layer utilities {
-  .font-outfit-thin { font-family: 'Outfit', sans-serif; font-weight: 100; }
-  .font-outfit-extralight { font-family: 'Outfit', sans-serif; font-weight: 200; }
-  .font-outfit-light { font-family: 'Outfit', sans-serif; font-weight: 300; }
-  .font-outfit-normal { font-family: 'Outfit', sans-serif; font-weight: 400; }
-  .font-outfit-medium { font-family: 'Outfit', sans-serif; font-weight: 500; }
-  .font-outfit-semibold { font-family: 'Outfit', sans-serif; font-weight: 600; }
-  .font-outfit-bold { font-family: 'Outfit', sans-serif; font-weight: 700; }
-  .font-outfit-extrabold { font-family: 'Outfit', sans-serif; font-weight: 800; }
-  .font-outfit-black { font-family: 'Outfit', sans-serif; font-weight: 900; }
+  .font-outfit-thin {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 100;
+  }
+  .font-outfit-extralight {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 200;
+  }
+  .font-outfit-light {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+  }
+  .font-outfit-normal {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+  }
+  .font-outfit-medium {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+  }
+  .font-outfit-semibold {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+  }
+  .font-outfit-bold {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+  }
+  .font-outfit-extrabold {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+  }
+  .font-outfit-black {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 900;
+  }
 
   /* Ashley Demo Color System */
-  .mil-accent { color: rgb(250 92 51 / var(--tw-text-opacity, 1)); }
-  .mil-light { color: rgb(255, 255, 255) !important; }
-  .mil-muted { color: rgba(255, 255, 255, 0.9); }
-  .mil-dark { color: rgb(0, 0, 0); }
-  .mil-light-soft { color: rgba(255, 255, 255, 0.7); }
-  .mil-dark-soft { color: rgba(0, 0, 0, 0.7); }
+  .mil-accent {
+    color: rgb(250 92 51 / var(--tw-text-opacity, 1));
+  }
+  .mil-light {
+    color: rgb(255, 255, 255) !important;
+  }
+  .mil-muted {
+    color: rgba(255, 255, 255, 0.9);
+  }
+  .mil-dark {
+    color: rgb(0, 0, 0);
+  }
+  .mil-light-soft {
+    color: rgba(255, 255, 255, 0.7);
+  }
+  .mil-dark-soft {
+    color: rgba(0, 0, 0, 0.7);
+  }
 
   /* Ashley Demo Typography Utilities */
-  .mil-upper { text-transform: uppercase; font-size: 12px; font-weight: 500; letter-spacing: 2px; }
-  .mil-bold { font-weight: 500; }
-  .mil-thin { font-weight: 100; }
-  .mil-text-sm { font-size: 15px; }
-  .mil-text-lg { font-size: 18px; line-height: 170%; }
-  .mil-text-xl { font-size: 22px; line-height: 180%; }
+  .mil-upper {
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 2px;
+  }
+  .mil-bold {
+    font-weight: 500;
+  }
+  .mil-thin {
+    font-weight: 100;
+  }
+  .mil-text-sm {
+    font-size: 15px;
+  }
+  .mil-text-lg {
+    font-size: 18px;
+    line-height: 170%;
+  }
+  .mil-text-xl {
+    font-size: 22px;
+    line-height: 180%;
+  }
 
   /* Ashley Demo Layout Utilities */
-  .mil-center { text-align: center; }
-  .mil-left { text-align: left; }
-  .mil-right { text-align: right; }
-  .mil-no-wrap { white-space: nowrap; }
+  .mil-center {
+    text-align: center;
+  }
+  .mil-left {
+    text-align: left;
+  }
+  .mil-right {
+    text-align: right;
+  }
+  .mil-no-wrap {
+    white-space: nowrap;
+  }
 }
 
 @font-face {
   font-display: block;
-  font-family:DINNeuzeitGroteskLTW01-_812426;
-  src:url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/b41558bd-2862-46c0-abf7-536d2542fa26.eot?#iefix");
-  src:url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/b41558bd-2862-46c0-abf7-536d2542fa26.eot?#iefix") format("eot"),url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/5cee8d6e-89ad-4d8c-a0ac-584d316b15ae.woff2") format("woff2"),url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/388ef902-2c31-4818-abb1-a40dcd81f6d6.woff") format("woff"),url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/29c60077-2614-4061-aa8d-5bcfdf7354bb.ttf") format("truetype"),url("//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/76250d27-b353-4f3b-90c6-0ff635fabaab.svg#76250d27-b353-4f3b-90c6-0ff635fabaab") format("svg");
+  font-family: DINNeuzeitGroteskLTW01-_812426;
+  src: url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/b41558bd-2862-46c0-abf7-536d2542fa26.eot?#iefix');
+  src: url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/b41558bd-2862-46c0-abf7-536d2542fa26.eot?#iefix')
+      format('eot'),
+    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/5cee8d6e-89ad-4d8c-a0ac-584d316b15ae.woff2')
+      format('woff2'),
+    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/388ef902-2c31-4818-abb1-a40dcd81f6d6.woff')
+      format('woff'),
+    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/29c60077-2614-4061-aa8d-5bcfdf7354bb.ttf')
+      format('truetype'),
+    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/76250d27-b353-4f3b-90c6-0ff635fabaab.svg#76250d27-b353-4f3b-90c6-0ff635fabaab')
+      format('svg');
 }
 
 @font-face {
@@ -121,8 +251,12 @@
   font-family: 'Open Sans Condensed';
   font-style: normal;
   font-weight: 300;
-  src: local('Open Sans Condensed Light'), local('OpenSansCondensed-Light'), url("//static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/opensanscondensed/v14/z7NFdQDnbTkabZAIOl9il_O6KJj73e7Ff1GhDuXMR7eS2Ao.woff2") format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  src: local('Open Sans Condensed Light'), local('OpenSansCondensed-Light'),
+    url('//static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/opensanscondensed/v14/z7NFdQDnbTkabZAIOl9il_O6KJj73e7Ff1GhDuXMR7eS2Ao.woff2')
+      format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
 }
 
 @layer components {
@@ -134,7 +268,8 @@
     left: calc(50% - 2px);
   }
 
-  .btn-main, .btn-secondary {
+  .btn-main,
+  .btn-secondary {
     @apply cursor-pointer;
     @apply border-none;
     @apply text-sm;
@@ -163,14 +298,16 @@
     @apply hover:text-white;
   }
 
-  .btn-main[disabled], .btn-secondary[disabled] {
+  .btn-main[disabled],
+  .btn-secondary[disabled] {
     @apply hover:text-white;
     @apply bg-gray-400;
     @apply border-gray-400;
     @apply hover:bg-gray-400;
   }
 
-  h1, .title {
+  h1,
+  .title {
     @apply font-outfit;
     @apply text-5xl;
     @apply md:text-7xl;
@@ -267,7 +404,11 @@ a:hover {
   align-items: center;
 }
 
-.mil-preloader .mil-preloader-animation .mil-pos-abs .mil-reveal-frame .mil-reveal-box {
+.mil-preloader
+  .mil-preloader-animation
+  .mil-pos-abs
+  .mil-reveal-frame
+  .mil-reveal-box {
   z-index: 4;
   position: absolute;
   height: 100%;
@@ -353,7 +494,11 @@ a:hover {
 
 .progress-bar {
   height: 4px;
-  background: linear-gradient(90deg, rgb(250 92 51 / var(--tw-text-opacity, 1)), rgb(250 92 51 / var(--tw-text-opacity, 1)));
+  background: linear-gradient(
+    90deg,
+    rgb(250 92 51 / var(--tw-text-opacity, 1)),
+    rgb(250 92 51 / var(--tw-text-opacity, 1))
+  );
   border-radius: 2px;
   transition: width 0.3s ease;
 }
@@ -378,7 +523,7 @@ a:hover {
   .mil-preloader .mil-preloader-animation .mil-pos-abs {
     flex-direction: column;
   }
-  
+
   .mil-preloader .mil-preloader-animation .mil-pos-abs p {
     margin-right: 0;
     margin-bottom: 10px;
@@ -508,7 +653,8 @@ textarea:focus-visible {
 }
 
 /* Disable horizontal scrolling on mobile */
-html, body {
+html,
+body {
   overflow-x: hidden;
   max-width: 100vw;
   position: relative;
@@ -522,12 +668,13 @@ html, body {
 
 /* Mobile-specific overflow control */
 @media (max-width: 768px) {
-  html, body {
+  html,
+  body {
     overflow-x: hidden !important;
     width: 100vw;
     max-width: 100vw;
   }
-  
+
   .mobile-no-scroll {
     overflow-x: hidden !important;
     max-width: 100vw !important;

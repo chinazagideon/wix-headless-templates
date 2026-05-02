@@ -38,7 +38,7 @@ const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => {
       {isLoading && <Preloader />}
       {!isLoading && <Header />}
       <main
-        className={`bg-transparent min-h-[1000px] transition-all duration-1000 ease-out ${
+        className={`bg-transparent min-h-screen transition-all duration-1000 ease-out ${
           showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}
       >

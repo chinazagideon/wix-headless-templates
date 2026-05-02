@@ -15,10 +15,13 @@ import {
   HandHelping,
   Loader,
   SofaIcon,
+  PhoneIcon,
 } from 'lucide-react';
 import PageHeader from '@app/components/Layout/PageHeader';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
+import { constants } from '@app/components/constants';
+import ThemeButton from '@app/components/Button/ThemeButton';
 
 const move_sizes = [
   {
@@ -93,22 +96,46 @@ export default function QuotationPage() {
 
   return (
     <>
-      <PageHeader
-        title={`Get a Free Moving Quote`}
-        description={`Tell us about your move and get a personalized quote in minutes`}
-        className="items-center justify-center"
-      />
+      {isCompleted === false && (
+        <PageHeader
+          title={`Get a Free Moving Quote`}
+          description={`Tell us about your move and get a personalized quote in minutes`}
+          className="items-center justify-center"
+        />
+      )}
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
         {isCompleted && (
           <>
-            <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
-              <div className="flex flex-col items-center justify-center">
-                <CheckCircleIcon className="w-12 h-12 text-theme-orange mb-4" />
-                <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4 text-center">
-                  Thank you for your interest in our services!
+            <div className="max-w-4xl mx-auto justify-center flex flex-col items-center justify-center text-center py-16 pt-4">
+              <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
+                <CheckCircleIcon className="w-14 h-14 text-theme-orange mb-6" />
+                <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
+                  You&apos;re all set.
                 </h1>
-                <p className="text-gray-600 text-lg max-w-2xl mx-auto text-center">
-                  We will get back to you shortly.
+                <p className="text-gray-600 text-lg max-w-xl mx-auto mb-6">
+                  Our team will reach out within the hour to confirm your quote.
+                </p>
+
+                <p className="text-gray-600 text-md max-w-xl mx-auto mb-2">
+                  {' '}
+                  Need us sooner?
+                </p>
+                <ThemeButton
+                  href={`tel:${constants.companyPhone}`}
+                  isSubmitting={false}
+                  showIcon={false}
+                >
+                  <div className="flex flex-row items-center gap-2 justify-center">
+                    <span className="bg-black rounded-full size-6 p-1 flex items-center justify-center">
+                      <PhoneIcon className="w-4 h-4 text-white" />
+                    </span>
+                    <span className="text-sm">
+                      Call {constants.companyPhone}
+                    </span>
+                  </div>
+                </ThemeButton>
+                <p className="text-gray-400 text-sm mt-6">
+                  Fully insured · No hidden fees · Winnipeg owned & operated
                 </p>
               </div>
             </div>
@@ -116,17 +143,6 @@ export default function QuotationPage() {
         )}
         {!isCompleted && (
           <div className="max-w-4xl mx-auto">
-            {/* Header */}
-            {/* <div className="text-center mb-12"> */}
-            {/* <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
-                Get Your{' '}
-                <span className="font-outfit font-bold">Moving Quote</span>
-              </h1> */}
-            {/* <p className="text-gray-600 text-lg max-w-2xl mx-auto">
-                Tell us about your move and get a personalized quote in minutes
-              </p> */}
-            {/* </div> */}
-
             {/* Progress Bar */}
             <div className="mb-4 lg:mb-12 w-full relative z-1000 ">
               <div className="flex items-center justify-between mb-4  w-full z-1000">

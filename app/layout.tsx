@@ -5,9 +5,17 @@ import PreloaderWrapper from '@app/components/Loader/PreloaderWrapper';
 import { WixBookingsClientProvider } from '@app/components/Provider/WixBookingsClientProvider';
 import React from 'react';
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { constants } from '@app/components/constants';
 import StructuredData from '@app/components/SEO/StructuredData';
 import CrispChat from './components/livechat/crisp-chat';
+
+const GOOGLE_ADS_MEASUREMENT_ID_RAW =
+  process.env.NEXT_PUBLIC_GOOGLE_ADS_ID ?? '';
+/** Allow only Google Ads tag id shape to avoid breaking inline scripts. */
+const GOOGLE_ADS_MEASUREMENT_ID = /^AW-\d+$/.test(GOOGLE_ADS_MEASUREMENT_ID_RAW)
+  ? GOOGLE_ADS_MEASUREMENT_ID_RAW
+  : '';
 
 /**
  * Using force dynamic so changes in business assets (e.g. services) are immediately reflected.
@@ -91,6 +99,18 @@ export default function RootLayout(layoutProps: any) {
   return (
     <html lang="en">
       <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_MEASUREMENT_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-ads-gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GOOGLE_ADS_MEASUREMENT_ID}');
+          `}
+        </Script>
         <StructuredData />
         {/* Preload hero background video and poster for faster start */}
         <link rel="preload" as="image" href="/custom/icando-move-truck.jpg" />

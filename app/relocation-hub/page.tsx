@@ -42,7 +42,7 @@ const Page = () => {
         </div>
       </div> */}
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="w-full rounded-2xl overflow-hidden mx-auto h-full text-black flex flex-col lg:grid lg:grid-cols-3 items-center justify-center gap-4">
+        <div className="w-full rounded-2xl overflow-hidden mx-auto h-full text-black flex flex-col lg:grid lg:grid-cols-3 gap-4">
           {isLoading ||
             (isFetching && (
               <div className="flex items-center justify-center">
