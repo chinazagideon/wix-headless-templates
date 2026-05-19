@@ -5,7 +5,7 @@ export const constants = {
   companyAddress: '246 Hatcher Road',
   companyCity: 'Winnipeg',
   companyProvince: 'MB',
-  companyPostalCode: '(R2J 0S8)',
+  companyPostalCode: 'R2J 0S8',
   companyCountry: 'Canada',
   companyWebsite: 'https://icandomovers.ca',
   companyLogo: '/custom/logo.svg',
