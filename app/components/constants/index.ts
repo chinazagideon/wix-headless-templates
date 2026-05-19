@@ -2,7 +2,7 @@ export const constants = {
   phoneNumber: '+1 (204) 229-5871',
   companyName: 'ICANDO Movers',
   companyEmail: 'info@icandomovers.ca',
-  companyAddress: '246 Hatcher Road',
+  companyAddress: '463 Dawson road north',
   companyCity: 'Winnipeg',
   companyProvince: 'MB',
   companyPostalCode: 'R2C 3W7',
