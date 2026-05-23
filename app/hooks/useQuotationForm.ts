@@ -31,6 +31,7 @@ export interface FormData {
   stairs_count?: string;
   moving_date_and_time?: string;
   destination_building_type?: string;
+  form_type?: string;
 }
 
 export const useQuotationForm = () => {
@@ -85,6 +86,7 @@ export const useQuotationForm = () => {
     'moving_address_date_and_time',
     'moving_date_and_time',
     'destination_building_type',
+    'form_type',
   ];
 
   const updateFormData = useCallback(
@@ -147,6 +149,10 @@ export const useQuotationForm = () => {
 
   const isEmailOrPhone = useCallback((value: string) => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\d{10}$/.test(value);
+  }, []);
+
+  const compareValue = useCallback((value: string, compare: string) => {
+    return value.includes(compare);
   }, []);
 
   const validateForm = useCallback((data: FormData) => {
@@ -220,6 +226,7 @@ export const useQuotationForm = () => {
           if (key === 'phone_9f17') {
             sanitized[key] = normalizePhoneE164(String(value));
           } else if (key === 'moving_address_date_and_time') {
+            sanitized['form_type'] = 'Quote Form';
             const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
             // sanitized[key] = utcDate.toISOString();
             // sanitized[key] = new Date(String(value)).toISOString();
@@ -255,6 +262,7 @@ export const useQuotationForm = () => {
       console.error(e);
     }
   }, [formData, validateForm, onSubmit]);
+  const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   const isStepValid = useCallback(
     (step: number) => {
@@ -268,11 +276,12 @@ export const useQuotationForm = () => {
               formData.destination_building_type
           );
         case 3:
-          return (
+          return Boolean(
             formData.moving_address &&
-            formData.first_name &&
-            formData.email_e1ca &&
-            formData.moving_address_date_and_time
+              formData.first_name &&
+              formData.email_e1ca &&
+              formData.moving_address_date_and_time
+            // && (!isMovingHelp && !formData.unloading_address)
           );
         default:
           return false;
@@ -339,5 +348,6 @@ export const useQuotationForm = () => {
     // Computed
     isStepValid,
     isEmailOrPhone,
+    compareValue,
   };
 };

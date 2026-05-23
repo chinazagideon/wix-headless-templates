@@ -9,6 +9,7 @@ import ThemeButton from '../Button/ThemeButton';
 import AddressAutocomplete from '@app/components/AddressAutocomplete';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 import { constants } from '@app/components/constants';
+import { useQuotationForm } from '@app/hooks/useQuotationForm';
 
 const QuoteComponent = ({ services }: { services: any[] }) => {
   const {
@@ -18,9 +19,12 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     formId,
     onSubmit,
   } = useForms(process.env.NEXT_PUBLIC_WIX_FORM_ID || '');
+  const { compareValue } = useQuotationForm();
+
   const [isCompleted, setIsCompleted] = useState(false);
   const successRef = useRef<HTMLDivElement | null>(null);
   const dateTimeRef = useRef<HTMLInputElement | null>(null);
+  const quick_form = 'Quick Form';
 
   const [formData, setFormData] = useState({
     first_name: '',
@@ -33,6 +37,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     moving_address_date_and_time: '',
     moving_date_and_time: '',
     hp_field: '',
+    form_type: quick_form,
   });
   const [errors, setErrors] = useState<
     Partial<Record<keyof typeof formData, string>>
@@ -58,6 +63,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       setErrors(rest);
     }
   };
+  const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   const validateForm = (data: typeof formData) => {
     const newErrors: Partial<Record<keyof typeof formData, string>> = {};
@@ -94,9 +100,12 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     }
 
     // Final destination / Unloading address
-    // if (!data.unloading_address || !data.unloading_address.trim()) {
-    //   newErrors.unloading_address = 'Final destination is required';
-    // }
+    if (
+      !isMovingHelp &&
+      (!data.unloading_address || !data.unloading_address.trim())
+    ) {
+      newErrors.unloading_address = 'Final destination is required';
+    }
 
     // Moving date and time (must be valid date-time)
     if (
@@ -165,6 +174,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
           moving_address_date_and_time: '',
           moving_date_and_time: '',
           hp_field: '',
+          form_type: quick_form,
         });
         setErrors({});
         // Optional scroll and native form reset
@@ -188,6 +198,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     'moving_address',
     'unloading_address',
     'moving_date_and_time',
+    'form_type',
   ];
 
   const isFormValid = Object.keys(validateForm(formData)).length === 0;
@@ -398,68 +409,46 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     })
                   }
                   placeholder="City / Province"
-                  label={`Where is the pickup or loading?`}
+                  label={`${
+                    !isMovingHelp
+                      ? 'Where is the pickup or loading?'
+                      : 'Where are you located?'
+                  }`}
                   className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                   fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   labelClassName="text-gray-400 dark:text-white text-sm"
                   required={true}
                 />
-                {/* <label
-                  htmlFor="pickup_l"
-                  className="text-gray-400 dark:text-white text-sm font-outfit font-light"
-                >
-                  Pickup Location <span className="">*</span>
-                </label>
-                <input
-                  type="tel"
-                  id="pickup"
-                  className="w-full rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
-                  name="moving_address"
-                  value={formData.moving_address}
-                  onChange={handleChange}
-                  required
-                />*/}
                 {errors.moving_address && (
                   <p className="text-red-500 text-xs">
                     {errors.moving_address}
                   </p>
                 )}
               </div>
-              <div className="flex flex-col gap-2 w-full mt-2">
-                <AddressAutocomplete
-                  value={formData.unloading_address}
-                  onChange={(address) =>
-                    handleChange({
-                      target: { name: 'unloading_address', value: address },
-                    })
-                  }
-                  placeholder="City / Province"
-                  label="Where are you moving to? (if applicable)"
-                  className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                  fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
-                  labelClassName="text-gray-400 dark:text-white text-sm"
-                />
-                {/* <label
-                  htmlFor="final_d"
-                  className="text-gray-400 dark:text-white text-sm font-outfit font-light"
-                >
-                  Final Destination <span className="text-theme-orange">*</span>
-                </label>
-                <input
-                  type="tel"
-                  id="final"
-                  className="w-full rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
-                  name="unloading_address"
-                  value={formData.unloading_address}
-                  onChange={handleChange}
-                  required
-                />*/}
-                {errors.unloading_address && (
-                  <p className="text-red-500 text-xs">
-                    {errors.unloading_address}
-                  </p>
-                )}
-              </div>
+              {!isMovingHelp && (
+                <div className="flex flex-col gap-2 w-full mt-2">
+                  <AddressAutocomplete
+                    value={formData.unloading_address}
+                    onChange={(address) =>
+                      handleChange({
+                        target: { name: 'unloading_address', value: address },
+                      })
+                    }
+                    placeholder="City / Province"
+                    required={true}
+                    label="Where are you moving to?"
+                    className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                    fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
+                    labelClassName="text-gray-400 dark:text-white text-sm"
+                  />
+
+                  {errors.unloading_address && (
+                    <p className="text-red-500 text-xs">
+                      {errors.unloading_address}
+                    </p>
+                  )}
+                </div>
+              )}
 
               <div className="flex flex-col gap-2 w-full mt-2">
                 {/* <p className="text-gray-400 dark:text-white text-sm font-outfit font-light">

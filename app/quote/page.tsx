@@ -75,6 +75,7 @@ export default function QuotationPage() {
     handleSubmit,
     handleStepValidation,
     isStepValid,
+    compareValue,
   } = useQuotationForm();
 
   type IconType = typeof HomeIcon;
@@ -93,6 +94,8 @@ export default function QuotationPage() {
     const firstWord = serviceName.trim().split(/\s+/)[0].toLowerCase();
     return iconByKeyword[firstWord] ?? TruckIcon;
   };
+
+  const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   return (
     <>
@@ -336,7 +339,6 @@ export default function QuotationPage() {
                         <option value="House">House</option>
                         <option value="Office">Office</option>
                         <option value="Condo">Condo</option>
-                        <option value="other">Other</option>
                       </select>
                       {errors.building_type_str && (
                         <p className="text-red-500 text-xs">
@@ -369,7 +371,6 @@ export default function QuotationPage() {
                         <option value="House">House</option>
                         <option value="Office">Office</option>
                         <option value="Condo">Condo</option>
-                        <option value="other">Other</option>
                       </select>
                       {errors.destination_building_type && (
                         <p className="text-red-500 text-xs">
@@ -495,7 +496,7 @@ export default function QuotationPage() {
                         </p>
                       )}
                     </label>
-                    <label className="block">
+                    <div className="flex flex-col gap-2 w-full">
                       <label
                         htmlFor="moving_datetime"
                         className="text-gray-700 font-medium text-sm"
@@ -524,17 +525,21 @@ export default function QuotationPage() {
                           {errors.moving_address_date_and_time}
                         </p>
                       )}
-                    </label>
+                    </div>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="flex flex-col">
+                  <div className="flex flex-row w-full gap-6">
+                    <div className="flex flex-col w-full">
                       <AddressAutocomplete
                         value={formData.moving_address}
                         onChange={(address) =>
                           updateFormData('moving_address', address)
                         }
                         placeholder="City / Province"
-                        label={`Where is the pickup or loading?`}
+                        label={`${
+                          !isMovingHelp
+                            ? 'Where is the pickup or loading?'
+                            : 'Where are you located?'
+                        }`}
                         fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium text-sm"
@@ -546,25 +551,27 @@ export default function QuotationPage() {
                         </p>
                       )}
                     </div>
-
-                    <div className="flex flex-col">
-                      <AddressAutocomplete
-                        value={formData.unloading_address}
-                        onChange={(address) =>
-                          updateFormData('unloading_address', address)
-                        }
-                        placeholder="City / Province"
-                        label="Where are you moving to? (if applicable)"
-                        fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
-                        className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                        labelClassName="text-gray-700 font-medium text-sm"
-                      />
-                      {errors.unloading_address && (
-                        <p className="text-red-500 text-xs mt-1">
-                          {errors.unloading_address}
-                        </p>
-                      )}
-                    </div>
+                    {!isMovingHelp && (
+                      <div className="flex flex-col w-full">
+                        <AddressAutocomplete
+                          value={formData.unloading_address}
+                          onChange={(address) =>
+                            updateFormData('unloading_address', address)
+                          }
+                          required={true}
+                          placeholder="City / Province"
+                          label="Where are you moving to?"
+                          fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
+                          className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                          labelClassName="text-gray-700 font-medium text-sm"
+                        />
+                        {errors.unloading_address && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.unloading_address}
+                          </p>
+                        )}
+                      </div>
+                    )}
                   </div>
                   <div className="flex flex-col gap-4 hidden">
                     <label className="block">
