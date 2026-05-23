@@ -94,22 +94,26 @@ export default function InlineDateTimePicker({
     <div className="w-full max-w-5xl mx-auto">
       {selectedDate && displayTime && (
         <div className="mb-6 p-4 bg-theme-orange/10 rounded-xl border border-theme-orange/20">
-          <div className="flex items-center justify-center space-x-4">
-            <Calendar className="w-5 h-5 text-theme-orange" />
-            <span className="text-lg font-outfit font-semibold text-gray-900">
-              {formatDateForDisplay(selectedDate)}
-            </span>
-            <Clock className="w-5 h-5 text-theme-orange" />
-            <span className="text-lg font-outfit font-semibold text-gray-900">
-              {displayTime}
-            </span>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+            <div className="flex items-center gap-2">
+              <Calendar className="w-5 h-5 text-theme-orange shrink-0" />
+              <span className="text-base sm:text-lg font-outfit font-semibold text-gray-900 text-center">
+                {formatDateForDisplay(selectedDate)}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-5 h-5 text-theme-orange shrink-0" />
+              <span className="text-base sm:text-lg font-outfit font-semibold text-gray-900">
+                {displayTime}
+              </span>
+            </div>
           </div>
         </div>
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         {/* Calendar (same as popover DateTimePicker, but inline) */}
-        <div className="flex lg:flex-row flex-col bg-white justify-center items-right lg:px-16 px-0">
+        <div className="flex flex-col bg-white justify-center items-center w-full">
           <DayPicker
             mode="single"
             selected={selectedDate ?? undefined}
@@ -128,11 +132,7 @@ export default function InlineDateTimePicker({
         </div>
 
         {/* Time Picker */}
-        <div className="flex lg:flex-row flex-col bg-white lg:mt-6 ml-0">
-          <h3 className="text-gray-900 text-base font-medium mb-5 text-center">
-            {/* {selectedDate ? formatDateForDisplay(selectedDate) : ''} */}
-          </h3>
-
+        <div className="flex flex-col bg-white w-full">
           <TimePickerDropdown
             value={selectedTime}
             onChange={handleTimeChange}

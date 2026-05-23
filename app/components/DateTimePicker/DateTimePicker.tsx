@@ -60,15 +60,20 @@ export default function DateTimePicker(props: DateTimePickerProps) {
       setTempTime('');
     }
     setIsOpen(true);
+    document.body.style.overflow = 'hidden';
   };
 
-  const close = () => setIsOpen(false);
+  const close = () => {
+    setIsOpen(false);
+    document.body.style.overflow = '';
+  };
 
   const commit = () => {
     if (!tempDate || !tempTime) return;
     const composed = `${format(tempDate, 'yyyy-MM-dd')}T${tempTime}`;
     onChange(composed);
     setIsOpen(false);
+    document.body.style.overflow = '';
   };
 
   useEffect(() => {
@@ -84,6 +89,7 @@ export default function DateTimePicker(props: DateTimePickerProps) {
     return () => {
       document.removeEventListener('mousedown', handleOutside);
       document.removeEventListener('touchstart', handleOutside);
+      document.body.style.overflow = '';
     };
   }, [isOpen]);
 
@@ -108,72 +114,85 @@ export default function DateTimePicker(props: DateTimePickerProps) {
       </button>
 
       {isOpen && (
-        <div
-          className={`absolute z-50 mt-2 max-w-sm rounded-lg border border-theme-orange/30 bg-[#0b2447] text-white shadow-xl ${popoverClassName}`}
-        >
-          <div className="flex items-center justify-between px-3 py-2 border-b border-theme-orange/20">
-            <span className="text-sm text-gray-200">Pick date & time</span>
-            <button
-              type="button"
-              className="text-gray-400 hover:text-white"
-              aria-label="Close"
-              onClick={close}
-            >
-              <CloseIcon className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="p-3">
-            <DayPicker
-              mode="single"
-              selected={tempDate}
-              onSelect={setTempDate}
-              disabled={{ before: new Date() }}
-              styles={{
-                caption: { color: '#fff' },
-                head_cell: { color: '#94a3b8' },
-                day: { color: '#e2e8f0' },
-              }}
-              modifiersStyles={{
-                selected: { backgroundColor: '#f97316', color: '#000' },
-              }}
-            />
-            <div className="mt-2  max-w-[min-content]">
-              <TimePickerDropdown
-                value={tempTime}
-                onChange={setTempTime}
-                disabled={!tempDate}
-                minTime="08:00"
-                maxTime="18:00"
-                interval={30}
-              />
+        <>
+          {/* Tap-to-dismiss backdrop — mobile only */}
+          <div
+            className="fixed inset-0 z-40 bg-black/40 sm:hidden"
+            aria-hidden="true"
+            onClick={close}
+          />
+
+          {/* Picker panel — bottom-sheet on mobile, absolute popover on sm+ */}
+          <div
+            className={`
+              fixed bottom-0 left-0 right-0 z-50
+              sm:absolute sm:bottom-auto sm:left-0 sm:right-auto sm:top-full sm:mt-2
+              sm:min-w-[300px] sm:max-w-[360px]
+              rounded-t-2xl sm:rounded-lg
+              border border-theme-orange/30
+              bg-[#0b2447] text-white shadow-xl
+              ${popoverClassName}
+            `}
+          >
+            <div className="flex items-center justify-between px-3 py-2 border-b border-theme-orange/20">
+              <span className="text-sm text-gray-200">Pick date & time</span>
+              <button
+                type="button"
+                className="text-gray-400 hover:text-white"
+                aria-label="Close"
+                onClick={close}
+              >
+                <CloseIcon className="w-4 h-4" />
+              </button>
             </div>
-            {/* <label className="block text-xs text-gray-300 mb-1">Time</label>
-              <input
-                type="time"
-                value={tempTime}
-                onChange={(e) => setTempTime(e.target.value)}
-                className="w-full py-2 px-3 rounded border border-theme-orange/30 bg-[#011a34] text-gray-200 focus:border-theme-orange"
-              />
-              */}
+            <div className="p-3">
+              <div className="w-full overflow-x-hidden">
+                <DayPicker
+                  mode="single"
+                  selected={tempDate}
+                  onSelect={setTempDate}
+                  disabled={{ before: new Date() }}
+                  styles={{
+                    caption: { color: '#fff' },
+                    head_cell: { color: '#94a3b8' },
+                    day: { color: '#e2e8f0' },
+                  }}
+                  modifiersStyles={{
+                    selected: { backgroundColor: '#f97316', color: '#000' },
+                  }}
+                />
+              </div>
+              <div className="mt-2 w-full">
+                <TimePickerDropdown
+                  value={tempTime}
+                  onChange={setTempTime}
+                  disabled={!tempDate}
+                  minTime="08:00"
+                  maxTime="18:00"
+                  interval={30}
+                  labelClassName="text-white"
+                />
+              </div>
+            </div>
+            <div className="flex items-center justify-end gap-2 p-3 border-t border-theme-orange/20">
+              <button
+                type="button"
+                className="px-3 py-1.5 rounded text-sm text-gray-300 hover:text-white"
+                onClick={close}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="px-3 py-1.5 rounded text-sm bg-theme-orange text-black hover:bg-orange-500 disabled:opacity-50"
+                onClick={commit}
+                disabled={!tempDate || !tempTime}
+              >
+                Done
+              </button>
+            </div>
           </div>
-          <div className="flex items-center justify-end gap-2 p-3 border-t border-theme-orange/20">
-            <button
-              type="button"
-              className="px-3 py-1.5 rounded text-sm text-gray-300 hover:text-white"
-              onClick={close}
-            >
-              Cancel
-            </button>
-            <button
-              type="button"
-              className="px-3 py-1.5 rounded text-sm bg-theme-orange text-black hover:bg-orange-500 disabled:opacity-50"
-              onClick={commit}
-              disabled={!tempDate || !tempTime}
-            >
-              Done
-            </button>
-          </div>
-        </div>
+        </>
       )}
 
       <style jsx global>{`

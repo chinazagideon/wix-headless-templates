@@ -20,6 +20,7 @@ interface TimePickerDropdownProps {
   minTime?: string; // HH:mm format
   maxTime?: string; // HH:mm format
   interval?: number; // minutes
+  labelClassName?: string;
 }
 
 /**
@@ -38,6 +39,7 @@ export default function TimePickerDropdown({
   minTime = '08:00',
   maxTime = '18:00',
   interval = 30,
+  labelClassName = 'text-gray-700',
 }: TimePickerDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
@@ -104,7 +106,7 @@ export default function TimePickerDropdown({
   useEffect(() => {
     if (!isOpen) return;
 
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
@@ -114,12 +116,16 @@ export default function TimePickerDropdown({
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
   }, [isOpen]);
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="block text-sm text-white mb-1.5">Pick a time</label>
+      <label className={`block text-sm mb-1.5 ${labelClassName}`}>Pick a time</label>
       <button
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -144,7 +150,7 @@ export default function TimePickerDropdown({
       </button>
 
       {isOpen && !disabled && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 sm:max-h-60 overflow-auto">
           <div className="py-1">
             {timeSlots.map(({ value: timeValue, label }) => (
               <button
