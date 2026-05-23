@@ -4,15 +4,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Clock } from 'lucide-react';
 import { useUserTimezone } from '@app/hooks/useFormattedTimezone';
 
-/**
- * TimePickerDropdownProps interface
- * @param value - The value of the time picker
- * @param onChange - The function to call when the time changes
- * @param disabled - Whether the time picker is disabled
- * @param minTime - The minimum time
- * @param maxTime - The maximum time
- * @param interval - The interval of the time picker
- */
 interface TimePickerDropdownProps {
   value: string;
   onChange: (time: string) => void;
@@ -23,15 +14,6 @@ interface TimePickerDropdownProps {
   labelClassName?: string;
 }
 
-/**
- * TimePickerDropdown component
- * @param value - The value of the time picker
- * @param onChange - The function to call when the time changes
- * @param disabled - Whether the time picker is disabled
- * @param minTime - The minimum time
- * @param maxTime - The maximum time
- * @param interval - The interval of the time picker
- */
 export default function TimePickerDropdown({
   value,
   onChange,
@@ -42,11 +24,12 @@ export default function TimePickerDropdown({
   labelClassName = 'text-gray-700',
 }: TimePickerDropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [dropUp, setDropUp] = useState(false);
   const [displayValue, setDisplayValue] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const userTimezone = useUserTimezone();
 
-  // Generate time slots
   const timeSlots = (() => {
     const slots = [];
     const [minHour, minMinute] = minTime.split(':').map(Number);
@@ -103,6 +86,14 @@ export default function TimePickerDropdown({
     );
   }, [value, userTimezone]);
 
+  // Decide whether the dropdown should open upward to avoid viewport overflow.
+  useEffect(() => {
+    if (!isOpen || !buttonRef.current) return;
+    const rect = buttonRef.current.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    setDropUp(spaceBelow < 220);
+  }, [isOpen]);
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -127,6 +118,7 @@ export default function TimePickerDropdown({
     <div className="relative" ref={dropdownRef}>
       <label className={`block text-sm mb-1.5 ${labelClassName}`}>Pick a time</label>
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         className={`
@@ -150,7 +142,13 @@ export default function TimePickerDropdown({
       </button>
 
       {isOpen && !disabled && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-48 sm:max-h-60 overflow-auto">
+        <div
+          className={`
+            absolute z-10 w-full bg-white border border-gray-200 rounded-lg shadow-lg
+            max-h-48 sm:max-h-60 overflow-auto
+            ${dropUp ? 'bottom-full mb-1' : 'top-full mt-1'}
+          `}
+        >
           <div className="py-1">
             {timeSlots.map(({ value: timeValue, label }) => (
               <button
@@ -175,11 +173,6 @@ export default function TimePickerDropdown({
           </div>
         </div>
       )}
-
-      {/* <p className="text-xs mt-1.5 text-xs text-gray-500">
-        Available between {timeSlots[0].label} and{' '}
-        {timeSlots[timeSlots.length - 1].label} in {interval} minute intervals
-      </p> */}
     </div>
   );
 }
