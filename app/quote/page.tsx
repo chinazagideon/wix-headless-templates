@@ -527,7 +527,7 @@ export default function QuotationPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-row w-full gap-6">
+                  <div className="flex md:flex-row flex-col w-full gap-6">
                     <div className="flex flex-col w-full">
                       <AddressAutocomplete
                         value={formData.moving_address}
