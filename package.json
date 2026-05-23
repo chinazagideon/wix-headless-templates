@@ -20,6 +20,7 @@
     "@wix/crm": "^1.0.957",
     "@wix/data": "^1.0.277",
     "@wix/forms": "^1.0.287",
+    "@wix/headless-components": "^0.0.0",
     "@wix/members": "^1.0.38",
     "@wix/pricing-plans": "^1.0.17",
     "@wix/redirects": "^1.0.97",

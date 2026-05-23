@@ -18,52 +18,52 @@ export default function Page() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [showVideo, setShowVideo] = useState(false);
-  useEffect(() => {
-    // Prefetch high-traffic routes
-    router.prefetch(routes.quotation);
-    router.prefetch(routes.services);
-    router.prefetch(routes.about);
-  }, [router]);
+  // useEffect(() => {
+  //   // Prefetch high-traffic routes
+  //   router.prefetch(routes.quotation);
+  //   router.prefetch(routes.services);
+  //   router.prefetch(routes.about);
+  // }, [router]);
 
   // Attempt to autoplay background video on mount (especially for iOS/Android mobile)
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-    // Ensure muted/inline before attempting to play
-    video.muted = true;
-    video.defaultMuted = true;
-    // Some browsers require an explicit play() call after setting props
-    const tryPlay = async () => {
-      try {
-        await video.play();
-        setShowVideo(true);
-      } catch (_err) {
-        setShowVideo(false);
-      }
-    };
-    const onCanPlay = () => {
-      if (video.paused) {
-        void tryPlay();
-      }
-    };
-    video.addEventListener('canplay', onCanPlay);
-    void tryPlay();
+  // useEffect(() => {
+  //   const video = videoRef.current;
+  //   if (!video) return;
+  // Ensure muted/inline before attempting to play
+  // video.muted = true;
+  // video.defaultMuted = true;
+  // Some browsers require an explicit play() call after setting props
+  //   const tryPlay = async () => {
+  //     try {
+  //       await video.play();
+  //       setShowVideo(true);
+  //     } catch (_err) {
+  //       setShowVideo(false);
+  //     }
+  //   };
+  //   const onCanPlay = () => {
+  //     if (video.paused) {
+  //       void tryPlay();
+  //     }
+  //   };
+  //   video.addEventListener('canplay', onCanPlay);
+  //   void tryPlay();
 
-    // As a fallback, attempt play on first user interaction
-    const onUserInteract = () => {
-      void tryPlay();
-      window.removeEventListener('touchstart', onUserInteract);
-      window.removeEventListener('click', onUserInteract);
-    };
-    window.addEventListener('touchstart', onUserInteract, { once: true });
-    window.addEventListener('click', onUserInteract, { once: true });
+  //   // As a fallback, attempt play on first user interaction
+  //   const onUserInteract = () => {
+  //     void tryPlay();
+  //     window.removeEventListener('touchstart', onUserInteract);
+  //     window.removeEventListener('click', onUserInteract);
+  //   };
+  //   window.addEventListener('touchstart', onUserInteract, { once: true });
+  //   window.addEventListener('click', onUserInteract, { once: true });
 
-    return () => {
-      video.removeEventListener('canplay', onCanPlay);
-      window.removeEventListener('touchstart', onUserInteract);
-      window.removeEventListener('click', onUserInteract);
-    };
-  }, []);
+  //   return () => {
+  //     video.removeEventListener('canplay', onCanPlay);
+  //     window.removeEventListener('touchstart', onUserInteract);
+  //     window.removeEventListener('click', onUserInteract);
+  //   };
+  // }, []);
   // const { weatherData, loading, error } = useWeather();
   const { services, isLoading, error: wixError } = useWixServices();
 
@@ -89,7 +89,7 @@ export default function Page() {
             ></div>
 
             {/* Video Background */}
-            <video
+            {/* <video
               ref={videoRef}
               autoPlay
               loop
@@ -113,7 +113,7 @@ export default function Page() {
             >
               <source src="/custom/videos/icandomovers.mp4" type="video/mp4" />
               Your browser does not support the video tag.
-            </video>
+            </video> */}
 
             {/* Dark Overlay for better text readability */}
             <div className="absolute inset-0 bg-black/60"></div>
