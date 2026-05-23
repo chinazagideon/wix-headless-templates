@@ -27,6 +27,7 @@ interface AddressAutocompleteProps {
   labelClassName?: string;
   showLabel?: boolean;
   all?: boolean;
+  required?: boolean;
 }
 
 /**
@@ -71,6 +72,7 @@ export default function AddressAutocomplete({
   labelClassName = '',
   showLabel = true,
   all = false,
+  required = false,
 }: AddressAutocompleteProps) {
   // const [suggestions, setSuggestions] = useState<GoogleAutocompleteResponse[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -242,10 +244,13 @@ export default function AddressAutocomplete({
     <div className={`relative ${className}`}>
       <label className="block">
         {showLabel && (
-          <span
-            className={`font-medium ${labelClassName}`}
-            dangerouslySetInnerHTML={{ __html: label || '' }}
-          />
+          <>
+            <span
+              className={`font-medium ${labelClassName}`}
+              dangerouslySetInnerHTML={{ __html: label || '' }}
+            />
+            {required && <span className="text-red-500 text-xs ml-1">*</span>}
+          </>
         )}
         <div className="relative mt-2">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

@@ -171,27 +171,28 @@ export const useQuotationForm = () => {
     if (!data.first_name || !data.first_name.trim()) {
       newErrors.first_name = 'First name is required';
     }
-    if (!data.last_name || !data.last_name.trim()) {
-      newErrors.last_name = 'Last name is required';
-    }
+    // if (!data.last_name || !data.last_name.trim()) {
+    //   newErrors.last_name = 'Last name is required';
+    // }
     if (!data.email_e1ca || !data.email_e1ca.trim()) {
       newErrors.email_e1ca = 'Email is required';
     } else if (!/^\S+@\S+\.\S+$/.test(data.email_e1ca)) {
       newErrors.email_e1ca = 'Enter a valid email address';
     }
     const digits = (data.phone_9f17 || '').replace(/\D/g, '');
-    if (!digits) {
-      newErrors.phone_9f17 = 'Phone number is required';
-    } else if (digits.length < 10) {
+    // if (!digits) {
+    //   newErrors.phone_9f17 = 'Phone number is required';
+    // } else
+    if (digits && digits.length < 10) {
       newErrors.phone_9f17 = 'Enter a valid phone number';
     }
 
     if (!data.moving_address || !data.moving_address.trim()) {
       newErrors.moving_address = 'Pickup location is required';
     }
-    if (!data.unloading_address || !data.unloading_address.trim()) {
-      newErrors.unloading_address = 'Final destination is required';
-    }
+    // if (!data.unloading_address || !data.unloading_address.trim()) {
+    //   newErrors.unloading_address = 'Final destination is required';
+    // }
 
     if (
       !data.moving_address_date_and_time ||
@@ -220,7 +221,7 @@ export const useQuotationForm = () => {
             sanitized[key] = normalizePhoneE164(String(value));
           } else if (key === 'moving_address_date_and_time') {
             const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
-            sanitized[key] = utcDate.toISOString();
+            // sanitized[key] = utcDate.toISOString();
             // sanitized[key] = new Date(String(value)).toISOString();
             sanitized['moving_date_and_time'] = new Date(
               String(value)
@@ -269,11 +270,8 @@ export const useQuotationForm = () => {
         case 3:
           return (
             formData.moving_address &&
-            formData.unloading_address &&
             formData.first_name &&
-            formData.last_name &&
             formData.email_e1ca &&
-            formData.phone_9f17 &&
             formData.moving_address_date_and_time
           );
         default:

@@ -31,6 +31,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     unloading_address: '',
     service_type: '',
     moving_address_date_and_time: '',
+    moving_date_and_time: '',
     hp_field: '',
   });
   const [errors, setErrors] = useState<
@@ -63,26 +64,27 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
 
     // First name
     if (!data.first_name || !data.first_name.trim()) {
-      newErrors.first_name = 'First name is required';
+      newErrors.first_name = 'Name is required';
     }
 
     // Last name
-    if (!data.last_name || !data.last_name.trim()) {
-      newErrors.last_name = 'Last name is required';
-    }
+    // if (!data.last_name || !data.last_name.trim()) {
+    //   newErrors.last_name = 'Last name is required';
+    // }
 
     // Email
     if (!data.email_e1ca || !data.email_e1ca.trim()) {
-      newErrors.email_e1ca = 'Email is required';
+      newErrors.email_e1ca = 'Email address is required';
     } else if (!/^\S+@\S+\.\S+$/.test(data.email_e1ca)) {
       newErrors.email_e1ca = 'Enter a valid email address';
     }
 
     // Phone (basic digit length check)
     const digits = (data.phone_9f17 || '').replace(/\D/g, '');
-    if (!digits) {
-      newErrors.phone_9f17 = 'Phone number is required';
-    } else if (digits.length < 10) {
+    // if (!digits) {
+    //   newErrors.phone_9f17 = 'Phone number is required';
+    // } else
+    if (digits && digits.length < 10) {
       newErrors.phone_9f17 = 'Enter a valid phone number';
     }
 
@@ -92,9 +94,9 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     }
 
     // Final destination / Unloading address
-    if (!data.unloading_address || !data.unloading_address.trim()) {
-      newErrors.unloading_address = 'Final destination is required';
-    }
+    // if (!data.unloading_address || !data.unloading_address.trim()) {
+    //   newErrors.unloading_address = 'Final destination is required';
+    // }
 
     // Moving date and time (must be valid date-time)
     if (
@@ -136,9 +138,9 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
         //   formData.moving_address_date_and_time,
         //   'America/Winnipeg'
         // ).toISOString(),
-        moving_address_date_and_time: new Date(
-          formData.moving_address_date_and_time
-        ).toUTCString(),
+        moving_date_and_time: new Date(
+          String(formData.moving_address_date_and_time)
+        ).toLocaleString('en-US', { timeZone: 'America/Winnipeg' }),
       } as typeof formData;
       const sanitized = Object.fromEntries(
         Object.entries(base).filter(
@@ -161,6 +163,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
           unloading_address: '',
           service_type: '',
           moving_address_date_and_time: '',
+          moving_date_and_time: '',
           hp_field: '',
         });
         setErrors({});
@@ -184,7 +187,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
     'service_type',
     'moving_address',
     'unloading_address',
-    'moving_address_date_and_time',
+    'moving_date_and_time',
   ];
 
   const isFormValid = Object.keys(validateForm(formData)).length === 0;
@@ -258,12 +261,12 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     htmlFor="name"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    First Name<span className="">*</span>
+                    Name<span className="text-red-500 text-xs ml-1">*</span>
                   </label>
                   <input
                     type="text"
                     id="name"
-                    placeholder="please enter your first name "
+                    placeholder="Please enter your name"
                     className="w-full py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="first_name"
                     value={formData.first_name}
@@ -274,27 +277,6 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     <p className="text-red-500 text-xs">{errors.first_name}</p>
                   )}
                 </div>
-                <div className="flex flex-col gap-2 w-full lg:mt-0 mt-2">
-                  <label
-                    htmlFor="name"
-                    className="text-gray-400 dark:text-white text-sm font-outfit font-light"
-                  >
-                    Last Name<span className="">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    placeholder="please enter your last name"
-                    className="w-full  py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
-                    name="last_name"
-                    value={formData.last_name}
-                    onChange={handleChange}
-                    required
-                  />
-                  {errors.last_name && (
-                    <p className="text-red-500 text-xs">{errors.last_name}</p>
-                  )}
-                </div>
               </div>
               <div className="flex md:flex-row flex-col gap-2 w-full mt-2">
                 <div className="flex flex-col gap-2 w-full mt-2">
@@ -302,17 +284,17 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     htmlFor="email"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    Email Address<span className="">*</span>
+                    Email Address
+                    <span className="text-red-500 text-xs ml-1">*</span>
                   </label>
                   <input
                     type="email"
                     id="email"
-                    placeholder="please enter your email address"
+                    placeholder="yourname@example.com"
                     className="w-full  py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] focus:border-theme-orange active:border-theme-orange"
                     name="email_e1ca"
                     value={formData.email_e1ca}
                     onChange={handleChange}
-                    required
                   />
                   {errors.email_e1ca && (
                     <p className="text-red-500 text-xs">{errors.email_e1ca}</p>
@@ -324,17 +306,19 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     htmlFor="phone"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    Phone Number<span className="">*</span>
+                    Phone Number&nbsp;
+                    <span className="text-red-500 text-xs ml-1">
+                      (optional)
+                    </span>
                   </label>
                   <input
                     type="tel"
                     id="phone"
-                    placeholder="please enter your phone number"
+                    placeholder="+1 (XXX) XXX-XXXX"
                     className="w-full  py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                     name="phone_9f17"
                     value={formData.phone_9f17}
                     onChange={handleChange}
-                    required
                   />
                   {errors.phone_9f17 && (
                     <p className="text-red-500 text-xs">{errors.phone_9f17}</p>
@@ -348,7 +332,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
                     Please select desired service
-                    <span className="">*</span>
+                    <span className="text-red-500 text-xs ml-1">*</span>
                   </label>
 
                   <select
@@ -384,7 +368,8 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     htmlFor="moving_datetime"
                     className="text-gray-400 dark:text-white text-sm font-outfit font-light"
                   >
-                    Moving Date & Time<span className="">*</span>
+                    Moving Date & Time
+                    <span className="text-red-500 text-xs ml-1">*</span>
                   </label>
                   <DateTimePicker
                     value={formData.moving_address_date_and_time}
@@ -412,11 +397,12 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                       target: { name: 'moving_address', value: address },
                     })
                   }
-                  placeholder="please enter the loading address"
-                  label={`Your Loading Address<span className="">*</span>`}
+                  placeholder="City / Province"
+                  label={`Where is the pickup or loading?`}
                   className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                   fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
-                  labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  labelClassName="text-gray-400 dark:text-white text-sm"
+                  required={true}
                 />
                 {/* <label
                   htmlFor="pickup_l"
@@ -447,11 +433,11 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                       target: { name: 'unloading_address', value: address },
                     })
                   }
-                  placeholder="please enter the unloading address"
-                  label={`Your Unloading Address<span className="">*</span>`}
+                  placeholder="City / Province"
+                  label="Where are you moving to? (if applicable)"
                   className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                   fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
-                  labelClassName="text-gray-400 dark:text-white text-sm font-outfit font-light"
+                  labelClassName="text-gray-400 dark:text-white text-sm"
                 />
                 {/* <label
                   htmlFor="final_d"

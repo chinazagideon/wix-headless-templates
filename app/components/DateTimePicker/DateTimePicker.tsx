@@ -137,7 +137,7 @@ export default function DateTimePicker(props: DateTimePickerProps) {
                 selected: { backgroundColor: '#f97316', color: '#000' },
               }}
             />
-            <div className="mt-2">
+            <div className="mt-2  max-w-[min-content]">
               <TimePickerDropdown
                 value={tempTime}
                 onChange={setTempTime}

@@ -119,14 +119,12 @@ export default function TimePickerDropdown({
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <label className="block  text-sm font-bold text-gray-600 mb-1.5">
-        Pick a time
-      </label>
+      <label className="block text-sm text-white mb-1.5">Pick a time</label>
       <button
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         className={`
-          relative w-full px-4 py-2.5 pl-12 text-left bg-white border rounded-lg
+          relative w-full px-4 py-2.5 pl-8 text-left bg-white border rounded-lg
           ${
             disabled
               ? 'cursor-not-allowed bg-gray-50 text-gray-400 border-gray-200'
@@ -135,11 +133,14 @@ export default function TimePickerDropdown({
         `}
       >
         <Clock
-          className={`w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 ${
+          size={15}
+          className={`absolute left-2 top-1/2 -translate-y-1/2 ${
             disabled ? 'text-gray-400' : 'text-gray-500'
           }`}
         />
-        <span className="block truncate">{displayValue || 'Select time'}</span>
+        <span className="block truncate text-xs">
+          {displayValue || 'Select time'}
+        </span>
       </button>
 
       {isOpen && !disabled && (
@@ -150,10 +151,10 @@ export default function TimePickerDropdown({
                 key={timeValue}
                 type="button"
                 className={`
-                  w-full px-4 py-2 text-sm text-left hover:bg-gray-100
+                  w-full px-4 py-2 text-xs text-left hover:bg-gray-100
                   ${
                     value === timeValue
-                      ? 'bg-theme-orange/10 text-theme-orange font-medium'
+                      ? 'bg-theme-orange/10 text-theme-orange'
                       : 'text-gray-900'
                   }
                 `}
@@ -169,10 +170,10 @@ export default function TimePickerDropdown({
         </div>
       )}
 
-      <p className="mt-1.5 text-xs text-gray-500">
+      {/* <p className="text-xs mt-1.5 text-xs text-gray-500">
         Available between {timeSlots[0].label} and{' '}
         {timeSlots[timeSlots.length - 1].label} in {interval} minute intervals
-      </p>
+      </p> */}
     </div>
   );
 }

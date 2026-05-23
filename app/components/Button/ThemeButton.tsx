@@ -16,9 +16,10 @@ const ThemeButton = (props: {
           type="submit"
           disabled={isSubmitting}
           onClick={handleSubmit}
-          className="capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 !font-size-10 font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case "
+          className={`capitalize rounded-full bg-theme-orange px-3 w-fit py-1.5 !font-size-10 font-outfit font-bold text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case 
+            ${isSubmitting ? 'cursor-not-allowed hover:bg-gray disabled' : ''}`}
         >
-          {children}
+          {isSubmitting ? 'loading' : children}
           <ArrowRightIcon className="w-8 h-8 rounded-full bg-[#011a34] p-1 text-white hover:scale-105 transition-all duration-200" />
         </button>
       )}

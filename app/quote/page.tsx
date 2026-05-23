@@ -378,7 +378,7 @@ export default function QuotationPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex flex-col space-y-4 w-full">
+                  <div className="flex flex-col space-y-4 w-full hidden">
                     <span className="text-gray-700 font-medium block mb-3">
                       Special items{' '}
                       <span className="text-gray-500 text-sm">(Optional)</span>
@@ -431,8 +431,8 @@ export default function QuotationPage() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
-                      <span className="text-gray-700 font-medium">
-                        First name
+                      <span className="text-gray-700 font-medium text-sm">
+                        Name
                         <span className="text-red-500 text-xs ml-1">
                           *
                         </span>{' '}
@@ -440,7 +440,7 @@ export default function QuotationPage() {
                       <input
                         type="text"
                         value={formData.first_name}
-                        placeholder="Please enter your first name"
+                        placeholder="Please enter your name"
                         onChange={(e) =>
                           updateFormData('first_name', e.target.value)
                         }
@@ -453,39 +453,12 @@ export default function QuotationPage() {
                       )}
                     </label>
                     <label className="block">
-                      <span className="text-gray-700 font-medium">
-                        Last name
-                        <span className="text-red-500 text-xs ml-1">
-                          *
-                        </span>{' '}
+                      <span className="text-gray-700 font-medium text-sm">
+                        Phone number (optional)
                       </span>
                       <input
                         type="text"
-                        placeholder="Please enter your last name"
-                        value={formData.last_name}
-                        onChange={(e) =>
-                          updateFormData('last_name', e.target.value)
-                        }
-                        className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                      />
-                      {errors.last_name && (
-                        <p className="text-red-500 text-xs">
-                          {errors.last_name}
-                        </p>
-                      )}
-                    </label>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <label className="block">
-                      <span className="text-gray-700 font-medium">
-                        Phone number
-                        <span className="text-red-500 text-xs ml-1">
-                          *
-                        </span>{' '}
-                      </span>
-                      <input
-                        type="text"
-                        placeholder="Please enter your phone number"
+                        placeholder="+1 (XXX) XXX-XXXX"
                         value={formData.phone_9f17}
                         onChange={(e) =>
                           updateFormData('phone_9f17', e.target.value)
@@ -498,8 +471,10 @@ export default function QuotationPage() {
                         </p>
                       )}
                     </label>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <label className="block">
-                      <span className="text-gray-700 font-medium">
+                      <span className="text-gray-700 font-medium text-sm">
                         Email address
                         <span className="text-red-500 text-xs ml-1">
                           *
@@ -507,7 +482,7 @@ export default function QuotationPage() {
                       </span>
                       <input
                         type="text"
-                        placeholder="Please enter your email address"
+                        placeholder="yourname@example.com"
                         value={formData.email_e1ca}
                         onChange={(e) =>
                           updateFormData('email_e1ca', e.target.value)
@@ -520,6 +495,36 @@ export default function QuotationPage() {
                         </p>
                       )}
                     </label>
+                    <label className="block">
+                      <label
+                        htmlFor="moving_datetime"
+                        className="text-gray-700 font-medium text-sm"
+                      >
+                        Moving Date & Time
+                        <span className="text-red-500 text-xs ml-1">
+                          *
+                        </span>{' '}
+                      </label>
+                      {/* <InlineDateTimePicker 
+                      value={formData.moving_address_date_and_time}
+                      onChange={(val) =>
+                        updateFormData('moving_address_date_and_time', val)
+                      }
+                    /> */}
+                      <DateTimePicker
+                        value={formData.moving_address_date_and_time}
+                        onChange={(val) =>
+                          updateFormData('moving_address_date_and_time', val)
+                        }
+                        placeholder="select moving date and time"
+                        inputClassName="w-full pr-10 py-3 rounded-lg border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange cursor-pointer"
+                      />
+                      {errors.moving_address_date_and_time && (
+                        <p className="text-red-500 text-xs">
+                          {errors.moving_address_date_and_time}
+                        </p>
+                      )}
+                    </label>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="flex flex-col">
@@ -528,11 +533,12 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('moving_address', address)
                         }
-                        placeholder="Please enter your current address"
-                        label="Current address*"
+                        placeholder="City / Province"
+                        label={`Where is the pickup or loading?`}
                         fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                        labelClassName="text-gray-700 font-medium"
+                        labelClassName="text-gray-700 font-medium text-sm"
+                        required={true}
                       />
                       {errors.moving_address && (
                         <p className="text-red-500 text-xs mt-1">
@@ -547,11 +553,11 @@ export default function QuotationPage() {
                         onChange={(address) =>
                           updateFormData('unloading_address', address)
                         }
-                        placeholder="Please enter your new address"
-                        label="New address*"
+                        placeholder="City / Province"
+                        label="Where are you moving to? (if applicable)"
                         fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                         className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                        labelClassName="text-gray-700 font-medium"
+                        labelClassName="text-gray-700 font-medium text-sm"
                       />
                       {errors.unloading_address && (
                         <p className="text-red-500 text-xs mt-1">
@@ -559,35 +565,6 @@ export default function QuotationPage() {
                         </p>
                       )}
                     </div>
-                  </div>
-
-                  <div className="flex flex-col gap-2 w-full mt-4">
-                    <label
-                      htmlFor="moving_datetime"
-                      className="text-gray-700 font-medium"
-                    >
-                      Moving Date & Time
-                      <span className="text-red-500 text-xs ml-1">*</span>{' '}
-                    </label>
-                    {/* <InlineDateTimePicker 
-                      value={formData.moving_address_date_and_time}
-                      onChange={(val) =>
-                        updateFormData('moving_address_date_and_time', val)
-                      }
-                    /> */}
-                    <DateTimePicker
-                      value={formData.moving_address_date_and_time}
-                      onChange={(val) =>
-                        updateFormData('moving_address_date_and_time', val)
-                      }
-                      placeholder="select moving date and time"
-                      inputClassName="w-full pr-10 py-3 rounded-lg border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange cursor-pointer"
-                    />
-                    {errors.moving_address_date_and_time && (
-                      <p className="text-red-500 text-xs">
-                        {errors.moving_address_date_and_time}
-                      </p>
-                    )}
                   </div>
                   <div className="flex flex-col gap-4 hidden">
                     <label className="block">
