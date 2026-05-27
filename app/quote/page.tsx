@@ -76,6 +76,8 @@ export default function QuotationPage() {
     handleStepValidation,
     isStepValid,
     compareValue,
+    formError,
+    validatePhoneField,
   } = useQuotationForm();
 
   type IconType = typeof HomeIcon;
@@ -208,6 +210,12 @@ export default function QuotationPage() {
                   <span className="text-gray-600">Loading...</span>
                 </div>
               )}
+              {Boolean(formError) && (
+                <p className="text-red-500 text-xs text-center mb-4">
+                  {(formError as any)?.message ||
+                    'An error occurred. Please try again.'}
+                </p>
+              )}
               {!isFetching && (
                 <p className="text-red-500 text-xs text-center mb-4">
                   {' '}
@@ -316,7 +324,7 @@ export default function QuotationPage() {
                     </p>
                   )}
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                  {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
                     <div className="space-y-4">
                       <label className="block">
                         <span className="text-gray-700 font-medium">
@@ -378,7 +386,7 @@ export default function QuotationPage() {
                         </p>
                       )}
                     </div>
-                  </div>
+                  </div> */}
                   <div className="flex flex-col space-y-4 w-full hidden">
                     <span className="text-gray-700 font-medium block mb-3">
                       Special items{' '}
@@ -458,12 +466,14 @@ export default function QuotationPage() {
                         Phone number (optional)
                       </span>
                       <input
-                        type="text"
+                        type="tel"
+                        maxLength={15}
                         placeholder="+1 (XXX) XXX-XXXX"
                         value={formData.phone_9f17}
                         onChange={(e) =>
                           updateFormData('phone_9f17', e.target.value)
                         }
+                        onBlur={(e) => validatePhoneField(e.target.value)}
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
                       {errors.phone_9f17 && (

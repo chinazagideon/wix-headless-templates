@@ -151,6 +151,27 @@ export const useQuotationForm = () => {
     return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) || /^\d{10}$/.test(value);
   }, []);
 
+  const validatePhoneField = useCallback((value: string) => {
+    if (!value || !value.trim()) {
+      setErrors((prev) => {
+        const { phone_9f17: _, ...rest } = prev;
+        return rest;
+      });
+      return;
+    }
+    const digits = value.replace(/\D/g, '');
+    const isValid =
+      digits.length === 10 || (digits.length === 11 && digits.startsWith('1'));
+    setErrors((prev) =>
+      isValid
+        ? (({ phone_9f17: _, ...rest }) => rest)(prev)
+        : {
+            ...prev,
+            phone_9f17: 'Enter a valid phone number (e.g. +1 204 555 1234)',
+          }
+    );
+  }, []);
+
   const compareValue = useCallback((value: string, compare: string) => {
     return value.includes(compare);
   }, []);
@@ -164,15 +185,15 @@ export const useQuotationForm = () => {
     if (!data.move_size_str || !data.move_size_str.trim()) {
       newErrors.move_size_str = 'Please select move size';
     }
-    if (!data.building_type_str || !data.building_type_str.trim()) {
-      newErrors.building_type_str = 'Please select current building type';
-    }
-    if (
-      !data.destination_building_type ||
-      !data.destination_building_type.trim()
-    ) {
-      newErrors.destination_building_type = 'Please select new building type';
-    }
+    // if (!data.building_type_str || !data.building_type_str.trim()) {
+    //   newErrors.building_type_str = 'Please select current building type';
+    // }
+    // if (
+    //   !data.destination_building_type ||
+    //   !data.destination_building_type.trim()
+    // ) {
+    //   newErrors.destination_building_type = 'Please select new building type';
+    // }
 
     if (!data.first_name || !data.first_name.trim()) {
       newErrors.first_name = 'First name is required';
@@ -186,11 +207,14 @@ export const useQuotationForm = () => {
       newErrors.email_e1ca = 'Enter a valid email address';
     }
     const digits = (data.phone_9f17 || '').replace(/\D/g, '');
-    // if (!digits) {
-    //   newErrors.phone_9f17 = 'Phone number is required';
-    // } else
-    if (digits && digits.length < 10) {
-      newErrors.phone_9f17 = 'Enter a valid phone number';
+    if (digits) {
+      const isValid =
+        digits.length === 10 ||
+        (digits.length === 11 && digits.startsWith('1'));
+      if (!isValid) {
+        newErrors.phone_9f17 =
+          'Enter a valid phone number (e.g. +1 204 555 1234)';
+      }
     }
 
     if (!data.moving_address || !data.moving_address.trim()) {
@@ -271,9 +295,9 @@ export const useQuotationForm = () => {
           return Boolean(formData.service_type);
         case 2:
           return Boolean(
-            formData.move_size_str &&
-              formData.building_type_str &&
-              formData.destination_building_type
+            formData.move_size_str
+            // && formData.building_type_str &&
+            // formData.destination_building_type
           );
         case 3:
           return Boolean(
@@ -305,16 +329,16 @@ export const useQuotationForm = () => {
         const stepErrors: Partial<Record<keyof FormData, string>> = {};
         if (validationErrors.move_size_str)
           stepErrors.move_size_str = validationErrors.move_size_str;
-        if (validationErrors.building_type_str)
-          stepErrors.building_type_str = validationErrors.building_type_str;
-        if (validationErrors.destination_building_type)
-          stepErrors.destination_building_type =
-            validationErrors.destination_building_type;
-        setErrors(stepErrors);
+        // if (validationErrors.building_type_str)
+        //   stepErrors.building_type_str = validationErrors.building_type_str;
+        // if (validationErrors.destination_building_type)
+        //   stepErrors.destination_building_type =
+        //     validationErrors.destination_building_type;
+        // setErrors(stepErrors);
         if (
-          !validationErrors.move_size_str &&
-          !validationErrors.building_type_str &&
-          !validationErrors.destination_building_type
+          !validationErrors.move_size_str
+          //  && !validationErrors.building_type_str &&
+          //   !validationErrors.destination_building_type
         )
           setCurrentStep(step + 1);
         return;
@@ -349,5 +373,6 @@ export const useQuotationForm = () => {
     isStepValid,
     isEmailOrPhone,
     compareValue,
+    validatePhoneField,
   };
 };

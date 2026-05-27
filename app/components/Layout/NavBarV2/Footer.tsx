@@ -21,6 +21,8 @@ const Footer = () => {
         />
       ),
       designerByPlaceHolder: `Designed by`,
+      designerName: 'www.evoocta.com',
+      designerAnchor: 'https://evoocta.com/',
       designerLogo: (
         <Image
           src={constants.designerLogo}
@@ -43,8 +45,8 @@ const Footer = () => {
   ];
   return (
     <>
-      <footer className="w-full h-full py-5 px-10 bg-[#f95b33]">
-        <div className="flex flex-col justify-between lg:items-start items-center gap-2 w-full lg:h-[200px]">
+      <footer className="w-full h-full py-5 md:px-10 px-6 bg-[#f95b33]">
+        <div className="flex flex-col hidden lg:block justify-between lg:items-start items-center gap-2 w-full lg:h-[200px]">
           <div className="flex lg:flex-row flex-col items-start text-black text-2xl font-outfit font-light normal-case w-full">
             <div className="flex flex-col lg:flex-row items-center gap-2 w-full">
               {contactInfo[0].logo}
@@ -61,14 +63,20 @@ const Footer = () => {
               </div>
               <div className="flex flex-row justify-center items-center gap-2 w-full hover:text-theme-orange/60 transition-all duration-300 cursor-pointer lg:w-auto">
                 <div className="flex lg:flex-row flex-col justify-between items-center gap-2 w-full">
-                  <a
-                    href={constants.bbbReviewLink}
-                    target="_blank"
-                    rel="nofollow"
-                    className="hover:opacity-80 transition-all duration-300 flex lg:flex-row flex-col items-center gap-2"
-                  >
-                    {contactInfo[0].bbbSeal}
-                  </a>
+                  <div className="flex flex-col justify-between gap-8 w-full">
+                    <div className="lg:hidden sm:block">
+                      {' '}
+                      {contactInfo[0].logo}
+                    </div>
+                    <a
+                      href={constants.bbbReviewLink}
+                      target="_blank"
+                      rel="nofollow"
+                      className="hover:opacity-80 transition-all duration-300 flex lg:flex-row flex-col items-center gap-2"
+                    >
+                      {contactInfo[0].bbbSeal}
+                    </a>
+                  </div>
                 </div>
               </div>
               <div className="flex flex-row gap-4 justify-end hidden lg:block">
@@ -79,15 +87,25 @@ const Footer = () => {
                   <p className="text-xs font-outfit font-light ">
                     {contactInfo[0].designerByPlaceHolder}
                   </p>
-                  {contactInfo[0].designerLogo}
+                  {contactInfo[0].designerName}
                 </div>
               </div>
             </div>
           </div>
           <div className="flex flex-col items-center gap-2 lg:hidden justify-center border-t-2 border-theme-orange/10 w-full mt-4 py-6">
-            <p className="text-black text-xs font-outfit font-light normal-case py-4">
+            <p className="flex text-black text-sm font-outfit font-light normal-case py-4">
               &copy; {contactInfo[0].rightComment}
             </p>
+
+            <div
+              onClick={() => window.open(constants.designer, '_blank')}
+              className="flex flex-col items-center gap-0 w-full hover:text-theme-orange/60 transition-all duration-300 cursor-pointer text-xs"
+            >
+              <p className="text-xs font-outfit font-light text-[#000]">
+                {contactInfo[0].designerByPlaceHolder}
+              </p>
+              <p className="text-[#000]">{contactInfo[0].designerName}</p>
+            </div>
           </div>
         </div>
       </footer>

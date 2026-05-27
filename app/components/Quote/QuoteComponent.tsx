@@ -65,6 +65,25 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
   };
   const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
+  const handlePhoneBlur = (value: string) => {
+    if (!value || !value.trim()) {
+      const { phone_9f17: _, ...rest } = errors;
+      setErrors(rest);
+      return;
+    }
+    const digits = value.replace(/\D/g, '');
+    const isValid =
+      digits.length === 10 || (digits.length === 11 && digits.startsWith('1'));
+    setErrors((prev) =>
+      isValid
+        ? (({ phone_9f17: _, ...rest }) => rest)(prev)
+        : {
+            ...prev,
+            phone_9f17: 'Enter a valid phone number (e.g. +1 204 555 1234)',
+          }
+    );
+  };
+
   const validateForm = (data: typeof formData) => {
     const newErrors: Partial<Record<keyof typeof formData, string>> = {};
 
@@ -85,13 +104,16 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
       newErrors.email_e1ca = 'Enter a valid email address';
     }
 
-    // Phone (basic digit length check)
+    // Phone (optional — validate format if provided)
     const digits = (data.phone_9f17 || '').replace(/\D/g, '');
-    // if (!digits) {
-    //   newErrors.phone_9f17 = 'Phone number is required';
-    // } else
-    if (digits && digits.length < 10) {
-      newErrors.phone_9f17 = 'Enter a valid phone number';
+    if (digits) {
+      const isValid =
+        digits.length === 10 ||
+        (digits.length === 11 && digits.startsWith('1'));
+      if (!isValid) {
+        newErrors.phone_9f17 =
+          'Enter a valid phone number (e.g. +1 204 555 1234)';
+      }
     }
 
     // Pickup / Moving address
@@ -328,8 +350,10 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     placeholder="+1 (XXX) XXX-XXXX"
                     className="w-full  py-3 rounded-lg bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                     name="phone_9f17"
+                    maxLength={15}
                     value={formData.phone_9f17}
                     onChange={handleChange}
+                    onBlur={(e) => handlePhoneBlur(e.target.value)}
                   />
                   {errors.phone_9f17 && (
                     <p className="text-red-500 text-xs">{errors.phone_9f17}</p>
@@ -354,7 +378,9 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                     onChange={handleChange}
                     required
                   >
-                    <option value="">Select Service</option>
+                    <option value="" selected disabled>
+                      Select Service
+                    </option>
                     {visibleServices.map((service: any, index: number) => (
                       <option
                         key={
