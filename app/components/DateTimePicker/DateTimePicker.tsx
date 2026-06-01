@@ -108,8 +108,17 @@ export default function DateTimePicker(props: DateTimePickerProps) {
       </button>
 
       {isOpen && (
+        /* Full-width on mobile, constrained popover on sm+. Stays absolute so
+           it isn't clipped by overflow-x:hidden on body. */
         <div
-          className={`absolute z-50 mt-2 max-w-sm rounded-lg border border-theme-orange/30 bg-[#0b2447] text-white shadow-xl ${popoverClassName}`}
+          className={`
+            absolute top-full mt-2 left-0 right-0 z-50
+            sm:right-auto sm:min-w-[300px] sm:max-w-[360px]
+            rounded-lg
+            border border-theme-orange/30
+            bg-[#0b2447] text-white shadow-xl
+            ${popoverClassName}
+          `}
         >
           <div className="flex items-center justify-between px-3 py-2 border-b border-theme-orange/20">
             <span className="text-sm text-gray-200">Pick date & time</span>
@@ -123,21 +132,23 @@ export default function DateTimePicker(props: DateTimePickerProps) {
             </button>
           </div>
           <div className="p-3">
-            <DayPicker
-              mode="single"
-              selected={tempDate}
-              onSelect={setTempDate}
-              disabled={{ before: new Date() }}
-              styles={{
-                caption: { color: '#fff' },
-                head_cell: { color: '#94a3b8' },
-                day: { color: '#e2e8f0' },
-              }}
-              modifiersStyles={{
-                selected: { backgroundColor: '#f97316', color: '#000' },
-              }}
-            />
-            <div className="mt-2  max-w-[min-content]">
+            <div className="w-full overflow-x-hidden flex justify-center">
+              <DayPicker
+                mode="single"
+                selected={tempDate}
+                onSelect={setTempDate}
+                disabled={{ before: new Date() }}
+                styles={{
+                  caption: { color: '#fff' },
+                  head_cell: { color: '#94a3b8' },
+                  day: { color: '#e2e8f0' },
+                }}
+                modifiersStyles={{
+                  selected: { backgroundColor: '#f97316', color: '#000' },
+                }}
+              />
+            </div>
+            <div className="mt-2 w-full">
               <TimePickerDropdown
                 value={tempTime}
                 onChange={setTempTime}
@@ -145,16 +156,9 @@ export default function DateTimePicker(props: DateTimePickerProps) {
                 minTime="08:00"
                 maxTime="18:00"
                 interval={30}
+                labelClassName="text-white"
               />
             </div>
-            {/* <label className="block text-xs text-gray-300 mb-1">Time</label>
-              <input
-                type="time"
-                value={tempTime}
-                onChange={(e) => setTempTime(e.target.value)}
-                className="w-full py-2 px-3 rounded border border-theme-orange/30 bg-[#011a34] text-gray-200 focus:border-theme-orange"
-              />
-              */}
           </div>
           <div className="flex items-center justify-end gap-2 p-3 border-t border-theme-orange/20">
             <button
