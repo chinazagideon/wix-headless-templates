@@ -122,7 +122,10 @@ export default function RootLayout(layoutProps: any) {
         />
         {/* Warm up DNS and connections for frequently used third-parties */}
         <meta httpEquiv="x-dns-prefetch-control" content="on" />
-        <meta name="facebook-domain-verification" content="e80f34nb5sz8vrxq9pyq7lq4tzle8o"/>
+        <meta
+          name="facebook-domain-verification"
+          content="e80f34nb5sz8vrxq9pyq7lq4tzle8o"
+        />
         <link rel="dns-prefetch" href="//nominatim.openstreetmap.org" />
         <link rel="preconnect" href="https://nominatim.openstreetmap.org" />
         <link rel="dns-prefetch" href="//maps.googleapis.com" />
