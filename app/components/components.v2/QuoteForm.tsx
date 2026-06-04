@@ -8,7 +8,7 @@ export default function QuoteForm() {
     formData,
     updateFormData,
     updateMoveDateTime,
-    handleSubmit,
+    handleSimpleSubmit,
     isSubmitting,
     isCompleted,
     errors,
@@ -24,7 +24,7 @@ export default function QuoteForm() {
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSubmit();
+    handleSimpleSubmit();
   };
 
   return (
@@ -150,14 +150,14 @@ export default function QuoteForm() {
             </div>
 
             <div>
-              <label className={labelCls}>Pickup Address *</label>
+              <label className={labelCls}>Pickup Province/Territory *</label>
               <input
                 value={formData.moving_address}
                 onChange={(e) =>
                   updateFormData('moving_address', e.target.value)
                 }
                 className={inputCls}
-                placeholder="123 Main St, Winnipeg, MB"
+                placeholder="Winnipeg, MB"
               />
               {errors.moving_address && (
                 <p className={errorCls}>{errors.moving_address}</p>
@@ -165,14 +165,14 @@ export default function QuoteForm() {
             </div>
 
             <div>
-              <label className={labelCls}>Delivery Address</label>
+              <label className={labelCls}>Delivery Province/Territory *</label>
               <input
                 value={formData.unloading_address}
                 onChange={(e) =>
                   updateFormData('unloading_address', e.target.value)
                 }
                 className={inputCls}
-                placeholder="456 Elm Ave, Winnipeg, MB"
+                placeholder="Winnipg, MB"
               />
             </div>
 

@@ -286,6 +286,48 @@ export const useQuotationForm = () => {
       console.error(e);
     }
   }, [formData, validateForm, onSubmit]);
+
+  // Validates only the fields present in the single-step v2 QuoteForm
+  const handleSimpleSubmit = useCallback(async () => {
+    const newErrors: Partial<Record<keyof FormData, string>> = {};
+    if (!formData.service_type?.trim())
+      newErrors.service_type = 'Please select a service';
+    if (!formData.first_name?.trim())
+      newErrors.first_name = 'First name is required';
+    if (!formData.email_e1ca?.trim()) {
+      newErrors.email_e1ca = 'Email is required';
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email_e1ca)) {
+      newErrors.email_e1ca = 'Enter a valid email address';
+    }
+    const digits = (formData.phone_9f17 || '').replace(/\D/g, '');
+    if (digits) {
+      const isValid =
+        digits.length === 10 ||
+        (digits.length === 11 && digits.startsWith('1'));
+      if (!isValid)
+        newErrors.phone_9f17 =
+          'Enter a valid phone number (e.g. +1 204 555 1234)';
+    }
+    if (!formData.moving_address?.trim())
+      newErrors.moving_address = 'Pickup location is required';
+    if (!formData.moving_address_date_and_time?.trim()) {
+      newErrors.moving_address_date_and_time =
+        'Moving date and time is required';
+    } else if (
+      isNaN(new Date(formData.moving_address_date_and_time).getTime())
+    ) {
+      newErrors.moving_address_date_and_time = 'Enter a valid date and time';
+    }
+    setErrors(newErrors);
+    if (Object.keys(newErrors).length > 0) return;
+    try {
+      await onSubmit(formData);
+      setIsCompleted(true);
+      fireQuoteLeadConversion();
+    } catch (e) {
+      console.error(e);
+    }
+  }, [formData, onSubmit]);
   const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   const isStepValid = useCallback(
@@ -367,6 +409,7 @@ export const useQuotationForm = () => {
     nextStep,
     prevStep,
     handleSubmit,
+    handleSimpleSubmit,
     handleStepValidation,
 
     // Computed

@@ -1,4 +1,4 @@
-import Nav from './components/components.v2/Nav';
+
 import Hero from './components/components.v2/Hero';
 import Stats from './components/components.v2/Stats';
 import QuoteForm from './components/components.v2/QuoteForm';
@@ -9,25 +9,10 @@ import Pricing from './components/components.v2/Pricing';
 import Included from './components/components.v2/Included';
 import Testimonials from './components/components.v2/Testimonials';
 import FAQ from './components/components.v2/FAQ';
-import DarkCTA from './components/components.v2/DarkCTA';
 import HeroWidget from './components/Widget/HeroWdget';
 
 /**
  * ICANDO Movers — Homepage
- *
- * Stack: Next.js 14+ (App Router) + Tailwind CSS
- *
- * Assets expected in /public/assets/:
- *   logo-full.png, favicon.png, icando-move-truck.jpg,
- *   moving-elevator.jpg, moving-bed-mirror.jpg, moving-package-icando.jpg,
- *   truck-move.jpg, truck-move-2.jpg, winnipeg.webp
- *
- * External dependencies:
- *   - next/image (built-in)
- *   - next/link  (built-in)
- *   - Google Fonts: Playfair Display + DM Sans
- *     → add to app/layout.tsx or globals.css
- *
  * GitHub source:
  *   https://github.com/chinazagideon/wix-headless-templates
  */
@@ -59,7 +44,6 @@ export default function HomePage() {
         <Included />
         <Testimonials />
         <FAQ />
-        {/* <DarkCTA /> */}
         <HeroWidget />
       </main>
     </>
