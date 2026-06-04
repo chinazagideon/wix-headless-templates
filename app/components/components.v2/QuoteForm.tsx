@@ -199,7 +199,7 @@ export default function QuoteForm() {
               We&apos;ll be in touch soon!
             </h3>
             <p className="text-[14px] text-[rgba(253,250,245,0.7)] mb-6">
-              Nelson will contact you within a few hours to confirm your move
+              We will contact you within a few hours to confirm your move
               details.
             </p>
           </div>

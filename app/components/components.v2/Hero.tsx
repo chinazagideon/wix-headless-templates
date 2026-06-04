@@ -36,7 +36,7 @@ export default function Hero() {
       <div className="relative z-10 w-full max-w-[1100px] mx-auto px-12 pt-36 pb-24">
         <div className="max-w-[600px]">
           <p className="text-[11px] font-semibold tracking-[.14em] uppercase text-[#E8832A] mb-3">
-            Winnipeg&apos;s trusted moving crew · Est. 2016
+            Winnipeg&apos;s trusted moving crew · Est. {constants.statYear}
           </p>
 
           <h1

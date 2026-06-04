@@ -15,7 +15,7 @@ export default function Nav() {
         {/* Logo */}
         <Link href="/" className="flex-shrink-0">
           <Image
-            src="/custom/logo.svg"
+            src="/custom/logo-white.jpg"
             alt="ICANDO Movers"
             width={120}
             height={48}

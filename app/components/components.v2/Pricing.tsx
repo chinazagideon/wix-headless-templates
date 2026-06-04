@@ -1,8 +1,9 @@
 const PLANS = [
   {
     tier: '2 Movers',
-    price: '$130',
+    price: '$120',
     unit: '/per hour',
+    subtext: 'plus a travel fee',
     dark: false,
     features: [
       'Truck & equipment included',
@@ -16,6 +17,7 @@ const PLANS = [
     tier: '3 Movers',
     price: '$170',
     unit: '/per hour',
+    subtext: 'plus a travel fee',
     dark: true,
     features: [
       'Truck & equipment included',
@@ -44,7 +46,8 @@ export default function Pricing() {
             No hidden fees.
           </h2>
           <p className="text-[16px] text-[#5C4F3D] max-w-[400px] mx-auto">
-            Minimum 2-hour charge on all bookings. Truck included in every rate.
+            Minimum 2-hour charge on all bookings. Truck included in every rate,
+            plus a travel fee.
           </p>
         </div>
 
@@ -65,6 +68,7 @@ export default function Pricing() {
               >
                 {plan.tier}
               </p>
+
               <div className="flex items-baseline gap-1 mb-5">
                 <span
                   className={`font-serif font-bold text-[52px] leading-none ${
@@ -82,7 +86,9 @@ export default function Pricing() {
                 >
                   {plan.unit}
                 </span>
+                {/* <span className="text-left text-xs"></span> */}
               </div>
+
               <ul className="flex flex-col gap-2.5 mb-6">
                 {plan.features.map((f) => (
                   <li key={f} className="flex items-center gap-2.5 text-[14px]">

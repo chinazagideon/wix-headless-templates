@@ -1,4 +1,3 @@
-
 import Hero from './components/components.v2/Hero';
 import Stats from './components/components.v2/Stats';
 import QuoteForm from './components/components.v2/QuoteForm';
