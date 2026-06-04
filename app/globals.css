@@ -2,706 +2,732 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Import Outfit font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+/* ─────────────────────────────────────────────────────────────
+   ICANDO Movers — Global Stylesheet
+   Adapted from: Ashley Demo template
+   Brand: icandomovers.ca · Winnipeg, MB
+   Version: 2.0 — Refresh
 
-/* Ashley Demo Design System - Typography */
+   FONT MIGRATION NOTES
+   ─────────────────────
+   • Display / headings → Playfair Display (replaces Outfit for h1–h3)
+   • Body copy          → DM Sans (replaces Outfit for body text)
+   • Outfit kept as utility (.font-outfit-*) for legacy components
+   ─────────────────────────────────────────────────────────────
+   COLOUR MIGRATION NOTES
+   ─────────────────────
+   • theme-orange updated from #FA5C33 → #FD6232 (exact ICANDO brand)
+   • Body bg updated from gray-c1 (dark) → --surface-cream (#F5F0E8)
+   • Body text updated from white → --text-primary (#1A1208)
+   • Navy (#003467) replaces pure black for dark sections / footer
+   ─────────────────────────────────────────────────────────────
+   tailwind.config.ts changes needed:
+   ─────────────────────
+   colors: {
+     'theme-orange':  '#FD6232',   // was #FA5C33
+     'theme-ember':   '#C44B1A',   // new: hover state
+     'theme-amber':   '#E8832A',   // new: dark-bg accent
+     'theme-navy':    '#003467',   // new: replaces pure black sections
+     'theme-brown':   '#3D1A08',   // new: deepest dark
+     'surface-cream': '#F5F0E8',   // new: page background
+     'surface-warm':  '#FDFAF5',   // new: card background
+     'surface-stone': '#EAE4D8',   // new: alternate section bg
+     'gray-c1':       '#F5F0E8',   // CHANGED: was dark, now cream
+     'gray-c2':       '#EAE4D8',   // CHANGED: was dark gray, now stone
+   }
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600;1,700&family=DM+Sans:wght@300;400;500;600&family=Outfit:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/* ─────────────────────────────────────────────────────────────
+   DESIGN TOKENS  (CSS custom properties)
+   Reference these in any component: var(--color-orange), etc.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  /* Brand colours */
+  --color-orange:        #FD6232;
+  --color-navy:          #003467;
+  --color-ember:         #C44B1A;   /* CTA hover */
+  --color-amber:         #E8832A;   /* dark-bg accents, overlines on dark */
+  --color-wheat:         #D4A96A;   /* decorative */
+  --color-brown:         #3D1A08;   /* deepest dark sections */
+
+  /* Warm surfaces */
+  --surface-cream:       #F5F0E8;   /* primary page bg */
+  --surface-warm-white:  #FDFAF5;   /* cards, panels */
+  --surface-stone:       #EAE4D8;   /* alternating section bg */
+  --surface-border:      #D9D2C4;   /* dividers, input borders */
+
+  /* Text */
+  --text-primary:        #1A1208;   /* near-black, warm undertone */
+  --text-secondary:      #5C4F3D;   /* body copy, captions */
+  --text-muted:          #9C8E7A;   /* placeholders, fine print */
+  --text-inverse:        #FDFAF5;   /* text on dark/navy/brown */
+
+  /* Semantic */
+  --color-success:       #2E7D32;
+  --color-error:         #C62828;
+
+  /* Spacing (8-pt grid) */
+  --space-xs:   4px;
+  --space-sm:   8px;
+  --space-md:   16px;
+  --space-lg:   24px;
+  --space-xl:   32px;
+  --space-2xl:  48px;
+  --space-3xl:  64px;
+  --space-4xl:  96px;
+  --space-5xl:  128px;
+
+  /* Radii */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   24px;
+  --radius-pill: 100px;
+
+  /* Shadows (warm brown undertone) */
+  --shadow-card:     0 2px 16px rgba(61, 26, 8, 0.06);
+  --shadow-elevated: 0 8px 32px rgba(61, 26, 8, 0.12);
+  --shadow-orange:   0 4px 24px rgba(253, 98, 50, 0.28);
+
+  /* Motion */
+  --trans-fast:   150ms ease-out;
+  --trans-normal: 280ms ease-out;
+  --trans-slow:   450ms ease-out;
+
+  /* Layout */
+  --max-w: 1100px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   BASE LAYER — Typography & Reset
+   ───────────────────────────────────────────────────────────── */
 @layer base {
   html {
-    font-family: 'Outfit', sans-serif;
-    color: rgb(0, 0, 0);
+    /* DM Sans as primary body font (ICANDO brand) */
+    font-family: 'DM Sans', 'Outfit', sans-serif;
+    color: var(--text-primary);
+    font-weight: 400;
+    line-height: 1.65;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  body {
+    background-color: var(--surface-cream);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    max-width: 100vw;
+  }
+
+  /* Display headings → Playfair Display */
+  h1, .mil-h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(34px, 5.5vw, 86px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--text-primary);
+  }
+
+  h2, .mil-h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(28px, 4vw, 68px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text-primary);
+  }
+
+  h3, .mil-h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(22px, 3vw, 42px);
+    font-weight: 600;
+    line-height: 1.25;
+    color: var(--text-primary);
+  }
+
+  h4, .mil-h4 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(18px, 2vw, 28px);
+    font-weight: 600;
+    line-height: 1.35;
+  }
+
+  h5, .mil-h5 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(16px, 1.5vw, 20px);
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  h6, .mil-h6 {
+    font-family: 'DM Sans', sans-serif;
+    font-size: clamp(14px, 1.2vw, 18px);
     font-weight: 500;
-    line-height: 120%;
+    line-height: 1.5;
   }
 
-  h1,
-  .mil-h1 {
-    font-size: 86px;
-    font-weight: 500;
-    line-height: 120%;
+  p {
+    color: var(--text-secondary);
+    line-height: 1.7;
   }
 
-  h2,
-  .mil-h2 {
-    font-size: 68px;
-    line-height: 120%;
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--trans-fast);
+  }
+  a:hover {
+    color: var(--color-orange);
   }
 
-  h3,
-  .mil-h3 {
-    font-size: 42px;
+  * {
+    box-sizing: border-box;
+    max-width: 100%;
   }
 
-  h4,
-  .mil-h4 {
-    font-size: 28px;
+  /* Focus ring — ICANDO orange */
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(253, 98, 50, 0.15) !important;
+    border-color: var(--color-orange) !important;
+  }
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    outline: none !important;
   }
 
-  h5,
-  .mil-h5 {
-    font-size: 20px;
-    line-height: 150%;
-  }
-
-  h6,
-  .mil-h6 {
-    font-size: 18px;
-    line-height: 150%;
-  }
-
-  /* Responsive Typography */
-  @media screen and (max-width: 1400px) {
-    h1,
-    .mil-h1 {
-      font-size: 74px;
-    }
-  }
-
+  /* Responsive typography breakpoints */
   @media screen and (max-width: 1200px) {
-    h1,
-    .mil-h1 {
-      font-size: 72px;
-    }
-    h2,
-    .mil-h2 {
-      font-size: 56px;
-    }
-    h3,
-    .mil-h3 {
-      font-size: 39px;
-    }
-    h4,
-    .mil-h4 {
-      font-size: 26px;
-    }
-    h6,
-    .mil-h6 {
-      font-size: 17px;
-    }
+    h1, .mil-h1 { font-size: clamp(32px, 5vw, 72px); }
+    h2, .mil-h2 { font-size: clamp(26px, 4vw, 56px); }
+    h3, .mil-h3 { font-size: clamp(22px, 3vw, 39px); }
+    h4, .mil-h4 { font-size: 26px; }
   }
-
   @media screen and (max-width: 992px) {
-    h1,
-    .mil-h1 {
-      font-size: 58px;
-    }
-    h2,
-    .mil-h2 {
-      font-size: 44px;
-    }
-    h3,
-    .mil-h3 {
-      font-size: 36px;
-    }
-    h4,
-    .mil-h4 {
-      font-size: 24px;
-    }
-    h6,
-    .mil-h6 {
-      font-size: 16px;
-    }
+    h1, .mil-h1 { font-size: 52px; }
+    h2, .mil-h2 { font-size: 40px; }
+    h3, .mil-h3 { font-size: 34px; }
+    h4, .mil-h4 { font-size: 24px; }
   }
-
   @media screen and (max-width: 768px) {
-    h1,
-    .mil-h1 {
-      font-size: 34px;
-    }
-    h2,
-    .mil-h2 {
-      font-size: 36px;
-    }
-    h3,
-    .mil-h3 {
-      font-size: 30px;
-    }
-    h4,
-    .mil-h4 {
-      font-size: 22px;
-    }
-    h5,
-    .mil-h5 {
-      font-size: 18px;
-    }
-    h6,
-    .mil-h6 {
-      font-size: 21px;
-    }
+    h1, .mil-h1 { font-size: 34px; }
+    h2, .mil-h2 { font-size: 30px; }
+    h3, .mil-h3 { font-size: 26px; }
+    h4, .mil-h4 { font-size: 20px; }
+    h5, .mil-h5 { font-size: 17px; }
+    h6, .mil-h6 { font-size: 16px; }
   }
 }
 
-/* Custom font weight utilities */
-@layer utilities {
-  .font-outfit-thin {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 100;
-  }
-  .font-outfit-extralight {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 200;
-  }
-  .font-outfit-light {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 300;
-  }
-  .font-outfit-normal {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 400;
-  }
-  .font-outfit-medium {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 500;
-  }
-  .font-outfit-semibold {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 600;
-  }
-  .font-outfit-bold {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 700;
-  }
-  .font-outfit-extrabold {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 800;
-  }
-  .font-outfit-black {
-    font-family: 'Outfit', sans-serif;
-    font-weight: 900;
-  }
+/* ─────────────────────────────────────────────────────────────
+   COMPONENTS LAYER
+   ───────────────────────────────────────────────────────────── */
+@layer components {
 
-  /* Ashley Demo Color System */
-  .mil-accent {
-    color: rgb(250 92 51 / var(--tw-text-opacity, 1));
-  }
-  .mil-light {
-    color: rgb(255, 255, 255) !important;
-  }
-  .mil-muted {
-    color: rgba(255, 255, 255, 0.9);
-  }
-  .mil-dark {
-    color: rgb(0, 0, 0);
-  }
-  .mil-light-soft {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  .mil-dark-soft {
-    color: rgba(0, 0, 0, 0.7);
-  }
-
-  /* Ashley Demo Typography Utilities */
-  .mil-upper {
-    text-transform: uppercase;
-    font-size: 12px;
-    font-weight: 500;
-    letter-spacing: 2px;
-  }
-  .mil-bold {
-    font-weight: 500;
-  }
-  .mil-thin {
-    font-weight: 100;
-  }
-  .mil-text-sm {
+  /* ── ICANDO Buttons ── */
+  .btn-icando {
+    @apply inline-flex items-center gap-2 font-semibold cursor-pointer border-none;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: var(--radius-pill);
+    padding: 13px 26px;
     font-size: 15px;
-  }
-  .mil-text-lg {
-    font-size: 18px;
-    line-height: 170%;
-  }
-  .mil-text-xl {
-    font-size: 22px;
-    line-height: 180%;
-  }
-
-  /* Ashley Demo Layout Utilities */
-  .mil-center {
-    text-align: center;
-  }
-  .mil-left {
-    text-align: left;
-  }
-  .mil-right {
-    text-align: right;
-  }
-  .mil-no-wrap {
+    transition: all var(--trans-fast);
+    text-decoration: none;
     white-space: nowrap;
   }
+  .btn-icando:active { transform: scale(0.97); }
+
+  /* Primary — orange pill */
+  .btn-main,
+  .btn-icando-primary {
+    @apply inline-flex items-center gap-2 cursor-pointer border-none font-semibold;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: var(--radius-pill);
+    padding: 13px 26px;
+    font-size: 15px;
+    background: var(--color-orange);
+    color: #fff;
+    box-shadow: var(--shadow-orange);
+    transition: all var(--trans-fast);
+    text-decoration: none;
+  }
+  .btn-main:hover,
+  .btn-icando-primary:hover {
+    background: var(--color-ember);
+    transform: translateY(-1px);
+    color: #fff;
+  }
+  .btn-main:active,
+  .btn-icando-primary:active { transform: scale(0.97); }
+
+  /* Secondary — outlined */
+  .btn-secondary,
+  .btn-icando-secondary {
+    @apply inline-flex items-center gap-2 cursor-pointer font-semibold;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: var(--radius-pill);
+    padding: 11px 24px;
+    font-size: 15px;
+    background: transparent;
+    color: var(--color-orange);
+    border: 1.5px solid var(--color-orange);
+    transition: all var(--trans-fast);
+    text-decoration: none;
+  }
+  .btn-secondary:hover,
+  .btn-icando-secondary:hover {
+    background: var(--color-orange);
+    color: #fff;
+  }
+
+  /* Ghost — text only */
+  .btn-ghost,
+  .btn-icando-ghost {
+    @apply inline-flex items-center gap-2 cursor-pointer border-none font-semibold;
+    background: transparent;
+    color: var(--color-orange);
+    padding: 0;
+    font-size: 15px;
+    transition: color var(--trans-fast);
+  }
+  .btn-ghost:hover,
+  .btn-icando-ghost:hover { color: var(--color-ember); }
+
+  /* Light — for use on dark backgrounds */
+  .btn-icando-light {
+    @apply inline-flex items-center gap-2 cursor-pointer border-none font-semibold;
+    font-family: 'DM Sans', sans-serif;
+    border-radius: var(--radius-pill);
+    padding: 13px 26px;
+    font-size: 15px;
+    background: var(--surface-warm-white);
+    color: var(--color-orange);
+    transition: all var(--trans-fast);
+  }
+  .btn-icando-light:hover { background: #fff; transform: translateY(-1px); color: var(--color-orange); }
+
+  /* Disabled state */
+  .btn-main[disabled],
+  .btn-secondary[disabled],
+  .btn-icando-primary[disabled] {
+    background: #ccc;
+    border-color: #ccc;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* ── Overline label ── */
+  .overline,
+  .mil-upper {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-orange);
+    display: block;
+    margin-bottom: 10px;
+  }
+  .overline-amber { color: var(--color-amber); }
+  .overline-muted { color: var(--text-muted); }
+
+  /* ── Cards ── */
+  .card-icando {
+    background: var(--surface-warm-white);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    transition: box-shadow var(--trans-normal), transform var(--trans-normal);
+  }
+  .card-icando:hover {
+    box-shadow: var(--shadow-elevated);
+    transform: translateY(-2px);
+  }
+
+  /* ── Section container ── */
+  .section-container {
+    max-width: var(--max-w);
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+  @media (max-width: 768px) {
+    .section-container { padding-left: 24px; padding-right: 24px; }
+  }
+
+  /* ── Warm section pads ── */
+  .section-pad-icando { padding-top: 88px; padding-bottom: 88px; }
+  @media (max-width: 768px) { .section-pad-icando { padding-top: 56px; padding-bottom: 56px; } }
+
+  /* ── Nav sticky ── */
+  .nav-icando {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--surface-warm-white);
+    border-bottom: 1px solid var(--surface-border);
+    box-shadow: 0 1px 12px rgba(61, 26, 8, 0.05);
+  }
+
+  /* ── Dark sections (navy / brown) ── */
+  .section-navy  { background: var(--color-navy); color: var(--text-inverse); }
+  .section-brown { background: var(--color-brown); color: var(--text-inverse); }
+  .section-dark-gradient {
+    background: linear-gradient(145deg, #3D1A08 0%, #8B3000 60%, #C44B1A 100%);
+    color: var(--text-inverse);
+  }
+
+  /* ── Inline form inputs ── */
+  .input-icando {
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--surface-warm-white);
+    border: 1.5px solid var(--surface-border);
+    border-radius: var(--radius-md);
+    color: var(--text-primary);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    transition: border-color var(--trans-fast), box-shadow var(--trans-fast);
+    outline: none;
+  }
+  .input-icando::placeholder { color: var(--text-muted); }
+  .input-icando:focus {
+    border-color: var(--color-orange);
+    box-shadow: 0 0 0 3px rgba(253, 98, 50, 0.12);
+  }
+  /* Dark variant (on navy bg) */
+  .input-icando-dark {
+    background: rgba(253, 250, 245, 0.06);
+    border-color: rgba(253, 250, 245, 0.12);
+    color: var(--text-inverse);
+  }
+  .input-icando-dark::placeholder { color: rgba(253, 250, 245, 0.3); }
+
+  /* ── Checklist item ── */
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  .check-bullet {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    border: 1.5px solid var(--color-orange);
+    color: var(--color-orange);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 9px;
+    font-weight: 700;
+  }
+
+  /* ── Layout helpers ── */
+  .h-header { height: 72px; }
+  .header-line { width: 36px; height: 2px; background: var(--color-orange); margin-bottom: 8px; }
+
+  .absolute-full {
+    @apply absolute top-0 right-0 w-full h-full;
+  }
+  .parallax-background {
+    @apply bg-fixed bg-center bg-no-repeat bg-cover;
+  }
+  .mil-center { text-align: center; }
+  .mil-left   { text-align: left; }
+  .mil-right  { text-align: right; }
+  .mil-no-wrap { white-space: nowrap; }
+
+  .dot-md-center {
+    @apply h-1 w-1 rounded-md;
+    top: 85%;
+    left: calc(50% - 2px);
+  }
 }
 
+/* ─────────────────────────────────────────────────────────────
+   UTILITIES LAYER
+   ───────────────────────────────────────────────────────────── */
+@layer utilities {
+
+  /* ── Playfair Display utilities ── */
+  .font-playfair         { font-family: 'Playfair Display', Georgia, serif; }
+  .font-playfair-italic  { font-family: 'Playfair Display', Georgia, serif; font-style: italic; }
+
+  /* ── DM Sans utilities ── */
+  .font-dm              { font-family: 'DM Sans', sans-serif; }
+
+  /* ── Outfit utilities (legacy — kept for backwards compat) ── */
+  .font-outfit-thin       { font-family: 'Outfit', sans-serif; font-weight: 100; }
+  .font-outfit-extralight { font-family: 'Outfit', sans-serif; font-weight: 200; }
+  .font-outfit-light      { font-family: 'Outfit', sans-serif; font-weight: 300; }
+  .font-outfit-normal     { font-family: 'Outfit', sans-serif; font-weight: 400; }
+  .font-outfit-medium     { font-family: 'Outfit', sans-serif; font-weight: 500; }
+  .font-outfit-semibold   { font-family: 'Outfit', sans-serif; font-weight: 600; }
+  .font-outfit-bold       { font-family: 'Outfit', sans-serif; font-weight: 700; }
+  .font-outfit-extrabold  { font-family: 'Outfit', sans-serif; font-weight: 800; }
+  .font-outfit-black      { font-family: 'Outfit', sans-serif; font-weight: 900; }
+
+  /* ── ICANDO colour utilities ── */
+  .text-orange   { color: var(--color-orange); }
+  .text-navy     { color: var(--color-navy); }
+  .text-ember    { color: var(--color-ember); }
+  .text-amber    { color: var(--color-amber); }
+  .text-wheat    { color: var(--color-wheat); }
+  .text-brown    { color: var(--color-brown); }
+  .text-primary-warm   { color: var(--text-primary); }
+  .text-secondary-warm { color: var(--text-secondary); }
+  .text-muted-warm     { color: var(--text-muted); }
+  .text-inverse-warm   { color: var(--text-inverse); }
+
+  .bg-cream      { background-color: var(--surface-cream); }
+  .bg-warm-white { background-color: var(--surface-warm-white); }
+  .bg-stone      { background-color: var(--surface-stone); }
+  .bg-navy       { background-color: var(--color-navy); }
+  .bg-brown      { background-color: var(--color-brown); }
+  .bg-orange     { background-color: var(--color-orange); }
+
+  /* ── Legacy mil- colour utilities (remapped to ICANDO palette) ── */
+  .mil-accent      { color: var(--color-orange); }
+  .mil-light       { color: var(--text-inverse) !important; }
+  .mil-muted       { color: rgba(253, 250, 245, 0.9); }
+  .mil-dark        { color: var(--text-primary); }
+  .mil-light-soft  { color: rgba(253, 250, 245, 0.7); }
+  .mil-dark-soft   { color: var(--text-secondary); }
+
+  /* ── Text scale utilities ── */
+  .mil-text-sm { font-size: 14px; line-height: 1.6; }
+  .mil-text-lg { font-size: 18px; line-height: 1.7; }
+  .mil-text-xl { font-size: 22px; line-height: 1.8; }
+
+  /* ── Weight shorthands ── */
+  .mil-bold { font-weight: 600; }
+  .mil-thin { font-weight: 300; }
+
+  /* ── Shadow utilities ── */
+  .shadow-card     { box-shadow: var(--shadow-card); }
+  .shadow-elevated { box-shadow: var(--shadow-elevated); }
+  .shadow-orange   { box-shadow: var(--shadow-orange); }
+
+  /* ── Responsive container ── */
+  .container-responsive {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  @media (min-width: 640px) {
+    .container-responsive { padding-left: 1.5rem; padding-right: 1.5rem; }
+  }
+  @media (min-width: 1024px) {
+    .container-responsive { padding-left: 2rem; padding-right: 2rem; }
+  }
+
+  /* ── Mobile helpers ── */
+  @media (max-width: 768px) {
+    .mobile-no-scroll { overflow-x: hidden !important; max-width: 100vw !important; }
+  }
+  @media (max-width: 640px) {
+    .mobile-full-width {
+      width: 100vw;
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
+    }
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   SCROLL REVEAL & ANIMATIONS
+   ───────────────────────────────────────────────────────────── */
+
+/* Intersection observer reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Hero item animate-in */
+.animate-item {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.5s ease-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes fadeUp {
+  to { opacity: 1; transform: none; }
+}
+
+/* Legacy animations — kept for existing components */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes slide-in-right {
+  from { opacity: 0; transform: translateX(50px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fade-in-delay {
+  0%  { opacity: 0; transform: translateY(20px); }
+  50% { opacity: 0; transform: translateY(20px); }
+  100%{ opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in-delay-2 {
+  0%  { opacity: 0; transform: translateY(20px); }
+  70% { opacity: 0; transform: translateY(20px); }
+  100%{ opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes bounce-subtle {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+
+.animate-fade-in-up      { animation: fade-in-up 1s ease-out; }
+.animate-slide-in-left   { animation: slide-in-left 1.2s ease-out; }
+.animate-slide-in-right  { animation: slide-in-right 1.2s ease-out 0.3s both; }
+.animate-fade-in-delay   { animation: fade-in-delay 1.5s ease-out; }
+.animate-fade-in-delay-2 { animation: fade-in-delay-2 2s ease-out; }
+.animate-fade-in         { animation: fadeIn 0.5s ease-in-out; }
+
+/* ─────────────────────────────────────────────────────────────
+   PRELOADER  (Ashley Demo — remapped to ICANDO palette)
+   ───────────────────────────────────────────────────────────── */
+.mil-preloader {
+  position: fixed;
+  z-index: 9999;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
+  background-color: var(--color-navy);   /* was black → now navy */
+}
+.mil-preloader .mil-preloader-animation {
+  opacity: 1;
+  position: relative;
+  height: 100vh;
+  color: var(--text-inverse);
+}
+.mil-preloader .mil-preloader-animation .mil-pos-abs {
+  position: absolute;
+  height: 100vh; width: 100%;
+  display: flex; justify-content: center; align-items: center;
+}
+.mil-preloader .mil-preloader-animation .mil-pos-abs p {
+  opacity: 0;
+  margin-right: 15px;
+}
+.mil-preloader .mil-preloader-animation .mil-pos-abs .mil-reveal-frame {
+  position: relative;
+  padding: 0 30px;
+  display: flex; flex-direction: column; align-items: center;
+}
+.mil-preloader .mil-preloader-animation .mil-pos-abs .mil-reveal-frame .mil-reveal-box {
+  z-index: 4;
+  position: absolute;
+  height: 100%;
+  background-color: var(--color-orange);   /* accent wipe */
+  left: 0; top: 0;
+  transition: width 0.6s ease;
+}
+.mil-preloader.mil-hidden { pointer-events: none; }
+.mil-animation-1 { z-index: 1; }
+.mil-animation-2 { z-index: 2; }
+
+@media screen and (max-width: 992px) {
+  .mil-preloader .mil-preloader-animation .mil-pos-abs { flex-direction: column; }
+  .mil-preloader .mil-preloader-animation .mil-pos-abs p { margin-right: 0; margin-bottom: 10px; }
+}
+
+/* Legacy preloader */
+.preloader {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
+  background-color: var(--color-navy);
+  z-index: 9999;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center;
+  opacity: 1; visibility: visible;
+  transition: opacity 0.75s ease, visibility 0.75s ease;
+}
+.preloader.hidden { opacity: 0; visibility: hidden; }
+
+.logo {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 24px; font-weight: 700;
+  color: var(--text-inverse);
+  margin-bottom: 20px;
+}
+.spinner {
+  margin-top: 20px;
+  width: 40px; height: 40px;
+  border: 4px solid rgba(253, 250, 245, 0.2);
+  border-top-color: var(--color-orange);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+.loading-progress { margin-top: 30px; width: 200px; position: relative; }
+.progress-bar {
+  height: 4px;
+  background: var(--color-orange);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+.progress-text {
+  position: absolute;
+  top: -25px; right: 0;
+  font-size: 12px; color: var(--text-inverse);
+  font-family: 'DM Sans', sans-serif;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   LEGACY FONT-FACE  (Wix / Parastorage CDN — keep as-is)
+   ───────────────────────────────────────────────────────────── */
 @font-face {
   font-display: block;
   font-family: DINNeuzeitGroteskLTW01-_812426;
   src: url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/b41558bd-2862-46c0-abf7-536d2542fa26.eot?#iefix');
-  src: url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/b41558bd-2862-46c0-abf7-536d2542fa26.eot?#iefix')
-      format('eot'),
-    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/5cee8d6e-89ad-4d8c-a0ac-584d316b15ae.woff2')
-      format('woff2'),
-    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/388ef902-2c31-4818-abb1-a40dcd81f6d6.woff')
-      format('woff'),
-    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/29c60077-2614-4061-aa8d-5bcfdf7354bb.ttf')
-      format('truetype'),
-    url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/76250d27-b353-4f3b-90c6-0ff635fabaab.svg#76250d27-b353-4f3b-90c6-0ff635fabaab')
-      format('svg');
+  src: url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/b41558bd-2862-46c0-abf7-536d2542fa26.eot?#iefix') format('eot'),
+       url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/5cee8d6e-89ad-4d8c-a0ac-584d316b15ae.woff2') format('woff2'),
+       url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/388ef902-2c31-4818-abb1-a40dcd81f6d6.woff') format('woff'),
+       url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/29c60077-2614-4061-aa8d-5bcfdf7354bb.ttf') format('truetype'),
+       url('//static.parastorage.com/services/third-party/fonts/user-site-fonts/fonts/76250d27-b353-4f3b-90c6-0ff635fabaab.svg#76250d27-b353-4f3b-90c6-0ff635fabaab') format('svg');
 }
-
 @font-face {
   font-display: block;
   font-family: 'Open Sans Condensed';
   font-style: normal;
   font-weight: 300;
   src: local('Open Sans Condensed Light'), local('OpenSansCondensed-Light'),
-    url('//static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/opensanscondensed/v14/z7NFdQDnbTkabZAIOl9il_O6KJj73e7Ff1GhDuXMR7eS2Ao.woff2')
-      format('woff2');
+       url('//static.parastorage.com/tag-bundler/api/v1/fonts-cache/googlefont/woff2/s/opensanscondensed/v14/z7NFdQDnbTkabZAIOl9il_O6KJj73e7Ff1GhDuXMR7eS2Ao.woff2') format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
     U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
     U+FEFF, U+FFFD;
-}
-
-@layer components {
-  .dot-md-center {
-    @apply h-1;
-    @apply w-1;
-    @apply rounded-md;
-    top: 85%;
-    left: calc(50% - 2px);
-  }
-
-  .btn-main,
-  .btn-secondary {
-    @apply cursor-pointer;
-    @apply border-none;
-    @apply text-sm;
-    @apply font-medium;
-    @apply focus:ring-2;
-    @apply focus:ring-gray-300;
-    @apply focus:outline-none;
-    @apply rounded-none;
-    @apply px-5;
-    @apply py-2;
-    @apply font-outfit;
-    @apply transition-colors;
-  }
-
-  .btn-secondary {
-    @apply text-theme-orange;
-    @apply bg-gray-c1;
-    @apply hover:bg-theme-orange;
-    @apply hover:text-gray-c1;
-  }
-
-  .btn-main {
-    @apply text-gray-c1;
-    @apply bg-theme-orange;
-    @apply hover:bg-gray-c2;
-    @apply hover:text-white;
-  }
-
-  .btn-main[disabled],
-  .btn-secondary[disabled] {
-    @apply hover:text-white;
-    @apply bg-gray-400;
-    @apply border-gray-400;
-    @apply hover:bg-gray-400;
-  }
-
-  h1,
-  .title {
-    @apply font-outfit;
-    @apply text-5xl;
-    @apply md:text-7xl;
-    @apply uppercase;
-  }
-
-  .h-header {
-    @apply sm:h-[85px];
-    @apply h-[90px];
-  }
-
-  .header-line {
-    @apply w-9;
-    @apply h-[2px];
-    @apply bg-black;
-    @apply mb-2;
-  }
-
-  .parallax-background {
-    @apply bg-fixed;
-    @apply bg-center;
-    @apply bg-no-repeat;
-    @apply bg-cover;
-  }
-
-  .absolute-full {
-    @apply absolute;
-    @apply top-0;
-    @apply right-0;
-    @apply w-full;
-    @apply h-full;
-  }
-}
-
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font: normal normal normal 18px/1.4em 'Outfit', sans-serif;
-  @apply bg-gray-c1;
-  @apply text-white;
-  @apply antialiased;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-a:hover {
-  @apply text-theme-orange;
-}
-
-* {
-  box-sizing: border-box;
-}
-
-/* Ashley Demo Preloader Styles */
-.mil-preloader {
-  position: fixed;
-  z-index: 9;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgb(0, 0, 0);
-}
-
-.mil-preloader .mil-preloader-animation {
-  opacity: 1;
-  position: relative;
-  height: 100vh;
-  color: rgb(255, 255, 255);
-}
-
-.mil-preloader .mil-preloader-animation .mil-pos-abs {
-  position: absolute;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.mil-preloader .mil-preloader-animation .mil-pos-abs p {
-  opacity: 0;
-  margin-right: 15px;
-}
-
-.mil-preloader .mil-preloader-animation .mil-pos-abs .mil-reveal-frame {
-  position: relative;
-  padding: 0 30px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.mil-preloader
-  .mil-preloader-animation
-  .mil-pos-abs
-  .mil-reveal-frame
-  .mil-reveal-box {
-  z-index: 4;
-  position: absolute;
-  height: 100%;
-  background-color: rgb(250 92 51 / var(--tw-text-opacity, 1));
-  left: 0;
-  top: 0;
-  transition: width 0.6s ease;
-}
-
-.mil-preloader.mil-hidden {
-  pointer-events: none;
-}
-
-/* Animation specific styles */
-.mil-animation-1 {
-  z-index: 1;
-}
-
-.mil-animation-2 {
-  z-index: 2;
-}
-
-/* Responsive styles for mobile */
-@media screen and (max-width: 992px) {
-  .mil-preloader .mil-preloader-animation .mil-pos-abs {
-    flex-direction: column;
-  }
-  .mil-preloader .mil-preloader-animation .mil-pos-abs p {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-}
-
-/* Legacy preloader styles - updated to match Ashley Demo */
-.preloader {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background-color: rgb(0, 0, 0);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.75s ease, visibility 0.75s ease;
-}
-
-.preloader.hidden {
-  opacity: 0;
-  visibility: hidden;
-}
-
-/* Logo styles - Ashley Demo */
-.logo {
-  font-size: 24px;
-  font-weight: bold;
-  color: #fff;
-  margin-bottom: 20px;
-  font-family: 'Outfit', sans-serif;
-}
-
-/* Spinner styles - Ashley Demo */
-.spinner {
-  margin-top: 20px;
-  width: 40px;
-  height: 40px;
-  border: 4px solid #444;
-  border-top-color: #fff;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-}
-
-/* Loading progress styles - Ashley Demo */
-.loading-progress {
-  margin-top: 30px;
-  width: 200px;
-  position: relative;
-}
-
-.progress-bar {
-  height: 4px;
-  background: linear-gradient(
-    90deg,
-    rgb(250 92 51 / var(--tw-text-opacity, 1)),
-    rgb(250 92 51 / var(--tw-text-opacity, 1))
-  );
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.progress-text {
-  position: absolute;
-  top: -25px;
-  right: 0;
-  font-size: 12px;
-  color: #fff;
-  font-family: 'Outfit', sans-serif;
-}
-
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* Ashley Demo Responsive */
-@media screen and (max-width: 992px) {
-  .mil-preloader .mil-preloader-animation .mil-pos-abs {
-    flex-direction: column;
-  }
-
-  .mil-preloader .mil-preloader-animation .mil-pos-abs p {
-    margin-right: 0;
-    margin-bottom: 10px;
-  }
-}
-
-/* Form Input Focus Styles - Override browser defaults */
-input:focus,
-select:focus,
-textarea:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  border-color: rgb(250 92 51 / var(--tw-text-opacity, 1)) !important;
-}
-
-/* Remove default focus ring */
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible {
-  outline: none !important;
-  box-shadow: none !important;
-}
-
-/* Scroll Animations */
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes slide-in-left {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slide-in-right {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fade-in-delay {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  50% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fade-in-delay-2 {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  70% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 1s ease-out;
-}
-
-.animate-slide-in-left {
-  animation: slide-in-left 1.2s ease-out;
-}
-
-.animate-slide-in-right {
-  animation: slide-in-right 1.2s ease-out 0.3s both;
-}
-
-.animate-fade-in-delay {
-  animation: fade-in-delay 1.5s ease-out;
-}
-
-.animate-fade-in-delay-2 {
-  animation: fade-in-delay-2 2s ease-out;
-}
-
-/* Responsive container utility */
-.container-responsive {
-  width: 100%;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-@media (min-width: 640px) {
-  .container-responsive {
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
-}
-
-@media (min-width: 1024px) {
-  .container-responsive {
-    padding-left: 2rem;
-    padding-right: 2rem;
-  }
-}
-
-/* Disable horizontal scrolling on mobile */
-html,
-body {
-  overflow-x: hidden;
-  max-width: 100vw;
-  position: relative;
-}
-
-/* Ensure all content containers don't exceed viewport width */
-* {
-  max-width: 100%;
-  box-sizing: border-box;
-}
-
-/* Mobile-specific overflow control */
-@media (max-width: 768px) {
-  html,
-  body {
-    overflow-x: hidden !important;
-    width: 100vw;
-    max-width: 100vw;
-  }
-
-  .mobile-no-scroll {
-    overflow-x: hidden !important;
-    max-width: 100vw !important;
-  }
-}
-
-/* Mobile-first responsive improvements */
-@media (max-width: 640px) {
-  .mobile-full-width {
-    width: 100vw;
-    margin-left: calc(-50vw + 50%);
-    margin-right: calc(-50vw + 50%);
-  }
-}
-
-/* Quotation form animations */
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }

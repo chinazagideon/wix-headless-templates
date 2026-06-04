@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Preloader from './Preloader';
-import Header from '../Layout/NavBarV2/Header';
-import Footer from '../Layout/NavBarV2/Footer';
+import Nav from '../components.v2/Nav';
+import Footer from '../components.v2/Footer';
 
 interface PreloaderWrapperProps {
   children: React.ReactNode;
@@ -36,7 +36,7 @@ const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => {
   return (
     <>
       {isLoading && <Preloader />}
-      {!isLoading && <Header />}
+      {!isLoading && <Nav />}
       <main
         className={`bg-transparent min-h-screen transition-all duration-1000 ease-out ${
           showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'

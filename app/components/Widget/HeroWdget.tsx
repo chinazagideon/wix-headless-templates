@@ -31,9 +31,15 @@ const HeroWidget = ({ className }: { className?: string }) => {
           </p>
           <div className="flex flex-col lg:flex-row  items-center justify-center gap-4 w-full pt-10 lg:pt-[5%] animate-fade-in-delay">
             <div className="flex items-center gap-2 animate-slide-in-left">
-              <ThemeButton isSubmitting={false} href={quotation_url}>
+              {/* <ThemeButton isSubmitting={false} href={quotation_url}>
                 Get a free quote
-              </ThemeButton>
+              </ThemeButton> */}
+              <a
+                href={quotation_url}
+                className="inline-flex items-center gap-2 bg-[#FD6232] text-white font-semibold px-6 py-3 rounded-full shadow-[0_4px_24px_rgba(253,98,50,0.28)] hover:bg-[#C44B1A] hover:-translate-y-px transition-all"
+              >
+                Get a free quote →
+              </a>
               {/* <a
                 href={quotation_url}
                 className="z-50 text-sm rounded-full bg-theme-orange px-3 w-fit py-2 !font-size-10 font-outfit font-light text-white hover:bg-orange-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 transition-all duration-200 hover:scale-105 flex flex-row items-center gap-2 normal-case"
@@ -47,7 +53,7 @@ const HeroWidget = ({ className }: { className?: string }) => {
               prefetch
               className="flex underline flex-col text-md py-5 font-outfit font-light text-white hover:text-gray-200 transition-colors duration-200 animate-slide-in-right"
             >
-              Visit our relocation hub
+              Read our relocation stories
             </Link>
           </div>
         </div>

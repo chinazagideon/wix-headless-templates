@@ -18,11 +18,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       }`}
     >
       <div className="flex flex-col items-start pt-20 lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
-        <h1 className="font-outfit font-bold lg:text-5xl text-4xl normal-case">
+        <h1 className="font-outfit text-white font-bold lg:text-5xl text-4xl normal-case">
           {title}
         </h1>
         {description ? (
-          <p className="font-outfit font-light lg:text-sm text-xs lg:w-full lg:text-center w-full pt-4">
+          <p className="font-outfit font-light text-muted lg:text-sm text-xs lg:w-full lg:text-center w-full pt-4">
             {description}
           </p>
         ) : null}

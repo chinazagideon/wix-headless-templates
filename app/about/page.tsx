@@ -6,6 +6,7 @@ import { useAboutUsItems } from '@app/hooks/useAbout';
 import { media as wixMedia } from '@wix/sdk';
 import { constants } from '@app/components/constants';
 import { BinocularsIcon, Loader, Gauge } from 'lucide-react';
+import About from '@app/components/components.v2/About';
 
 const Page = () => {
   const {
@@ -52,19 +53,8 @@ const Page = () => {
         }
       />
 
-      {/* <div className="w-full pt-4 lg:pt-12 px-4 sm:px-6 justify-center h-[300px] rounded-lg  overflow-hidden flex flex-col lg:flex-row gap-4 lg:gap-10 pb-10">
-        <div className="hidden lg:flex flex-col gap-4 lg:w-[100%] justify-center items-center">
-          {src ? (
-            <Image
-              src={src}
-              alt="About image"
-              width={width}
-              height={height}
-              className="rounded-lg"
-            />
-          ) : null}
-        </div>
-      </div> */}
+      <About />
+
       {isFetching || isLoading ? (
         <div className="flex flex-col justify-center items-center h-screen py-2">
           <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
