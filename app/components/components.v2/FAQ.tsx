@@ -3,13 +3,13 @@
 import { useState } from 'react';
 
 const FAQS = [
-  {
-    q: 'How are your rates calculated?',
-    a: 'We charge by the hour from the moment our crew arrives. No travel fees, no fuel surcharges, no stair fees — just the flat hourly rate. Minimum 2-hour charge applies.',
-  },
+  // {
+  //   q: 'How are your rates calculated?',
+  //   a: 'We charge by the hour from the moment our crew arrives. No travel fees, no fuel surcharges, no stair fees, just the flat hourly rate. Minimum 2-hour charge applies.',
+  // },
   {
     q: 'Do you provide packing materials?',
-    a: 'Yes — furniture pads, blankets, shrink wrap, and stretch film are all included at no extra cost.',
+    a: 'Yes, furniture pads, blankets, shrink wrap, and stretch film are all included at no extra cost.',
   },
   {
     q: 'Are you insured?',
@@ -17,11 +17,11 @@ const FAQS = [
   },
   {
     q: 'How far in advance should I book?',
-    a: 'We recommend 1–2 weeks in advance, especially May–September. For last-minute moves, call Nelson at (204) 229-5871.',
+    a: 'We recommend 1–2 weeks in advance, especially May–September. For last-minute moves, call us to check availability.',
   },
   {
     q: 'Do you move outside of Winnipeg?',
-    a: 'Yes — we serve Winnipeg and nearby communities. For long-distance or inter-provincial moves, call us for a flat-rate quote.',
+    a: 'Yes, we serve Winnipeg and nearby communities. For long-distance or inter-provincial moves, call us for a flat-rate quote.',
   },
 ];
 

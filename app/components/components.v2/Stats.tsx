@@ -1,8 +1,10 @@
+import { constants } from '../constants';
+
 export default function Stats() {
   const items = [
-    { value: '8+', label: 'Years Moving Winnipeg' },
-    { value: '4.8★', label: 'Google Rating' },
-    { value: '40%', label: 'Less Than Competitors' },
+    { value: constants.statYearsCount, label: 'Years Moving Winnipeg' },
+    { value: constants.googleRating, label: 'Google Rating' },
+    // { value: '40%', label: 'Less Than Competitors' },
   ];
 
   return (

@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import routes from '../Layout/NavBarV2/routes';
+import { constants } from '../constants';
 
 const FEATURES = [
   'Clean, fully fuelled truck',
@@ -28,13 +29,12 @@ export default function About() {
               style={{ fontSize: 'clamp(28px,3vw,38px)' }}
             >
               A Winnipeg crew that <em className="italic">actually</em> shows up
-              — and shows care
+              and shows care
             </h2>
             <p className="text-[16px] text-[#5C4F3D] leading-[1.7] mb-3">
-              Founded by Nelson, ICANDO Movers is a small, hands-on team built
-              on word-of-mouth across Winnipeg. We do fewer moves a day so every
-              customer gets a careful, focused crew — not a rushed assembly
-              line.
+              {constants.companyName} is a professional Winnipeg based moving
+              company. We offer residential and commercial moving services, with
+              hands-on team built on word-of-mouth across Winnipeg.
             </p>
             <p className="text-[16px] text-[#5C4F3D] leading-[1.7] mb-7">
               No upsells at the door. No mystery charges. Just two or three
@@ -77,7 +77,7 @@ export default function About() {
             {/* Badge */}
             <div className="absolute top-5 right-9 z-10 bg-[#FD6232] rounded-xl px-4 py-3 text-center shadow-[0_4px_24px_rgba(253,98,50,0.28)]">
               <span className="block font-serif font-bold text-white text-[28px] leading-none">
-                8+
+                {constants.statYearsCount}
               </span>
               <span className="block text-[10px] font-semibold text-[rgba(255,255,255,0.85)] uppercase tracking-wide mt-1 leading-snug">
                 Years Moving

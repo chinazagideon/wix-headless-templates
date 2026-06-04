@@ -19,21 +19,21 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           {/* Brand */}
           <div className="flex items-start gap-3">
-            <Image
-              src={'/custom/logo.svg'}
-              alt="logo"
-              height={100}
-              width={100}
-            />
             {/* <div className="w-[38px] h-[38px] flex-shrink-0 rounded-[8px] bg-gradient-to-br from-[#FD6232] to-[#C44B1A] flex items-center justify-center font-serif font-bold text-white text-[14px]">
               IC
             </div> */}
             <div>
-              <strong className="block text-[16px] font-bold text-white tracking-[-0.01em] mb-1">
+              <Image
+                src={'/custom/logo-white.jpg'}
+                alt="logo"
+                height={100}
+                width={100}
+              />
+              {/* <strong className="block text-[16px] font-bold text-white tracking-[-0.01em] mb-1">
                 {constants.companyName}
-              </strong>
+              </strong> */}
               <span className="text-[11px] text-[rgba(253,250,245,0.45)]">
-                Winnipeg, Manitoba · Est. 2016
+                Winnipeg, Manitoba · Est. {constants.statYear}
               </span>
             </div>
           </div>
@@ -86,6 +86,23 @@ export default function Footer() {
 
         <div className="border-t border-[rgba(253,250,245,0.1)] pt-6 flex flex-wrap justify-between gap-2 text-[12px] text-[rgba(253,250,245,0.35)]">
           <span>© 2026 ICANDO Movers. All rights reserved.</span>
+          <div className="flex items-center gap-2">
+            <a
+              href={constants.bbbReviewLink}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Image
+                src={constants.bbbSeal}
+                alt="BBB Seal"
+                height={100}
+                width={100}
+                className=""
+              />
+            </a>{' '}
+            <span>BBB Accredited Business</span>
+          </div>
+
           <span>{constants.websiteUrl}</span>
         </div>
       </div>
