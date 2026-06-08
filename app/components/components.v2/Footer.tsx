@@ -10,6 +10,7 @@ const NAV_LINKS = [
   { href: '#included', label: "What's Included" },
   { href: '#faq', label: 'FAQ' },
   { href: routes.relocation_hub, label: 'Read Blog stories' },
+  { href: '/privacy', label: 'Privacy Policy' },
 ];
 
 export default function Footer() {

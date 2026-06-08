@@ -1,27 +1,27 @@
 'use client';
 
+import { useEffect } from 'react';
 import {
   ChevronRightIcon,
   ChevronLeftIcon,
   TruckIcon,
   HomeIcon,
-  MapPinIcon,
   BuildingOfficeIcon,
 } from '@heroicons/react/24/outline';
-import AddressAutocomplete from '@app/components/AddressAutocomplete';
 import {
   BoxIcon,
-  CheckCircleIcon,
   HandHelping,
   Loader,
   SofaIcon,
-  PhoneIcon,
 } from 'lucide-react';
 import PageHeader from '@app/components/Layout/PageHeader';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
-import { constants } from '@app/components/constants';
-import ThemeButton from '@app/components/Button/ThemeButton';
+import TrustBar from '@app/components/ui/TrustBar';
+import PlaceAutocompleteInput from '@app/components/ui/PlaceAutocompleteInput';
+import ConsentText from './_components/ConsentText';
+import QuotePageShell from './_components/QuotePageShell';
+import { trackPixelEvent } from '@app/lib/meta-pixel';
 
 const move_sizes = [
   {
@@ -63,14 +63,11 @@ export default function QuotationPage() {
   const {
     currentStep,
     formData,
-    isCompleted,
     errors,
     isSubmitting,
     isFetching,
     visibleServices,
     updateFormData,
-    updateMoveDateTime,
-    nextStep,
     prevStep,
     handleSubmit,
     handleStepValidation,
@@ -79,6 +76,10 @@ export default function QuotationPage() {
     formError,
     validatePhoneField,
   } = useQuotationForm();
+
+  useEffect(() => {
+    trackPixelEvent('ViewContent');
+  }, []);
 
   type IconType = typeof HomeIcon;
   const iconByKeyword: Record<string, IconType> = {
@@ -100,54 +101,15 @@ export default function QuotationPage() {
   const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   return (
-    <>
-      {isCompleted === false && (
-        <PageHeader
-          title={`Get a Free Moving Quote`}
-          description={`Tell us about your move and get a personalized quote in minutes`}
-          className="items-center justify-center"
-        />
-      )}
+    <QuotePageShell>
+      <PageHeader
+        title={`Get a Free Moving Quote`}
+        description={`Tell us about your move and get a personalized quote in minutes`}
+        className="items-center justify-center"
+      />
+      <TrustBar />
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        {isCompleted && (
-          <>
-            <div className="max-w-4xl mx-auto justify-center flex flex-col items-center justify-center text-center py-16 pt-24">
-              <div className="max-w-4xl mx-auto flex flex-col items-center justify-center">
-                <CheckCircleIcon className="w-14 h-14 text-theme-orange mb-6" />
-                <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
-                  You&apos;re all set.
-                </h1>
-                <p className="text-gray-600 text-lg max-w-xl mx-auto mb-6">
-                  Our team will reach out within the hour to confirm your quote.
-                </p>
-
-                <p className="text-gray-600 text-md max-w-xl mx-auto mb-2">
-                  {' '}
-                  Need us sooner?
-                </p>
-                <ThemeButton
-                  href={`tel:${constants.companyPhone}`}
-                  isSubmitting={false}
-                  showIcon={false}
-                >
-                  <div className="flex flex-row items-center gap-2 justify-center">
-                    <span className="bg-black rounded-full size-6 p-1 flex items-center justify-center">
-                      <PhoneIcon className="w-4 h-4 text-white" />
-                    </span>
-                    <span className="text-sm">
-                      Call {constants.companyPhone}
-                    </span>
-                  </div>
-                </ThemeButton>
-                <p className="text-gray-400 text-sm mt-6">
-                  Fully insured · No hidden fees · Winnipeg owned & operated
-                </p>
-              </div>
-            </div>
-          </>
-        )}
-        {!isCompleted && (
-          <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto">
             {/* Progress Bar */}
             <div className="mb-4 lg:mb-12 w-full relative z-1000 ">
               <div className="flex items-center justify-between mb-4  w-full z-1000">
@@ -463,7 +425,8 @@ export default function QuotationPage() {
                     </label>
                     <label className="block">
                       <span className="text-gray-700 font-medium text-sm">
-                        Phone number (optional)
+                        Phone number
+                        <span className="text-red-500 text-xs ml-1">*</span>
                       </span>
                       <input
                         type="tel"
@@ -476,6 +439,9 @@ export default function QuotationPage() {
                         onBlur={(e) => validatePhoneField(e.target.value)}
                         className="text-gray-700 mt-2 block w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                       />
+                      <p className="text-[11px] text-gray-400 mt-1">
+                        We&apos;ll call to confirm your quote — usually within 2 hours
+                      </p>
                       {errors.phone_9f17 && (
                         <p className="text-red-500 text-xs">
                           {errors.phone_9f17}
@@ -539,19 +505,20 @@ export default function QuotationPage() {
                   </div>
                   <div className="flex md:flex-row flex-col w-full gap-6">
                     <div className="flex flex-col w-full">
-                      <AddressAutocomplete
+                      <PlaceAutocompleteInput
                         value={formData.moving_address}
-                        onChange={(address) =>
-                          updateFormData('moving_address', address)
+                        onPlaceResolved={({ formatted_address }) =>
+                          updateFormData('moving_address', formatted_address)
                         }
+                        onClear={() => updateFormData('moving_address', '')}
                         placeholder="City / Province"
-                        label={`${
+                        label={
                           !isMovingHelp
                             ? 'Where is the pickup or loading?'
                             : 'Where are you located?'
-                        }`}
-                        fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
-                        className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                        }
+                        fieldClassName="rounded-lg border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
+                        className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                         labelClassName="text-gray-700 font-medium text-sm"
                         required={true}
                       />
@@ -563,15 +530,16 @@ export default function QuotationPage() {
                     </div>
                     {!isMovingHelp && (
                       <div className="flex flex-col w-full">
-                        <AddressAutocomplete
+                        <PlaceAutocompleteInput
                           value={formData.unloading_address}
-                          onChange={(address) =>
-                            updateFormData('unloading_address', address)
+                          onPlaceResolved={({ formatted_address }) =>
+                            updateFormData('unloading_address', formatted_address)
                           }
+                          onClear={() => updateFormData('unloading_address', '')}
                           required={true}
                           placeholder="City / Province"
                           label="Where are you moving to?"
-                          fieldClassName="rounded-lg  border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
+                          fieldClassName="rounded-lg border border-gray-300 text-gray-700 dark:text-white focus:border-theme-orange active:border-theme-orange"
                           className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                           labelClassName="text-gray-700 font-medium text-sm"
                         />
@@ -644,29 +612,27 @@ export default function QuotationPage() {
                   </button>
                 </>
               ) : (
-                <>
-                  <button
-                    onClick={handleSubmit}
-                    disabled={!isStepValid(currentStep) || isSubmitting}
-                    className={`flex items-center px-8 py-3 rounded-lg text-sm md:text-md transition-all duration-200 ${
-                      isStepValid(currentStep)
-                        ? 'bg-theme-orange text-white hover:bg-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
-                  >
-                    {isSubmitting ? (
-                      <Loader className="w-5 h-5 mr-2" />
-                    ) : (
-                      'Get Quote'
-                    )}
-                    <ChevronRightIcon className="w-5 h-5 ml-2" />
-                  </button>
-                </>
+                <button
+                  onClick={handleSubmit}
+                  disabled={!isStepValid(currentStep) || isSubmitting}
+                  className={`flex items-center px-8 py-3 rounded-lg text-sm md:text-md transition-all duration-200 ${
+                    isStepValid(currentStep)
+                      ? 'bg-theme-orange text-white hover:bg-orange-600 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5'
+                      : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  }`}
+                >
+                  {isSubmitting ? (
+                    <Loader className="w-5 h-5 mr-2" />
+                  ) : (
+                    'Get Quote'
+                  )}
+                  <ChevronRightIcon className="w-5 h-5 ml-2" />
+                </button>
               )}
             </div>
+            {currentStep === 3 && <ConsentText />}
           </div>
-        )}
-      </div>
-    </>
+        </div>
+    </QuotePageShell>
   );
 }

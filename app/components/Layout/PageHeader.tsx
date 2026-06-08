@@ -22,7 +22,7 @@ const PageHeader: React.FC<PageHeaderProps> = ({
           {title}
         </h1>
         {description ? (
-          <p className="font-outfit font-light text-muted lg:text-sm text-xs lg:w-full lg:text-center w-full pt-4">
+          <p className="font-outfit font-light text-white lg:text-sm text-xs lg:w-full lg:text-center w-full pt-4">
             {description}
           </p>
         ) : null}
