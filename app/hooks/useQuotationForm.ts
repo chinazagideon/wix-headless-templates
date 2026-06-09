@@ -423,7 +423,6 @@ export const useQuotationForm = () => {
     handleSimpleSubmit,
     handleStepValidation,
 
-
     isStepValid,
     isEmailOrPhone,
     compareValue,
