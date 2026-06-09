@@ -146,6 +146,7 @@ export async function POST(request: NextRequest) {
       'moving_address_date_and_time',
       'moving_date_and_time',
       'destination_building_type',
+      'casl_consent',
     ]);
     const submissionValues = Object.fromEntries(
       Object.entries(submissionValuesRaw).filter(([k]) => allowedKeys.has(k))

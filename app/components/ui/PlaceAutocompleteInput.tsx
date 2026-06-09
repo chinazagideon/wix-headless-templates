@@ -5,44 +5,51 @@ import { MapPinIcon } from '@heroicons/react/24/outline';
 import {
   useGooglePlaces,
   type PlacePrediction,
+  type ResolvedPlace,
 } from '@app/hooks/useGooglePlaces';
 
-interface AddressAutocompleteProps {
+export type { ResolvedPlace };
+
+interface PlaceAutocompleteInputProps {
   value: string;
-  onChange: (value: string) => void;
-  placeholder: string;
+  onPlaceResolved: (place: ResolvedPlace) => void;
+  onClear: () => void;
+  placeholder?: string;
   label: string;
+  required?: boolean;
   className?: string;
   fieldClassName?: string;
   labelClassName?: string;
-  showLabel?: boolean;
-  required?: boolean;
-  /** @deprecated — no longer used; kept for call-site compatibility */
-  all?: boolean;
 }
 
-export default function AddressAutocomplete({
+export default function PlaceAutocompleteInput({
   value,
-  onChange,
-  placeholder,
+  onPlaceResolved,
+  onClear,
+  placeholder = 'City / Province',
   label,
+  required = false,
   className = '',
   fieldClassName = '',
   labelClassName = '',
-  showLabel = true,
-  required = false,
-}: AddressAutocompleteProps) {
-  const { isReady, getPredictions } = useGooglePlaces();
+}: PlaceAutocompleteInputProps) {
+  const { isReady, getPredictions, resolvePlace } = useGooglePlaces();
 
   const [inputText, setInputText] = useState(value);
+  const [isResolved, setIsResolved] = useState(Boolean(value));
+  const [inlineError, setInlineError] = useState('');
   const [predictions, setPredictions] = useState<PlacePrediction[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const debounceRef = useRef<NodeJS.Timeout>();
 
-  // Sync when parent resets the value
+  // Sync when parent resets value
   useEffect(() => {
-    setInputText(value);
+    if (!value) {
+      setInputText('');
+      setIsResolved(false);
+      setPredictions([]);
+    }
   }, [value]);
 
   const fetchPredictions = useCallback(
@@ -66,20 +73,42 @@ export default function AddressAutocomplete({
 
   const handleChange = (text: string) => {
     setInputText(text);
-    onChange(text);
+    setIsResolved(false);
+    setInlineError('');
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => fetchPredictions(text), 300);
   };
 
-  const handleSelect = (prediction: PlacePrediction) => {
+  const handleSelect = async (prediction: PlacePrediction) => {
+    // Mark resolved immediately so blur does not clear the field
+    // while the async details call is in-flight
     setInputText(prediction.fullText);
-    onChange(prediction.fullText);
-    setPredictions([]);
+    setIsResolved(true);
     setShowSuggestions(false);
+    setPredictions([]);
+    setIsLoading(true);
+    try {
+      const resolved = await resolvePlace(prediction.placeId);
+      setInlineError('');
+      onPlaceResolved(resolved);
+    } catch {
+      setInlineError('Could not resolve address. Please try again.');
+      setIsResolved(false);
+      setInputText('');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleBlur = () => {
-    setTimeout(() => setShowSuggestions(false), 200);
+    setTimeout(() => {
+      setShowSuggestions(false);
+      if (inputText.trim() && !isResolved) {
+        setInputText('');
+        setInlineError('Please select an address from the suggestions');
+        onClear();
+      }
+    }, 200);
   };
 
   const handleFocus = () => {
@@ -97,12 +126,10 @@ export default function AddressAutocomplete({
   return (
     <div className={`relative ${className}`}>
       <label className="block">
-        {showLabel && (
-          <span className={`font-medium ${labelClassName}`}>
-            {label}
-            {required && <span className="text-red-500 text-xs ml-1">*</span>}
-          </span>
-        )}
+        <span className={`font-medium ${labelClassName}`}>
+          {label}
+          {required && <span className="text-red-500 text-xs ml-1">*</span>}
+        </span>
         <div className="relative mt-2">
           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
             <MapPinIcon className="h-5 w-5 text-gray-400" />
@@ -124,6 +151,10 @@ export default function AddressAutocomplete({
           )}
         </div>
       </label>
+
+      {inlineError && (
+        <p className="text-red-500 text-xs mt-1">{inlineError}</p>
+      )}
 
       {showSuggestions && predictions.length > 0 && (
         <div className="absolute z-50 w-full mt-1 bg-white border border-gray-200 rounded-lg shadow-lg max-h-60 overflow-y-auto">

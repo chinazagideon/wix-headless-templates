@@ -1,5 +1,7 @@
 import { useState, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { fireQuoteLeadConversion } from '@app/lib/track-google-ads-conversion';
+import { trackPixelEvent } from '@app/lib/meta-pixel';
 import { useWixServices } from './useWixServices';
 import { useForms } from './useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
@@ -35,6 +37,7 @@ export interface FormData {
 }
 
 export const useQuotationForm = () => {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     first_name: '',
@@ -153,10 +156,10 @@ export const useQuotationForm = () => {
 
   const validatePhoneField = useCallback((value: string) => {
     if (!value || !value.trim()) {
-      setErrors((prev) => {
-        const { phone_9f17: _, ...rest } = prev;
-        return rest;
-      });
+      setErrors((prev) => ({
+        ...prev,
+        phone_9f17: 'Phone number is required',
+      }));
       return;
     }
     const digits = value.replace(/\D/g, '');
@@ -207,14 +210,16 @@ export const useQuotationForm = () => {
       newErrors.email_e1ca = 'Enter a valid email address';
     }
     const digits = (data.phone_9f17 || '').replace(/\D/g, '');
-    if (digits) {
-      const isValid =
+    if (!digits) {
+      newErrors.phone_9f17 = 'Phone number is required';
+    } else if (
+      !(
         digits.length === 10 ||
-        (digits.length === 11 && digits.startsWith('1'));
-      if (!isValid) {
-        newErrors.phone_9f17 =
-          'Enter a valid phone number (e.g. +1 204 555 1234)';
-      }
+        (digits.length === 11 && digits.startsWith('1'))
+      )
+    ) {
+      newErrors.phone_9f17 =
+        'Enter a valid phone number (e.g. +1 204 555 1234)';
     }
 
     if (!data.moving_address || !data.moving_address.trim()) {
@@ -243,7 +248,7 @@ export const useQuotationForm = () => {
   const onSubmit = useCallback(
     async (data: FormData) => {
       if (!formId) throw new Error('Form ID not resolved yet');
-      const sanitized: Record<string, any> = {};
+      const sanitized: Record<string, unknown> = { casl_consent: true };
       for (const key of allowedWixFieldIds) {
         const value = data[key];
         if (value !== undefined && value !== null && value !== '') {
@@ -279,13 +284,16 @@ export const useQuotationForm = () => {
     }
     try {
       await onSubmit(formData);
-      setIsCompleted(true);
       fireQuoteLeadConversion();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      trackPixelEvent('Lead');
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('quote_first_name', formData.first_name);
+      }
+      router.push('/quote/thank-you');
     } catch (e) {
       console.error(e);
     }
-  }, [formData, validateForm, onSubmit]);
+  }, [formData, validateForm, onSubmit, router]);
 
   // Validates only the fields present in the single-step v2 QuoteForm
   const handleSimpleSubmit = useCallback(async () => {
@@ -322,12 +330,16 @@ export const useQuotationForm = () => {
     if (Object.keys(newErrors).length > 0) return;
     try {
       await onSubmit(formData);
-      setIsCompleted(true);
       fireQuoteLeadConversion();
+      trackPixelEvent('Lead');
+      if (typeof window !== 'undefined') {
+        sessionStorage.setItem('quote_first_name', formData.first_name);
+      }
+      router.push('/quote/thank-you');
     } catch (e) {
       console.error(e);
     }
-  }, [formData, onSubmit]);
+  }, [formData, onSubmit, router]);
   const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   const isStepValid = useCallback(
@@ -346,8 +358,8 @@ export const useQuotationForm = () => {
             formData.moving_address &&
               formData.first_name &&
               formData.email_e1ca &&
+              formData.phone_9f17 &&
               formData.moving_address_date_and_time
-            // && (!isMovingHelp && !formData.unloading_address)
           );
         default:
           return false;
@@ -399,11 +411,10 @@ export const useQuotationForm = () => {
     isSubmitting,
     formError,
     isLoading,
-    error,
+    serviceError: error,
     isFetching,
     visibleServices,
 
-    // Actions
     updateFormData,
     updateMoveDateTime,
     nextStep,
@@ -412,7 +423,7 @@ export const useQuotationForm = () => {
     handleSimpleSubmit,
     handleStepValidation,
 
-    // Computed
+
     isStepValid,
     isEmailOrPhone,
     compareValue,

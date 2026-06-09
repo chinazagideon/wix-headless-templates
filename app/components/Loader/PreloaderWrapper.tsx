@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { usePathname, useSearchParams } from 'next/navigation';
 import Preloader from './Preloader';
 import Nav from '../components.v2/Nav';
 import Footer from '../components.v2/Footer';
@@ -9,26 +10,22 @@ interface PreloaderWrapperProps {
   children: React.ReactNode;
 }
 
-const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => {
+function PreloaderWrapperInner({ children }: PreloaderWrapperProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [showContent, setShowContent] = useState(false);
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const isAdMode =
+    pathname.startsWith('/quote') && Boolean(searchParams.get('utm_source'));
 
   useEffect(() => {
-    // Hide preloader after animation completes
     const timer = setTimeout(() => {
       setIsLoading(false);
-
-      // Add a small delay before showing content with scroll animation
       setTimeout(() => {
         setShowContent(true);
-
-        // Smooth scroll to top after content appears
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth',
-        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 500);
-    }, 4000); // Total animation duration
+    }, 4000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -36,7 +33,7 @@ const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => {
   return (
     <>
       {isLoading && <Preloader />}
-      {!isLoading && <Nav />}
+      {!isLoading && !isAdMode && <Nav />}
       <main
         className={`bg-transparent min-h-screen transition-all duration-1000 ease-out ${
           showContent ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
@@ -44,9 +41,15 @@ const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => {
       >
         {children}
       </main>
-      {!isLoading && <Footer />}
+      {!isLoading && !isAdMode && <Footer />}
     </>
   );
-};
+}
+
+const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => (
+  <Suspense fallback={<>{children}</>}>
+    <PreloaderWrapperInner>{children}</PreloaderWrapperInner>
+  </Suspense>
+);
 
 export default PreloaderWrapper;

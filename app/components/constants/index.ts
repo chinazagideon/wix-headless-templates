@@ -3,7 +3,7 @@ export const constants = {
   companyName: 'ICANDO Movers',
   statYear: '2023',
   statYearsCount: '3+',
-  googleRating: '4.8★',
+  googleRating: '4.8',
   companyEmail: 'info@icandomovers.ca',
   companyAddress: '463 Dawson road north',
   companyCity: 'Winnipeg',

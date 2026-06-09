@@ -2,28 +2,22 @@
 import Lines from '@app/components/Design/Lines';
 import { useEffect, useRef, useState } from 'react';
 import { CheckCircleIcon, Loader, PhoneIcon } from 'lucide-react';
-import { zonedTimeToUtc } from 'date-fns-tz';
 import { useForms } from '@app/hooks/useForms';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import ThemeButton from '../Button/ThemeButton';
-import AddressAutocomplete from '@app/components/AddressAutocomplete';
+import PlaceAutocompleteInput from '@app/components/ui/PlaceAutocompleteInput';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 import { constants } from '@app/components/constants';
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
 
 const QuoteComponent = ({ services }: { services: any[] }) => {
-  const {
-    submit,
-    isSubmitting,
-    error: formError,
-    formId,
-    onSubmit,
-  } = useForms(process.env.NEXT_PUBLIC_WIX_FORM_ID || '');
+  const { isSubmitting, onSubmit } = useForms(
+    process.env.NEXT_PUBLIC_WIX_FORM_ID || ''
+  );
   const { compareValue } = useQuotationForm();
 
   const [isCompleted, setIsCompleted] = useState(false);
   const successRef = useRef<HTMLDivElement | null>(null);
-  const dateTimeRef = useRef<HTMLInputElement | null>(null);
   const quick_form = 'Quick Form';
 
   const [formData, setFormData] = useState({
@@ -427,21 +421,25 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
                 </div>
               </div>
               <div className="flex flex-col gap-2 w-full mt-2">
-                <AddressAutocomplete
+                <PlaceAutocompleteInput
                   value={formData.moving_address}
-                  onChange={(address) =>
-                    handleChange({
-                      target: { name: 'moving_address', value: address },
-                    })
+                  onPlaceResolved={(place) =>
+                    setFormData((prev) => ({
+                      ...prev,
+                      moving_address: place.formatted_address,
+                    }))
+                  }
+                  onClear={() =>
+                    setFormData((prev) => ({ ...prev, moving_address: '' }))
                   }
                   placeholder="City / Province"
-                  label={`${
+                  label={
                     !isMovingHelp
                       ? 'Where is the pickup or loading?'
                       : 'Where are you located?'
-                  }`}
-                  className="mt-2 block w-full  rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                  fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
+                  }
+                  className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                  fieldClassName="rounded-lg bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                   labelClassName="text-gray-400 dark:text-white text-sm"
                   required={true}
                 />
@@ -453,21 +451,27 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
               </div>
               {!isMovingHelp && (
                 <div className="flex flex-col gap-2 w-full mt-2">
-                  <AddressAutocomplete
+                  <PlaceAutocompleteInput
                     value={formData.unloading_address}
-                    onChange={(address) =>
-                      handleChange({
-                        target: { name: 'unloading_address', value: address },
-                      })
+                    onPlaceResolved={(place) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        unloading_address: place.formatted_address,
+                      }))
+                    }
+                    onClear={() =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        unloading_address: '',
+                      }))
                     }
                     placeholder="City / Province"
                     required={true}
                     label="Where are you moving to?"
                     className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
-                    fieldClassName="rounded-lg  bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
+                    fieldClassName="rounded-lg bg-[#011a34] border-1 border-[#011a34] active:border-theme-orange"
                     labelClassName="text-gray-400 dark:text-white text-sm"
                   />
-
                   {errors.unloading_address && (
                     <p className="text-red-500 text-xs">
                       {errors.unloading_address}

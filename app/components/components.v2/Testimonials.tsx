@@ -2,6 +2,7 @@
 
 import { useTestimonials } from '@app/hooks/useTestimonials';
 import { constants } from '@app/components/constants';
+import { Stars } from '../Testimonials/(components)/utils';
 
 function getInitials(displayName: string): string {
   const parts = displayName.trim().split(/\s+/);
@@ -42,7 +43,7 @@ export default function Testimonials() {
             What Winnipeg says about us
           </h2>
           <div className="inline-flex items-center gap-2 bg-[#FDFAF5] border border-[#D9D2C4] rounded-full px-4 py-1.5">
-            <span className="text-[#FBB914] tracking-wide text-sm">★★★★★</span>
+            <Stars rating={overallRating ?? 4.8} />
             <span className="font-serif font-bold text-[18px] text-[#1A1208]">
               {overallRating?.toFixed(1) ?? '4.8'}
             </span>
@@ -82,8 +83,13 @@ export default function Testimonials() {
                       <strong className="block text-[15px] font-semibold text-[#1A1208]">
                         {r.authorAttribution?.displayName ?? 'Anonymous'}
                       </strong>
-                      <span className="text-[12px] text-[#9C8E7A]">
-                        ★★★★★ · {r.relativePublishTimeDescription}
+                      <span className="flex items-center gap-1.5">
+                        <Stars rating={r.rating ?? 5} />
+                        {r.relativePublishTimeDescription && (
+                          <span className="text-[11px] text-[#9C8E7A]">
+                            · {r.relativePublishTimeDescription}
+                          </span>
+                        )}
                       </span>
                     </div>
                   </div>
