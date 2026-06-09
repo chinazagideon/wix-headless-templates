@@ -411,11 +411,10 @@ export const useQuotationForm = () => {
     isSubmitting,
     formError,
     isLoading,
-    error,
+    serviceError: error,
     isFetching,
     visibleServices,
 
-    // Actions
     updateFormData,
     updateMoveDateTime,
     nextStep,
@@ -424,7 +423,7 @@ export const useQuotationForm = () => {
     handleSimpleSubmit,
     handleStepValidation,
 
-    // Computed
+
     isStepValid,
     isEmailOrPhone,
     compareValue,

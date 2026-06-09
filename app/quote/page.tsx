@@ -71,6 +71,7 @@ export default function QuotationPage() {
     compareValue,
     formError,
     validatePhoneField,
+    serviceError,
   } = useQuotationForm();
 
   useEffect(() => {
@@ -104,7 +105,7 @@ export default function QuotationPage() {
         className="items-center justify-center"
       />
       <TrustBar />
-      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="bg-gradient-to-br from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
           {/* Progress Bar */}
           <div className="mb-4 lg:mb-12 w-full relative z-1000 ">
@@ -192,37 +193,44 @@ export default function QuotationPage() {
                     <span className="text-red-500 text-xs ml-1">*</span>
                   </p>
                 </div>
-
+                {serviceError && (
+                  <>
+                    <div className="flex">
+                      <p>{JSON.stringify(serviceError)}</p>
+                    </div>
+                  </>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                  {visibleServices?.map((service) => {
-                    const Icon = getIconForService(service.info?.name);
-                    return (
-                      <div
-                        key={service.id}
-                        onClick={() =>
-                          updateFormData('service_type', service.info?.name)
-                        }
-                        className={`p-3 rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg ${
-                          formData.service_type === service.info?.name
-                            ? 'border-theme-orange bg-orange-50'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="text-center">
-                          <Icon
-                            className={`w-10 h-10 mx-auto mb-4 ${
-                              formData.service_type === service.info?.name
-                                ? 'text-theme-orange'
-                                : 'text-gray-400'
-                            }`}
-                          />
-                          <h3 className="font-outfit font-semibold text-sm text-gray-900 mb-2">
-                            {service.info?.name}
-                          </h3>
+                  {!serviceError &&
+                    visibleServices?.map((service) => {
+                      const Icon = getIconForService(service.info?.name);
+                      return (
+                        <div
+                          key={service.id}
+                          onClick={() =>
+                            updateFormData('service_type', service.info?.name)
+                          }
+                          className={`p-3 rounded-xl border-1 cursor-pointer transition-all duration-300 hover:shadow-lg ${
+                            formData.service_type === service.info?.name
+                              ? 'border-theme-orange bg-orange-50'
+                              : 'border-gray-200 hover:border-gray-300'
+                          }`}
+                        >
+                          <div className="text-center">
+                            <Icon
+                              className={`w-10 h-10 mx-auto mb-4 ${
+                                formData.service_type === service.info?.name
+                                  ? 'text-theme-orange'
+                                  : 'text-gray-400'
+                              }`}
+                            />
+                            <h3 className="font-outfit font-semibold text-sm text-gray-900 mb-2">
+                              {service.info?.name}
+                            </h3>
+                          </div>
                         </div>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
                 </div>
                 {errors.service_type && (
                   <p className="text-red-500 text-xs">{errors.service_type}</p>
