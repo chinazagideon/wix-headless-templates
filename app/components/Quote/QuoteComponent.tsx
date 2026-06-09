@@ -9,6 +9,7 @@ import PlaceAutocompleteInput from '@app/components/ui/PlaceAutocompleteInput';
 import DateTimePicker from '@app/components/DateTimePicker/DateTimePicker';
 import { constants } from '@app/components/constants';
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
+import ConsentText from '@app/quote/_components/ConsentText';
 
 const QuoteComponent = ({ services }: { services: any[] }) => {
   const { isSubmitting, onSubmit } = useForms(
@@ -481,6 +482,7 @@ const QuoteComponent = ({ services }: { services: any[] }) => {
               )}
 
               <div className="flex flex-col gap-2 w-full mt-2">
+                <ConsentText />
                 {/* <p className="text-gray-400 dark:text-white text-sm font-outfit font-light">
                  <span className="">*</span> Indicates a required field
                 </p> */}
