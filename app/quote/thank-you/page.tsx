@@ -9,15 +9,11 @@ import { trackPixelEvent } from '@app/lib/meta-pixel';
 
 export default function ThankYouPage() {
   const [firstName, setFirstName] = useState('');
-  const [phone, setPhone] = useState('');
 
   useEffect(() => {
     const name = sessionStorage.getItem('quote_first_name') ?? '';
-    const ph = sessionStorage.getItem('quote_phone') ?? '';
     setFirstName(name);
-    setPhone(ph);
     sessionStorage.removeItem('quote_first_name');
-    sessionStorage.removeItem('quote_phone');
     trackPixelEvent('Lead');
   }, []);
 
@@ -31,9 +27,7 @@ export default function ThankYouPage() {
         </h1>
 
         <p className="text-gray-600 text-lg mb-2">
-          {phone
-            ? `We'll call you at ${phone} within 2 hours to confirm your quote.`
-            : "We'll call you within 2 hours to confirm your quote."}
+          We&apos;ll call you within 2 hours to confirm your quote.
         </p>
 
         <p className="text-gray-400 text-sm mb-8">
@@ -53,7 +47,8 @@ export default function ThankYouPage() {
         <div className="mt-8 flex flex-col items-center gap-1">
           <Stars rating={4.8} />
           <span className="text-sm text-gray-500">
-            {constants.googleRating} Google Rating · Winnipeg owned &amp; operated
+            {constants.googleRating} Google Rating · Winnipeg owned &amp;
+            operated
           </span>
         </div>
 

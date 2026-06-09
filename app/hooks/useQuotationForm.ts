@@ -156,7 +156,10 @@ export const useQuotationForm = () => {
 
   const validatePhoneField = useCallback((value: string) => {
     if (!value || !value.trim()) {
-      setErrors((prev) => ({ ...prev, phone_9f17: 'Phone number is required' }));
+      setErrors((prev) => ({
+        ...prev,
+        phone_9f17: 'Phone number is required',
+      }));
       return;
     }
     const digits = value.replace(/\D/g, '');
@@ -210,9 +213,13 @@ export const useQuotationForm = () => {
     if (!digits) {
       newErrors.phone_9f17 = 'Phone number is required';
     } else if (
-      !(digits.length === 10 || (digits.length === 11 && digits.startsWith('1')))
+      !(
+        digits.length === 10 ||
+        (digits.length === 11 && digits.startsWith('1'))
+      )
     ) {
-      newErrors.phone_9f17 = 'Enter a valid phone number (e.g. +1 204 555 1234)';
+      newErrors.phone_9f17 =
+        'Enter a valid phone number (e.g. +1 204 555 1234)';
     }
 
     if (!data.moving_address || !data.moving_address.trim()) {
@@ -281,7 +288,6 @@ export const useQuotationForm = () => {
       trackPixelEvent('Lead');
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('quote_first_name', formData.first_name);
-        sessionStorage.setItem('quote_phone', formData.phone_9f17);
       }
       router.push('/quote/thank-you');
     } catch (e) {
@@ -328,7 +334,6 @@ export const useQuotationForm = () => {
       trackPixelEvent('Lead');
       if (typeof window !== 'undefined') {
         sessionStorage.setItem('quote_first_name', formData.first_name);
-        sessionStorage.setItem('quote_phone', formData.phone_9f17);
       }
       router.push('/quote/thank-you');
     } catch (e) {

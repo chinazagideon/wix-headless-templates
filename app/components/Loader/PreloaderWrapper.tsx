@@ -16,8 +16,7 @@ function PreloaderWrapperInner({ children }: PreloaderWrapperProps) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const isAdMode =
-    pathname.startsWith('/quote') &&
-    Boolean(searchParams.get('utm_source'));
+    pathname.startsWith('/quote') && Boolean(searchParams.get('utm_source'));
 
   useEffect(() => {
     const timer = setTimeout(() => {

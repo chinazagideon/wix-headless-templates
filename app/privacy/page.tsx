@@ -3,7 +3,8 @@ import { constants } from '@app/components/constants';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy',
-  description: 'How ICANDO Movers collects, uses, and protects your information.',
+  description:
+    'How ICANDO Movers collects, uses, and protects your information.',
   alternates: { canonical: '/privacy' },
 };
 
@@ -22,8 +23,8 @@ export default function PrivacyPage() {
             When you request a quote or contact us, we collect your name, email
             address, phone number, and moving details (pickup and destination
             addresses, preferred date, and move size). We also collect standard
-            server log data (IP address, browser type, pages visited) through our
-            hosting and analytics providers.
+            server log data (IP address, browser type, pages visited) through
+            our hosting and analytics providers.
           </p>
         </div>
 
@@ -33,10 +34,10 @@ export default function PrivacyPage() {
           </h2>
           <p>
             Your information is used to prepare and deliver your moving quote,
-            confirm your booking, and contact you about your upcoming move. We may
-            also send you occasional service updates relevant to your booking. We
-            do not use your information for unrelated marketing without your
-            explicit consent.
+            confirm your booking, and contact you about your upcoming move. We
+            may also send you occasional service updates relevant to your
+            booking. We do not use your information for unrelated marketing
+            without your explicit consent.
           </p>
         </div>
 
@@ -45,10 +46,10 @@ export default function PrivacyPage() {
             Who we share it with
           </h2>
           <p>
-            We do not sell your personal information to third parties. We may share
-            it with service providers (such as our CRM and scheduling platform)
-            strictly for the purpose of fulfilling your move. These providers are
-            bound by confidentiality obligations.
+            We do not sell your personal information to third parties. We may
+            share it with service providers (such as our CRM and scheduling
+            platform) strictly for the purpose of fulfilling your move. These
+            providers are bound by confidentiality obligations.
           </p>
         </div>
 
@@ -58,8 +59,8 @@ export default function PrivacyPage() {
           </h2>
           <p>
             We retain your information for as long as necessary to complete your
-            move and comply with applicable legal obligations, typically no longer
-            than 3 years after your last interaction with us.
+            move and comply with applicable legal obligations, typically no
+            longer than 3 years after your last interaction with us.
           </p>
         </div>
 
@@ -68,9 +69,9 @@ export default function PrivacyPage() {
             Your rights
           </h2>
           <p>
-            You may request access to, correction of, or deletion of your personal
-            information at any time by contacting us at the address below. We will
-            respond within 30 days.
+            You may request access to, correction of, or deletion of your
+            personal information at any time by contacting us at the address
+            below. We will respond within 30 days.
           </p>
         </div>
 
@@ -105,9 +106,7 @@ export default function PrivacyPage() {
             </a>
             .
           </p>
-          <p className="mt-3">
-            ICANDO Movers · Winnipeg, Manitoba, Canada
-          </p>
+          <p className="mt-3">ICANDO Movers · Winnipeg, Manitoba, Canada</p>
         </div>
       </section>
     </main>
