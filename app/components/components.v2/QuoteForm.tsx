@@ -2,6 +2,7 @@
 
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
 import { constants } from '../constants';
+import ConsentText from '@app/quote/_components/ConsentText';
 
 export default function QuoteForm() {
   const {
@@ -110,7 +111,7 @@ export default function QuoteForm() {
                   className={`${inputCls} appearance-none cursor-pointer`}
                   disabled={servicesLoading}
                 >
-                  <option value="">
+                  <option value="" selected disabled>
                     {servicesLoading ? 'Loading…' : 'Select service…'}
                   </option>
                   {visibleServices.map((s) => (
@@ -175,6 +176,7 @@ export default function QuoteForm() {
                 placeholder="Winnipg, MB"
               />
             </div>
+            <ConsentText />
 
             <button
               type="submit"
