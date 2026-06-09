@@ -36,5 +36,5 @@ export function fireQuoteLeadConversion(): void {
   if (!sendTo) return;
 
   ensureGtagStub();
-  window?.gtag!('event', 'conversion', { send_to: sendTo }) ?? undefined;
+  window.gtag!('event', 'conversion', { send_to: sendTo });
 }
