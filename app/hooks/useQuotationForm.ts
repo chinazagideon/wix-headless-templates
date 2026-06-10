@@ -34,6 +34,7 @@ export interface FormData {
   moving_date_and_time?: string;
   destination_building_type?: string;
   form_type?: string;
+  casl_consent: boolean;
 }
 
 export const useQuotationForm = () => {
@@ -60,6 +61,8 @@ export const useQuotationForm = () => {
     stairs_count: '',
     moving_date_and_time: '',
     destination_building_type: '',
+    form_type: '',
+    casl_consent: false,
   });
   const [isCompleted, setIsCompleted] = useState(false);
   const [formHasError, setFormHasError] = useState<boolean>(false);
@@ -318,6 +321,9 @@ export const useQuotationForm = () => {
     }
     if (!formData.moving_address?.trim())
       newErrors.moving_address = 'Pickup location is required';
+    if (!formData.unloading_address?.trim() && !isMovingHelp) {
+      newErrors.unloading_address = 'Final destination is required';
+    }
     if (!formData.moving_address_date_and_time?.trim()) {
       newErrors.moving_address_date_and_time =
         'Moving date and time is required';
@@ -329,6 +335,8 @@ export const useQuotationForm = () => {
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
     try {
+      formData.form_type = 'Quick Form';
+      formData.casl_consent = true;
       await onSubmit(formData);
       fireQuoteLeadConversion();
       trackPixelEvent('Lead');

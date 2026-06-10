@@ -3,6 +3,7 @@
 import { useQuotationForm } from '@app/hooks/useQuotationForm';
 import { constants } from '../constants';
 import ConsentText from '@app/quote/_components/ConsentText';
+import PlaceAutocompleteInput from '../ui/PlaceAutocompleteInput';
 
 export default function QuoteForm() {
   const {
@@ -15,6 +16,7 @@ export default function QuoteForm() {
     errors,
     visibleServices,
     isLoading: servicesLoading,
+    compareValue,
   } = useQuotationForm();
 
   const inputCls =
@@ -27,6 +29,8 @@ export default function QuoteForm() {
     e.preventDefault();
     handleSimpleSubmit();
   };
+
+  const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   return (
     <section
@@ -65,14 +69,14 @@ export default function QuoteForm() {
                   value={formData.first_name}
                   onChange={(e) => updateFormData('first_name', e.target.value)}
                   className={inputCls}
-                  placeholder="First name"
+                  placeholder="Name"
                 />
                 {errors.first_name && (
                   <p className={errorCls}>{errors.first_name}</p>
                 )}
               </div>
               <div>
-                <label className={labelCls}>Phone (optional)</label>
+                <label className={labelCls}>Phone Number</label>
                 <input
                   type="tel"
                   value={formData.phone_9f17}
@@ -151,30 +155,59 @@ export default function QuoteForm() {
             </div>
 
             <div>
-              <label className={labelCls}>Pickup Province/Territory *</label>
-              <input
+              {/* <label className={labelCls}>Pickup Province/Territory *</label> */}
+              <PlaceAutocompleteInput
+                value={formData.unloading_address}
+                onPlaceResolved={({ formatted_address }) =>
+                  updateFormData('moving_address', formatted_address)
+                }
+                onClear={() => updateFormData('moving_address', '')}
+                required={true}
+                placeholder="City / Province"
+                label="Where are you moving from?"
+                fieldClassName={inputCls}
+                // className=" block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                labelClassName={labelCls}
+              />
+              {/* <input
                 value={formData.moving_address}
                 onChange={(e) =>
                   updateFormData('moving_address', e.target.value)
                 }
                 className={inputCls}
                 placeholder="Winnipeg, MB"
-              />
+              /> */}
               {errors.moving_address && (
                 <p className={errorCls}>{errors.moving_address}</p>
               )}
             </div>
 
             <div>
-              <label className={labelCls}>Delivery Province/Territory *</label>
-              <input
+              {/* <label className={labelCls}>Delivery Province/Territory *</label> */}
+              <PlaceAutocompleteInput
+                value={formData.unloading_address}
+                onPlaceResolved={({ formatted_address }) =>
+                  updateFormData('unloading_address', formatted_address)
+                }
+                onClear={() => updateFormData('unloading_address', '')}
+                required={!isMovingHelp}
+                placeholder="City / Province"
+                label="Where are you moving to?"
+                fieldClassName={inputCls}
+                className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
+                labelClassName={labelCls}
+              />
+              {/* <input
                 value={formData.unloading_address}
                 onChange={(e) =>
                   updateFormData('unloading_address', e.target.value)
                 }
                 className={inputCls}
                 placeholder="Winnipg, MB"
-              />
+              /> */}
+              {errors.unloading_address && (
+                <p className={errorCls}>{errors.unloading_address}</p>
+              )}
             </div>
             <ConsentText />
 

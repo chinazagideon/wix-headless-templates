@@ -7,6 +7,7 @@ import {
   type PlacePrediction,
   type ResolvedPlace,
 } from '@app/hooks/useGooglePlaces';
+import { cn } from '@app/utils';
 
 export type { ResolvedPlace };
 
@@ -142,7 +143,10 @@ export default function PlaceAutocompleteInput({
             onBlur={handleBlur}
             placeholder={isReady ? placeholder : 'Loading…'}
             disabled={!isReady}
-            className={`text-gray-700 block w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed ${fieldClassName}`}
+            className={cn(
+              `text-gray-700 block w-full pl-10 pr-4 py-3 rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed`,
+              fieldClassName
+            )}
           />
           {isLoading && (
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
