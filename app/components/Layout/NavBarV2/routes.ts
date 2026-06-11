@@ -4,7 +4,7 @@ const routes = {
   home: '/',
   about: '/about',
   services: '/services',
-  pricing: '/pricing',
+  pricing: '/truck-fees',
   relocation_hub: '/relocation-hub',
   contact: '/contact',
   quotation: '/quote',
@@ -15,6 +15,8 @@ const routes = {
   about_section: '/#about',
   reviews_section: '/#reviews',
   services_section: '/#services',
+  privacy: '/privacy',
+  truckFees: '/truck-fees',
 };
 
 export default routes;

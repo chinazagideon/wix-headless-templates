@@ -1,16 +1,17 @@
 import type { Metadata } from 'next';
 import { constants } from '@app/components/constants';
+import routes from '@app/components/Layout/NavBarV2/routes';
 
 export const metadata: Metadata = {
-  title: 'Pricing — Winnipeg Moving Rates',
+  title: 'Truck Fees — Winnipeg Moving Rates',
   description:
     'Transparent moving prices in Winnipeg. Get affordable rates for local and long-distance moves from ICANDO Movers.',
-  alternates: { canonical: '/pricing' },
+  alternates: { canonical: routes.pricing },
   openGraph: {
-    title: 'Pricing — Winnipeg Moving Rates',
+    title: 'Truck Fees — Winnipeg Moving Rates',
     description:
       'Affordable local and long-distance moving prices from ICANDO Movers.',
-    url: '/pricing',
+    url: routes.pricing,
     siteName: constants.companyName,
     type: 'website',
     images: [
@@ -24,13 +25,12 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Pricing — Winnipeg Moving Rates',
-    description:
-      'Affordable local and long-distance moving prices from ICANDO Movers.',
+    title: 'Truck Fees — Winnipeg Moving Rates',
+    description: `Affordable local and long-distance moving prices from ${constants.companyName}.`,
   },
 };
 
-export default function PricingLayout({
+export default function TruckFeesLayout({
   children,
 }: {
   children: React.ReactNode;

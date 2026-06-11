@@ -27,16 +27,17 @@ export const revalidate = 0;
 export const metadata: Metadata = {
   metadataBase: new URL(constants.companyWebsite),
   title: {
-    default: 'ICANDO Movers —  Redefining the neighborhood moving services',
-    template: '%s | ICANDO Movers',
+    default:
+      constants.companyName + ' —  Redefining the neighborhood moving services',
+    template: '%s | ' + constants.companyName,
   },
   description:
     'Affordable, reliable moving services in Winnipeg and across Manitoba.',
   keywords:
     'movers, moving services, Winnipeg movers, Manitoba moving, residential moving, commercial moving, packing services, storage, local movers',
-  authors: [{ name: 'ICANDO Movers' }],
-  creator: 'ICANDO Movers',
-  publisher: 'ICANDO Movers',
+  authors: [{ name: constants.companyName }],
+  creator: constants.companyName,
+  publisher: constants.companyName,
   alternates: {
     canonical: '/',
   },
@@ -44,11 +45,13 @@ export const metadata: Metadata = {
     icon: '/custom/favicon.png',
   },
   openGraph: {
-    title: 'ICANDO Movers — Redefining the neighborhood moving services',
+    title:
+      constants.companyName + ' — Redefining the neighborhood moving services',
     description:
       'Affordable, reliable moving services in Winnipeg and across Manitoba.',
     url: '/',
-    siteName: 'ICANDO Movers — Redefining the neighborhood moving services',
+    siteName:
+      constants.companyName + ' — Redefining the neighborhood moving services',
     type: 'website',
     locale: 'en_CA',
     images: [
@@ -62,7 +65,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ICANDO Movers',
+    title:
+      constants.companyName + ' — Redefining the neighborhood moving services',
     description:
       'Affordable, reliable moving services in Winnipeg and across Manitoba.',
   },

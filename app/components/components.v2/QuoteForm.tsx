@@ -155,7 +155,6 @@ export default function QuoteForm() {
             </div>
 
             <div>
-              {/* <label className={labelCls}>Pickup Province/Territory *</label> */}
               <PlaceAutocompleteInput
                 value={formData.unloading_address}
                 onPlaceResolved={({ formatted_address }) =>
@@ -169,21 +168,13 @@ export default function QuoteForm() {
                 // className=" block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                 labelClassName={labelCls}
               />
-              {/* <input
-                value={formData.moving_address}
-                onChange={(e) =>
-                  updateFormData('moving_address', e.target.value)
-                }
-                className={inputCls}
-                placeholder="Winnipeg, MB"
-              /> */}
+
               {errors.moving_address && (
                 <p className={errorCls}>{errors.moving_address}</p>
               )}
             </div>
 
             <div>
-              {/* <label className={labelCls}>Delivery Province/Territory *</label> */}
               <PlaceAutocompleteInput
                 value={formData.unloading_address}
                 onPlaceResolved={({ formatted_address }) =>
@@ -197,14 +188,6 @@ export default function QuoteForm() {
                 className="mt-2 block w-full rounded-lg focus:ring-2 focus:ring-theme-orange focus:border-transparent transition-all duration-200"
                 labelClassName={labelCls}
               />
-              {/* <input
-                value={formData.unloading_address}
-                onChange={(e) =>
-                  updateFormData('unloading_address', e.target.value)
-                }
-                className={inputCls}
-                placeholder="Winnipg, MB"
-              /> */}
               {errors.unloading_address && (
                 <p className={errorCls}>{errors.unloading_address}</p>
               )}

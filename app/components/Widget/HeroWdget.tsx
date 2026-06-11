@@ -1,6 +1,7 @@
 import routes from '@app/components/Layout/NavBarV2/routes';
 import Link from 'next/link';
 import ThemeButton from '../Button/ThemeButton';
+import { constants } from '../constants';
 
 const HeroWidget = ({ className }: { className?: string }) => {
   const quotation_url = routes.quotation;
@@ -24,10 +25,10 @@ const HeroWidget = ({ className }: { className?: string }) => {
             </span>
           </h1>
           <p className="font-outfit font-thin text-lg text-white lg:w-[70%] w-full pt-4">
-            At ICANDO Movers, we guarantee top-quality service to make your move
-            seamless. Our skilled team handles your belongings with care,
-            ensuring safe arrival at your new home. Trust us for an efficient,
-            worry free move where quality is our promise.
+            At {constants.companyName}, we guarantee top-quality service to make
+            your move seamless. Our skilled team handles your belongings with
+            care, ensuring safe arrival at your new home. Trust us for an
+            efficient, worry free move where quality is our promise.
           </p>
           <div className="flex flex-col lg:flex-row  items-center justify-center gap-4 w-full pt-10 lg:pt-[5%] animate-fade-in-delay">
             <div className="flex items-center gap-2 animate-slide-in-left">

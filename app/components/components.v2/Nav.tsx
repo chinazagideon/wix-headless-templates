@@ -5,9 +5,37 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { constants } from '../constants';
 import routes from '../Layout/NavBarV2/routes';
+import { usePathname } from 'next/navigation';
+import { cn } from '@app/utils';
+
+type pageRouteType = {
+  href: string;
+  label: string;
+  type: 'link' | 'hash';
+};
+const pageRoutes: pageRouteType[] = [
+  { href: '/', label: 'Home', type: 'link' },
+  { href: routes.about, label: 'About', type: 'link' },
+  { href: routes.services, label: 'Services', type: 'link' },
+  { href: routes.pricing_section, label: 'Pricing', type: 'hash' },
+  { href: routes.pricing, label: 'Truck Fees', type: 'link' },
+  { href: routes.reviews_section, label: 'Reviews', type: 'hash' },
+];
 
 export default function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const pathname = usePathname();
+
+  const isActivePage = (path: string) => {
+    if (!path) return false;
+    if (path === '/') return pathname === '/';
+    return pathname === path || pathname.startsWith(`${path}/`);
+  };
+
+  const stripLabel = (label: string) => {
+    return `/#${label.toLowerCase().replace(/[^a-z]/g, '')}`;
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-[#FDFAF5] border-b border-[#D9D2C4] shadow-[0_1px_12px_rgba(61,26,8,0.05)]">
@@ -26,18 +54,14 @@ export default function Nav() {
 
         {/* Desktop nav */}
         <nav className="hidden md:flex gap-1 ml-auto">
-          {[
-            { href: '/', label: 'Home' },
-            { href: routes.about_section, label: 'About' },
-            { href: routes.services_section, label: 'Services' },
-            { href: routes.pricing_section, label: 'Pricing' },
-            { href: routes.whatsIncluded, label: "What's Included" },
-            { href: routes.reviews_section, label: 'Reviews' },
-          ].map(({ href, label }) => (
+          {pageRoutes.map(({ href, label, type }) => (
             <a
               key={href}
               href={href}
-              className="px-3 py-2 rounded-lg text-sm font-medium text-[#5C4F3D] hover:text-[#FD6232] hover:bg-[#EAE4D8] transition-colors"
+              className={cn(
+                `px-3 py-2 rounded-lg text-sm font-medium text-[#5C4F3D] hover:text-[#FD6232] hover:bg-[#EAE4D8] transition-colors`,
+                isActivePage(href) && 'text-[#FD6232]'
+              )}
             >
               {label}
             </a>
@@ -76,30 +100,28 @@ export default function Nav() {
       {/* Mobile menu */}
       {menuOpen && (
         <nav className="md:hidden bg-[#FDFAF5] border-t border-[#D9D2C4] flex flex-col">
-          {[
-            'About',
-            'Services',
-            'Pricing',
-            "What's Included",
-            'Reviews',
-            'FAQ',
-          ].map((label) => (
-            <a
+          {pageRoutes.map(({ href, label, type }) => (
+            <Link
+              prefetch
               key={label}
-              href={`#${label.toLowerCase().replace(/[^a-z]/g, '')}`}
+              href={type === 'hash' ? stripLabel(label) : href}
               onClick={() => setMenuOpen(false)}
-              className="px-6 py-4 text-sm font-medium text-[#5C4F3D] border-b border-[#D9D2C4] hover:text-[#FD6232]"
+              className={cn(
+                `px-6 py-4 text-sm font-medium text-[#5C4F3D] border-b border-[#D9D2C4] hover:text-[#FD6232]`,
+                isActivePage(href) && 'text-[#FD6232]'
+              )}
             >
               {label}
-            </a>
+            </Link>
           ))}
           <div className="px-6 py-4">
-            <a
+            <Link
+              prefetch
               href={routes.quick_quote}
               className="inline-flex items-center gap-2 bg-[#FD6232] text-white font-semibold text-sm px-5 py-2.5 rounded-full"
             >
               Get a free quote →
-            </a>
+            </Link>
           </div>
         </nav>
       )}

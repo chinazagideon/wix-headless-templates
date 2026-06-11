@@ -1,6 +1,6 @@
 export const constants = {
   phoneNumber: '+1 (204) 229-5871',
-  companyName: 'ICANDO Movers',
+  companyName: 'ICANDO Movers & Transportation',
   statYear: '2023',
   statYearsCount: '3+',
   googleRating: '4.8',
@@ -17,7 +17,7 @@ export const constants = {
   facebook: 'https://www.facebook.com/icandomovers',
   websiteUrl: 'www.icandomovers.ca',
   requestQuotationText: 'Request Quote',
-  aboutDescription: ` Icando Movers is a professional moving company based in Winnipeg, 
+  aboutDescription: ` ICANDO Movers & Transportation is a professional moving company based in Winnipeg, 
   Manitoba. We are a team of experienced movers who are dedicated 
   to providing the best possible moving experience for our clients. 
   We offer a wide range of moving services, including local and long-distance moves,
