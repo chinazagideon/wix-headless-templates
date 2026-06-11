@@ -7,6 +7,7 @@ import { media as wixMedia } from '@wix/sdk';
 import { constants } from '@app/components/constants';
 import { BinocularsIcon, Loader, Gauge } from 'lucide-react';
 import About from '@app/components/components.v2/About';
+import Testimonials from '@app/components/components.v2/Testimonials';
 
 const Page = () => {
   const {
@@ -45,7 +46,7 @@ const Page = () => {
   return (
     <>
       <PageHeader
-        title={`About ${constants.companyName}`}
+        title={`Redifining Moving Services in Winnipeg`}
         description={
           <span
             dangerouslySetInnerHTML={{ __html: data.aboutDescription || '' }}
@@ -95,6 +96,8 @@ const Page = () => {
           </div>
         ) : null}
       </div>
+
+      <Testimonials />
       <HeroWidget />
     </>
   );

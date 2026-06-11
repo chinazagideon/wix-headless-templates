@@ -4,13 +4,13 @@ import routes from '../Layout/NavBarV2/routes';
 import Image from 'next/image';
 
 const NAV_LINKS = [
-  { href: '#about', label: 'About' },
-  { href: '#services', label: 'Services' },
-  { href: '#pricing', label: 'Pricing' },
-  { href: '#included', label: "What's Included" },
-  { href: '#faq', label: 'FAQ' },
-  { href: routes.relocation_hub, label: 'Read Blog stories' },
-  { href: '/privacy', label: 'Privacy Policy' },
+  { href: routes.about, label: 'About' },
+  { href: routes.services, label: 'Services' },
+  { href: routes.pricing_section, label: 'Pricing' },
+  { href: routes.faq, label: 'FAQ' },
+  { href: routes.truckFees, label: 'Truck Fees' },
+  { href: routes.relocation_hub, label: 'Relocation stories' },
+  { href: routes.privacy, label: 'Privacy Policy' },
 ];
 
 export default function Footer() {

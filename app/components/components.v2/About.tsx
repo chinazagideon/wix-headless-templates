@@ -22,7 +22,7 @@ export default function About() {
           {/* Text */}
           <div>
             <p className="text-[11px] font-semibold tracking-[.12em] uppercase text-[#FD6232] mb-2.5">
-              Meet ICANDO Movers
+              Meet {constants.companyName}
             </p>
             <h2
               className="font-serif font-bold text-[#1A1208] leading-[1.2] mb-5"

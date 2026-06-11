@@ -52,7 +52,7 @@ const Page = () => {
   return (
     <>
       <PageHeader
-        title={`Pricing`}
+        title={`Truck Fees`}
         description={`Affordable and reliable moving services available at your fingertips`}
         className="items-center justify-center"
       />
@@ -158,15 +158,16 @@ const Page = () => {
               )}
             </tbody>
           </table>
-          {isFetching ||
-            (isLoading && (
-              <div className="flex flex-col justify-center items-center h-full px-10 py-10">
-                <div className="w-full h-full flex justify-center items-center">
-                  <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
-                  <span className="text-gray-600">Loading...</span>
-                </div>
+          {isLoading && (
+            <div className="flex flex-col justify-center items-center h-full px-10 py-10">
+              <div className="w-full h-full flex justify-center items-center">
+                <Loader className="w-5 h-5 mr-2 animate-spin text-theme-orange" />
+                <span className="text-gray-600">Loading...</span>
               </div>
-            ))}
+            </div>
+          )}
+
+          {isError && <>{JSON.stringify(isError)}</>}
         </div>
       </div>
     </>

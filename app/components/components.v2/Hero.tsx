@@ -80,16 +80,18 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-wrap gap-2.5">
-            {['⭐ 4.8 Google', '✓ Fully insured', '✓ No hidden fees'].map(
-              (b) => (
-                <span
-                  key={b}
-                  className="text-[12px] font-medium text-[rgba(253,250,245,0.72)] bg-[rgba(253,250,245,0.1)] border border-[rgba(253,250,245,0.18)] rounded-full px-3.5 py-1"
-                >
-                  {b}
-                </span>
-              )
-            )}
+            {[
+              '⭐ ' + constants.googleRating + ' Google',
+              '✓ Fully insured',
+              '✓ No hidden fees',
+            ].map((b) => (
+              <span
+                key={b}
+                className="text-[12px] font-medium text-[rgba(253,250,245,0.72)] bg-[rgba(253,250,245,0.1)] border border-[rgba(253,250,245,0.18)] rounded-full px-3.5 py-1"
+              >
+                {b}
+              </span>
+            ))}
           </div>
         </div>
       </div>

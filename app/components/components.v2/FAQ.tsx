@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { constants } from '../constants';
 
 const FAQS = [
   // {
@@ -13,7 +14,7 @@ const FAQS = [
   },
   {
     q: 'Are you insured?',
-    a: 'Yes. ICANDO Movers carries full liability and cargo insurance on every job in Winnipeg.',
+    a: `Yes. ${constants.companyName} carries full liability and cargo insurance on every job in Winnipeg.`,
   },
   {
     q: 'How far in advance should I book?',

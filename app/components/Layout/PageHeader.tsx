@@ -13,16 +13,16 @@ const PageHeader: React.FC<PageHeaderProps> = ({
 }) => {
   return (
     <div
-      className={`w-full bg-[#f95b33] pt-32 px-2 lg:px-20 py-4 ${
+      className={`w-full bg-[#f95b33] pt-32 px-2 lg:px-20 py-4${
         className || ''
       }`}
     >
-      <div className="flex flex-col items-start pt-10 lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
+      <div className="flex flex-col items-start pt-10 lg:items-center px-4 justify-center p-2 lg:p-10 py-10 w-full md:w-[80%] mx-auto">
         <h1 className="font-outfit text-white font-bold lg:text-5xl text-4xl normal-case">
           {title}
         </h1>
         {description ? (
-          <p className="font-outfit font-light text-white lg:text-sm text-xs lg:w-full lg:text-center w-full pt-4">
+          <p className="font-outfit font-light text-white lg:text-sm text-md lg:w-full lg:text-center w-full pt-4">
             {description}
           </p>
         ) : null}

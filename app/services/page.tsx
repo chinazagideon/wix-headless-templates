@@ -8,6 +8,7 @@ import { Loader } from 'lucide-react';
 import Lines from '@app/components/Design/Lines';
 import PageHeader from '@app/components/Layout/PageHeader';
 import { constants } from '@app/components/constants';
+import Testimonials from '@app/components/components.v2/Testimonials';
 
 const ServicePageContent = () => {
   const { services, isLoading, error, isFetching } = useWixServices();
@@ -73,6 +74,7 @@ const ServicePageContent = () => {
               isLoading={isLoading || isFetching}
             />
           </div>
+          <Testimonials />
           <HeroWidget />
         </>
       )}
