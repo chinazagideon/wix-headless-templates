@@ -14,6 +14,8 @@ const NAV_LINKS = [
 ];
 
 export default function Footer() {
+  const date = new Date();
+  const currentYear = date.getFullYear();
   return (
     <footer className="bg-[#003467] pt-14 pb-8" id="footer">
       <div className="max-w-[1100px] mx-auto px-6 md:px-12">
@@ -86,7 +88,9 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-[rgba(253,250,245,0.1)] pt-6 flex flex-wrap justify-between gap-2 text-[12px] text-[rgba(253,250,245,0.35)]">
-          <span>© 2026 ICANDO Movers. All rights reserved.</span>
+          <span>
+            © {currentYear} {constants.companyName}. All rights reserved.
+          </span>
           <div className="flex items-center gap-2">
             <a
               href={constants.bbbReviewLink}
