@@ -319,9 +319,9 @@ export const useQuotationForm = () => {
     }
     if (!formData.moving_address?.trim())
       newErrors.moving_address = 'Pickup location is required';
-    // if (!formData.unloading_address?.trim() && !isMovingHelp) {
-    //   newErrors.unloading_address = 'Final destination is required';
-    // }
+    if (!formData.unloading_address?.trim()) {
+      newErrors.unloading_address = 'Final destination is required';
+    }
     if (!formData.move_date?.trim()) {
       newErrors.moving_address_date_and_time = 'Move date is required';
     } else if (isNaN(new Date(formData.move_date).getTime())) {

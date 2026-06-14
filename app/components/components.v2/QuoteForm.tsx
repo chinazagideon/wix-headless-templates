@@ -173,7 +173,7 @@ export default function QuoteForm() {
                   updateFormData('unloading_address', formatted_address)
                 }
                 onClear={() => updateFormData('unloading_address', '')}
-                required={false}
+                required={true}
                 placeholder="City / Province"
                 label="Where are you moving to?"
                 fieldClassName={inputCls}
