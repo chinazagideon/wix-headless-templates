@@ -104,7 +104,7 @@ export default function QuoteForm() {
               )}
             </div>
 
-            <div className="flex md:flex-col flex-row w-full gap-3.5">
+            <div className="flex md:flex-row flex-col w-full gap-3.5">
               {/* <div>
                 <label className={labelCls}>Service *</label>
                 <select
@@ -128,7 +128,7 @@ export default function QuoteForm() {
                   <p className={errorCls}>{errors.service_type}</p>
                 )}
               </div> */}
-              <div>
+              <div className='flex w-full flex-col'>
                 <label className={labelCls}>Move Date *</label>
                 <input
                   type="date"

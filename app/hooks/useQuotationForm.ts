@@ -113,8 +113,9 @@ export const useQuotationForm = () => {
         const hasDate = Boolean(next.move_date);
         const hasTime = Boolean(next.move_time);
         if (hasDate) {
-          const time = next.move_time || '00:00';
-          next.moving_address_date_and_time = `${next.move_date}T${time}`;
+          next.moving_address_date_and_time = hasTime
+            ? `${next.move_date}T${next.move_time}`
+            : next.move_date;
         } else {
           next.moving_address_date_and_time = '';
         }
@@ -259,12 +260,16 @@ export const useQuotationForm = () => {
             sanitized[key] = normalizePhoneE164(String(value));
           } else if (key === 'moving_address_date_and_time') {
             sanitized['form_type'] = 'Quote Form';
-            const utcDate = zonedTimeToUtc(String(value), 'America/Winnipeg');
-            // sanitized[key] = utcDate.toISOString();
-            // sanitized[key] = new Date(String(value)).toISOString();
-            sanitized['moving_date_and_time'] = new Date(
-              String(value)
-            ).toLocaleString('en-US', { timeZone: 'America/Winnipeg' });
+            const val = String(value);
+            if (val.includes('T')) {
+              const utcDate = zonedTimeToUtc(val, 'America/Winnipeg');
+              sanitized['moving_date_and_time'] = new Date(val).toLocaleString(
+                'en-US',
+                { timeZone: 'America/Winnipeg' }
+              );
+            } else {
+              sanitized['moving_date_and_time'] = val;
+            }
           } else if (key === 'special_items_str') {
             sanitized[key] = Array.isArray(value)
               ? value.join(', ')
