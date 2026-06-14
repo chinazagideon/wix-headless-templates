@@ -20,10 +20,10 @@ export default function QuoteForm() {
   } = useQuotationForm();
 
   const inputCls =
-    'w-full px-4 py-3 bg-[rgba(253,250,245,0.06)] border border-[rgba(253,250,245,0.12)] rounded-xl text-white placeholder-[rgba(253,250,245,0.3)] text-sm outline-none focus:border-[#FD6232] focus:shadow-[0_0_0_3px_rgba(253,98,50,0.15)] transition-all font-sans';
+    'w-full px-4 py-3 bg-white border border-[#011a34]/20 rounded-xl text-[#011a34] placeholder-[#011a34]/30 text-sm outline-none focus:border-[#FD6232] focus:shadow-[0_0_0_3px_rgba(253,98,50,0.15)] transition-all font-sans';
   const labelCls =
-    'block text-[12px] font-semibold text-[rgba(253,250,245,0.65)] tracking-wide mb-1.5';
-  const errorCls = 'mt-1 text-[11px] text-red-400';
+    'block text-[12px] font-semibold text-[#011a34]/70 tracking-wide mb-1.5';
+  const errorCls = 'mt-1 text-[11px] text-red-500';
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,19 +33,16 @@ export default function QuoteForm() {
   const isMovingHelp = compareValue(formData.service_type, 'Moving Help');
 
   return (
-    <section
-      className="bg-gradient-to-b from-[#011a34] to-[#003467] py-20"
-      id="quote"
-    >
+    <section className="bg-white py-20" id="quote">
       <div className="max-w-[720px] mx-auto px-6 md:px-12">
         <div className="text-center mb-9">
           <p className="text-[11px] font-semibold tracking-[.12em] uppercase text-[#E8832A] mb-2">
             Book your move
           </p>
-          <h2 className="font-serif font-bold text-white text-[36px] mb-2">
+          <h2 className="font-serif font-bold text-[#011a34] text-[36px] mb-2">
             Get a free quote
           </h2>
-          <p className="text-[14px] text-[rgba(253,250,245,0.6)]">
+          <p className="text-[14px] text-[#011a34]/60">
             Or call us directly:{' '}
             <a
               href={`tel:${constants.companyPhone}`}
@@ -104,7 +101,7 @@ export default function QuoteForm() {
               )}
             </div>
 
-            <div className="flex md:flex-col flex-row w-full gap-3.5">
+            <div className="flex md:flex-row flex-col w-full gap-3.5">
               {/* <div>
                 <label className={labelCls}>Service *</label>
                 <select
@@ -128,7 +125,7 @@ export default function QuoteForm() {
                   <p className={errorCls}>{errors.service_type}</p>
                 )}
               </div> */}
-              <div>
+              <div className="flex w-full flex-col">
                 <label className={labelCls}>Move Date *</label>
                 <input
                   type="date"
@@ -205,10 +202,10 @@ export default function QuoteForm() {
             <div className="w-14 h-14 rounded-full bg-[rgba(46,125,50,0.2)] border-2 border-[#2E7D32] text-[#2E7D32] text-2xl flex items-center justify-center mx-auto mb-4">
               ✓
             </div>
-            <h3 className="font-serif font-bold text-white text-[26px] mb-2">
+            <h3 className="font-serif font-bold text-[#011a34] text-[26px] mb-2">
               We&apos;ll be in touch soon!
             </h3>
-            <p className="text-[14px] text-[rgba(253,250,245,0.7)] mb-6">
+            <p className="text-[14px] text-[#011a34]/70 mb-6">
               We will contact you within a few hours to confirm your move
               details.
             </p>
