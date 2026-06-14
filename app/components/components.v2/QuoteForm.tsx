@@ -133,7 +133,9 @@ export default function QuoteForm() {
                 <input
                   type="date"
                   value={formData.move_date}
-                  onChange={(e) => updateMoveDateTime('move_date', e.target.value)}
+                  onChange={(e) =>
+                    updateMoveDateTime('move_date', e.target.value)
+                  }
                   className={inputCls}
                 />
                 {errors.moving_address_date_and_time && (
