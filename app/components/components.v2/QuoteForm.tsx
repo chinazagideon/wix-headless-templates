@@ -64,12 +64,12 @@ export default function QuoteForm() {
           >
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
               <div>
-                <label className={labelCls}>Your Name *</label>
+                <label className={labelCls}>Full name *</label>
                 <input
                   value={formData.first_name}
                   onChange={(e) => updateFormData('first_name', e.target.value)}
                   className={inputCls}
-                  placeholder="Name"
+                  placeholder="Your Full name"
                 />
                 {errors.first_name && (
                   <p className={errorCls}>{errors.first_name}</p>
@@ -104,8 +104,8 @@ export default function QuoteForm() {
               )}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-              <div>
+            <div className="flex md:flex-col flex-row w-full gap-3.5">
+              {/* <div>
                 <label className={labelCls}>Service *</label>
                 <select
                   value={formData.service_type}
@@ -127,23 +127,15 @@ export default function QuoteForm() {
                 {errors.service_type && (
                   <p className={errorCls}>{errors.service_type}</p>
                 )}
-              </div>
+              </div> */}
               <div>
-                <label className={labelCls}>Move Date &amp; Time *</label>
+                <label className={labelCls}>Move Date *</label>
                 <input
-                  type="datetime-local"
-                  value={
-                    formData.move_date && formData.move_time
-                      ? `${formData.move_date}T${formData.move_time}`
-                      : formData.move_date
-                      ? `${formData.move_date}T`
-                      : ''
+                  type="date"
+                  value={formData.move_date}
+                  onChange={(e) =>
+                    updateMoveDateTime('move_date', e.target.value)
                   }
-                  onChange={(e) => {
-                    const [date, time] = e.target.value.split('T');
-                    if (date) updateMoveDateTime('move_date', date);
-                    if (time) updateMoveDateTime('move_time', time);
-                  }}
                   className={inputCls}
                 />
                 {errors.moving_address_date_and_time && (
@@ -181,7 +173,7 @@ export default function QuoteForm() {
                   updateFormData('unloading_address', formatted_address)
                 }
                 onClear={() => updateFormData('unloading_address', '')}
-                required={!isMovingHelp}
+                required={true}
                 placeholder="City / Province"
                 label="Where are you moving to?"
                 fieldClassName={inputCls}
