@@ -112,9 +112,9 @@ export const useQuotationForm = () => {
         const next = { ...prev, [field]: value };
         const hasDate = Boolean(next.move_date);
         const hasTime = Boolean(next.move_time);
-        if (hasDate && hasTime) {
-          const localString = `${next.move_date}T${next.move_time}`;
-          next.moving_address_date_and_time = localString;
+        if (hasDate) {
+          const time = next.move_time || '00:00';
+          next.moving_address_date_and_time = `${next.move_date}T${time}`;
         } else {
           next.moving_address_date_and_time = '';
         }
@@ -301,8 +301,6 @@ export const useQuotationForm = () => {
   // Validates only the fields present in the single-step v2 QuoteForm
   const handleSimpleSubmit = useCallback(async () => {
     const newErrors: Partial<Record<keyof FormData, string>> = {};
-    if (!formData.service_type?.trim())
-      newErrors.service_type = 'Please select a service';
     if (!formData.first_name?.trim())
       newErrors.first_name = 'First name is required';
     if (!formData.email_e1ca?.trim()) {
@@ -321,16 +319,13 @@ export const useQuotationForm = () => {
     }
     if (!formData.moving_address?.trim())
       newErrors.moving_address = 'Pickup location is required';
-    if (!formData.unloading_address?.trim() && !isMovingHelp) {
-      newErrors.unloading_address = 'Final destination is required';
-    }
-    if (!formData.moving_address_date_and_time?.trim()) {
-      newErrors.moving_address_date_and_time =
-        'Moving date and time is required';
-    } else if (
-      isNaN(new Date(formData.moving_address_date_and_time).getTime())
-    ) {
-      newErrors.moving_address_date_and_time = 'Enter a valid date and time';
+    // if (!formData.unloading_address?.trim() && !isMovingHelp) {
+    //   newErrors.unloading_address = 'Final destination is required';
+    // }
+    if (!formData.move_date?.trim()) {
+      newErrors.moving_address_date_and_time = 'Move date is required';
+    } else if (isNaN(new Date(formData.move_date).getTime())) {
+      newErrors.moving_address_date_and_time = 'Enter a valid date';
     }
     setErrors(newErrors);
     if (Object.keys(newErrors).length > 0) return;
