@@ -147,9 +147,9 @@ export function useTestimonials(): UseTestimonialsReturn {
     : (data?.reviews as ReviewWithNumericTime[]) ?? [];
 
   const reviews = [
-    ...sortByTime(source.filter((r) => (r.rating ?? 0) > 4)),
+    ...sortByTime(source.filter((r) => (r.rating ?? 0) >= 4)),
     ...sortByTime(
-      source.filter((r) => (r.rating ?? 0) > 2 && (r.rating ?? 0) < 4)
+      source.filter((r) => (r.rating ?? 0) >= 4 && (r.rating ?? 0) < 4)
     ),
   ];
 
