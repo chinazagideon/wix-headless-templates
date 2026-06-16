@@ -48,9 +48,7 @@ function PreloaderWrapperInner({ children }: PreloaderWrapperProps) {
 
 const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => (
   <Suspense fallback={<>{children}</>}>
-    <PreloaderWrapperInner>
-      {children}
-      </PreloaderWrapperInner>
+    <PreloaderWrapperInner>{children}</PreloaderWrapperInner>
   </Suspense>
 );
 
