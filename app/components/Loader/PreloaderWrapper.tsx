@@ -32,7 +32,7 @@ function PreloaderWrapperInner({ children }: PreloaderWrapperProps) {
 
   return (
     <>
-      {isLoading && <Preloader />}
+      {/* {isLoading && <Preloader />} */}
       {!isLoading && !isAdMode && <Nav />}
       <main
         className={`bg-transparent min-h-screen transition-all duration-1000 ease-out ${
@@ -48,7 +48,9 @@ function PreloaderWrapperInner({ children }: PreloaderWrapperProps) {
 
 const PreloaderWrapper = ({ children }: PreloaderWrapperProps) => (
   <Suspense fallback={<>{children}</>}>
-    <PreloaderWrapperInner>{children}</PreloaderWrapperInner>
+    <PreloaderWrapperInner>
+      {children}
+      </PreloaderWrapperInner>
   </Suspense>
 );
 
