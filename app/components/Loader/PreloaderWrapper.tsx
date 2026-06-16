@@ -32,7 +32,7 @@ function PreloaderWrapperInner({ children }: PreloaderWrapperProps) {
 
   return (
     <>
-      {isLoading && <Preloader />}
+      {/* {isLoading && <Preloader />} */}
       {!isLoading && !isAdMode && <Nav />}
       <main
         className={`bg-transparent min-h-screen transition-all duration-1000 ease-out ${
