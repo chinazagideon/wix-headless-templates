@@ -83,7 +83,7 @@ export default function Gallery() {
               alt={photo.alt}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-500"
-              sizes="(max-width:900px) 50vw, 25vw"
+              sizes="(max-width:640px) 100vw, (max-width:900px) 50vw, (max-width:1200px) 33vw, 25vw"
             />
             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[rgba(10,4,2,0.75)] to-transparent px-4 py-3.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               <span className="text-[12px] font-medium text-[rgba(253,250,245,0.92)]">

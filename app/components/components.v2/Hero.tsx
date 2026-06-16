@@ -1,5 +1,4 @@
-'use client';
-
+import Image from 'next/image';
 import { constants } from '../constants';
 
 export default function Hero() {
@@ -9,13 +8,16 @@ export default function Hero() {
       id="hero"
     >
       {/* Background photo */}
-      <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/custom/icando-move-truck.jpg')",
-          backgroundPosition: 'center 30%',
-        }}
-      />
+      <div className="absolute inset-0">
+        <Image
+          src="/custom/icando-move-truck.jpg"
+          alt=""
+          fill
+          priority
+          className="object-cover object-[center_30%]"
+          sizes="100vw"
+        />
+      </div>
       {/* Warm dark overlay */}
       <div className="absolute inset-0 bg-gradient-to-br from-[rgba(10,4,2,0.88)] via-[rgba(0,20,50,0.75)] to-[rgba(61,26,8,0.65)]" />
 

@@ -22,8 +22,6 @@ const GOOGLE_ADS_MEASUREMENT_ID = /^AW-\d+$/.test(GOOGLE_ADS_MEASUREMENT_ID_RAW)
  * If you prefer having it reflected only after redeploy (not recommended) please remove it
  * **/
 
-export const revalidate = 0;
-
 export const metadata: Metadata = {
   metadataBase: new URL(constants.companyWebsite),
   title: {
@@ -116,14 +114,6 @@ export default function RootLayout(layoutProps: any) {
           `}
         </Script>
         <StructuredData />
-        {/* Preload hero background video and poster for faster start */}
-        <link rel="preload" as="image" href="/custom/icando-move-truck.jpg" />
-        <link
-          rel="preload"
-          as="video"
-          href="/custom/videos/icandomovers.mp4"
-          type="video/mp4"
-        />
         {/* Warm up DNS and connections for frequently used third-parties */}
         <meta httpEquiv="x-dns-prefetch-control" content="on" />
         <meta
@@ -138,6 +128,12 @@ export default function RootLayout(layoutProps: any) {
           href="https://maps.googleapis.com"
           crossOrigin=""
         />
+        <link
+          rel="preconnect"
+          href="https://static.wixstatic.com"
+          crossOrigin=""
+        />
+        <link rel="dns-prefetch" href="//static.wixstatic.com" />
       </head>
       {wixSession.wixClient ? (
         <body

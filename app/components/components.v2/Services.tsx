@@ -31,11 +31,17 @@ const SERVICES = [
   },
 ];
 
-export default function Services({}: {}) {
-  const { services, isLoading, error: wixError } = useWixServices();
+export default function Services({
+  initialServices,
+}: {
+  initialServices?: ServiceInfoViewModel[];
+}) {
+  const hookResult = useWixServices();
+  const services = initialServices ?? hookResult.services;
+  const isLoading = initialServices ? false : hookResult.isLoading;
 
   const items = (services ?? []).filter((s) => !s?.hidden);
-  if (!items.length) return null;
+  if (!isLoading && !items.length) return null;
 
   return (
     <section className="bg-[#FDFAF5] py-20 md:py-24" id="services">
