@@ -26,7 +26,7 @@ const setVisitorTokens = async ({
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       path: '/',
-      maxAge: 60 * 60 * 24, // 1 day to reduce stale risk
+      maxAge: 60 * 60 * 24 * 7, // 7 days
     });
   } catch (error) {
     // Fail open in middleware to avoid breaking local dev if network fails
@@ -48,18 +48,8 @@ export async function middleware(request: NextRequest) {
     cookieStore: request.cookies,
   });
   const isLoggedIn = wixClient?.auth.loggedIn();
-  const isProd = process.env.NODE_ENV === 'production';
-  if (isProd) {
-    // In production, refresh tokens when not logged in to avoid stale cookies.
-    if (!isLoggedIn) {
-      res.cookies.delete(WIX_REFRESH_TOKEN);
-      await setVisitorTokens({ response: res, wixClient, request });
-    }
-  } else {
-    // In development, avoid generating tokens on every request to prevent spam/fetch failures.
-    if (!cookies.get(WIX_REFRESH_TOKEN) && !isLoggedIn) {
-      await setVisitorTokens({ response: res, wixClient, request });
-    }
+  if (!cookies.get(WIX_REFRESH_TOKEN) && !isLoggedIn) {
+    await setVisitorTokens({ response: res, wixClient, request });
   }
   const wixMemberLoggedIn = request.nextUrl.searchParams.get(
     REDIRECT_FROM_WIX_LOGIN_STATUS

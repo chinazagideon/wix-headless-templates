@@ -9,7 +9,11 @@ import Included from './components/components.v2/Included';
 import Testimonials from './components/components.v2/Testimonials';
 import FAQ from './components/components.v2/FAQ';
 import HeroWidget from './components/Widget/HeroWdget';
+import { useServerAuthSession } from '@app/hooks/useServerAuthSession';
+import { getServices } from '@app/model/service/service-api';
 import { constants } from './components/constants';
+
+export const revalidate = 300;
 
 export const metadata = {
   title: `${constants.companyName} — Winnipeg's Trusted Moving Company`,
@@ -22,7 +26,16 @@ export const metadata = {
   },
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const wixSession = useServerAuthSession();
+  let services: Awaited<ReturnType<typeof getServices>>['services'] = [];
+  try {
+    const result = await getServices(wixSession);
+    services = result.services;
+  } catch {
+    // Fall back to client-side fetch via the hook if server-side fails
+  }
+
   return (
     <>
       <main>
@@ -30,7 +43,7 @@ export default function HomePage() {
         <Stats />
         <QuoteForm />
         <About />
-        <Services />
+        <Services initialServices={services.length ? services : undefined} />
         <Gallery />
         <Pricing />
         <Included />
