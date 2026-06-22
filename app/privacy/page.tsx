@@ -106,8 +106,13 @@ export default function PrivacyPage() {
             </a>
             .
           </p>
-          <p className="mt-3">
-            {constants.companyName} · {constants.companyFullAddress}
+          <p className="mt-3">{constants.companyName} </p>
+          <p>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: constants.companyFullAddress,
+              }}
+            />
           </p>
         </div>
       </section>
