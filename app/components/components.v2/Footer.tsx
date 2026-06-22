@@ -77,6 +77,12 @@ export default function Footer() {
               >
                 {constants.companyEmail}
               </a>
+              <a
+                href="#"
+                className="text-[14px] text-[rgba(253,250,245,0.7)] hover:text-[#FD6232] transition-colors"
+              >
+                {constants.companyFullAddress}
+              </a>
               <Link
                 href={routes.quotation}
                 className="mt-3 inline-flex items-center gap-2 bg-[#FD6232] text-white font-semibold text-sm px-5 py-2.5 rounded-full shadow-[0_4px_24px_rgba(253,98,50,0.28)] hover:bg-[#C44B1A] transition-all"
