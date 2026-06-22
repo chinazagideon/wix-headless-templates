@@ -5,7 +5,6 @@ const ITEMS = [
   'Dollies & moving straps',
   'Disassembly & reassembly',
   'Floor & door-frame protection',
-  'Stair carry at no extra charge',
   'Friendly, hands-on crew',
 ];
 
