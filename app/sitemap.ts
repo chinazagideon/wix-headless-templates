@@ -63,7 +63,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       .filter((p: any) => p?.slug)
       .map((p: any) => ({
         url: `${baseUrl}/relocation-hub/${p.slug}`,
-        lastModified: p.lastPublishedDate ? new Date(p.lastPublishedDate) : new Date(),
+        lastModified: p.lastPublishedDate
+          ? new Date(p.lastPublishedDate)
+          : new Date(),
         changeFrequency: 'weekly' as const,
         priority: 0.6,
       }));

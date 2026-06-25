@@ -28,7 +28,11 @@ export default async function LatestPosts() {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {posts.map((post, idx) => (
-            <PostThumb key={post?.id || post?._id || idx} post={post} index={idx} />
+            <PostThumb
+              key={post?.id || post?._id || idx}
+              post={post}
+              index={idx}
+            />
           ))}
         </div>
         <div className="text-center mt-8">

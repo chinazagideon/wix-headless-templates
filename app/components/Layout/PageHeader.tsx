@@ -18,7 +18,11 @@ const PageHeader: React.FC<PageHeaderProps> = ({
       className={`relative w-full pt-32 px-2 lg:px-20 py-4 bg-cover bg-center ${
         !backgroundImage ? 'bg-[#f95b33]' : ''
       }${className || ''}`}
-      style={backgroundImage ? { backgroundImage: `url(${backgroundImage})` } : undefined}
+      style={
+        backgroundImage
+          ? { backgroundImage: `url(${backgroundImage})` }
+          : undefined
+      }
     >
       {backgroundImage && <div className="absolute inset-0 bg-black/55" />}
       <div className="relative flex flex-col items-start pt-10 lg:items-center px-4 justify-center p-2 lg:p-10 py-10 w-full md:w-[80%] mx-auto">
