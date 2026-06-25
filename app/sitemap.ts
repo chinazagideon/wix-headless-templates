@@ -1,10 +1,11 @@
 import { MetadataRoute } from 'next';
 import { constants } from '@app/components/constants';
+import { fetchAllPostsAdmin } from '@app/model/blog/blog.service';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = constants.companyWebsite;
 
-  return [
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -54,4 +55,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
   ];
+
+  let postRoutes: MetadataRoute.Sitemap = [];
+  try {
+    const posts = await fetchAllPostsAdmin();
+    postRoutes = posts
+      .filter((p: any) => p?.slug)
+      .map((p: any) => ({
+        url: `${baseUrl}/relocation-hub/${p.slug}`,
+        lastModified: p.lastPublishedDate ? new Date(p.lastPublishedDate) : new Date(),
+        changeFrequency: 'weekly' as const,
+        priority: 0.6,
+      }));
+  } catch {
+    // Degrade gracefully — static routes still served if blog fetch fails
+  }
+
+  return [...staticRoutes, ...postRoutes];
 }

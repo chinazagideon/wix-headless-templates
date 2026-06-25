@@ -8,6 +8,7 @@ import Pricing from './components/components.v2/Pricing';
 import Included from './components/components.v2/Included';
 import Testimonials from './components/components.v2/Testimonials';
 import FAQ from './components/components.v2/FAQ';
+import LatestPosts from './components/components.v2/LatestPosts';
 import HeroWidget from './components/Widget/HeroWdget';
 import { useServerAuthSession } from '@app/hooks/useServerAuthSession';
 import { getServices } from '@app/model/service/service-api';
@@ -49,6 +50,8 @@ export default async function HomePage() {
         <Included />
         <Testimonials />
         <FAQ />
+        {/* @ts-expect-error Async Server Component — valid in Next.js App Router; TS <5.1 doesn't support Promise<Element> return type */}
+        <LatestPosts />
         <HeroWidget />
       </main>
     </>
