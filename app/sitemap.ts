@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { constants } from '@app/components/constants';
 import { fetchAllPostsAdmin } from '@app/model/blog/blog.service';
 
-export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = constants.companyWebsite;
@@ -27,7 +27,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/pricing`,
+      url: `${baseUrl}/travel-fees`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -39,19 +39,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/book`,
-      lastModified: new Date(),
-      changeFrequency: 'daily',
-      priority: 0.8,
-    },
-    {
       url: `${baseUrl}/relocation-hub`,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/quotation`,
+      url: `${baseUrl}/quote`,
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 0.8,
