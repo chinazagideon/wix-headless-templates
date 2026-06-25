@@ -50,6 +50,7 @@ export default async function HomePage() {
         <Included />
         <Testimonials />
         <FAQ />
+        {/* @ts-expect-error Async Server Component — valid in Next.js App Router; TS <5.1 doesn't support Promise<Element> return type */}
         <LatestPosts />
         <HeroWidget />
       </main>
