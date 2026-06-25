@@ -4,6 +4,7 @@ import { fireQuoteLeadConversion } from '@app/lib/track-google-ads-conversion';
 import { trackPixelEvent } from '@app/lib/meta-pixel';
 import { useWixServices } from './useWixServices';
 import { useForms } from './useForms';
+import { useUtmParams } from './useUtmParams';
 import { normalizePhoneE164 } from '@app/utils/format-phone';
 import { zonedTimeToUtc } from 'date-fns-tz';
 
@@ -39,6 +40,7 @@ export interface FormData {
 
 export const useQuotationForm = () => {
   const router = useRouter();
+  const utmParams = useUtmParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<FormData>({
     first_name: '',
@@ -279,9 +281,12 @@ export const useQuotationForm = () => {
           }
         }
       }
+      if (utmParams.utm_source) sanitized.utm_source = utmParams.utm_source;
+      if (utmParams.campaign_id) sanitized.campaign_id = utmParams.campaign_id;
+
       return submit(sanitized);
     },
-    [formId, submit]
+    [formId, submit, utmParams]
   );
 
   const handleSubmit = useCallback(async () => {
