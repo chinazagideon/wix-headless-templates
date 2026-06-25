@@ -13,9 +13,9 @@ import {
   fetchMostReadPosts,
 } from '@app/model/blog/blog.service';
 import PageHeader from '@app/components/Layout/PageHeader';
+import { constants } from '@app/components/constants';
 
-export const revalidate = 3600; // Disable ISR temporarily for live testing
-export const dynamic = 'force-dynamic'; // Force SSR to avoid serving old SSG HTML
+export const revalidate = 3600;
 
 // Rendering moved to RichContent component
 
@@ -48,7 +48,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
-      <PageHeader title={post.title} description={post.excerpt} />
+      <PageHeader
+        title={post.title}
+        description={post.excerpt}
+        backgroundImage={imageObj?.url}
+      />
       {/* <div className="w-full bg-[#D9D9D9] lg:h-[338px] pt-32 px-2 lg:px-20 py-10 lg:py-auto justify-center items-center">
         <div className="flex flex-col items-start lg:items-center px-4 justify-center p-2 lg:p-10 py-10">
           <h1 className="font-outfit font-thin lg:text-6xl text-4xl text-black normal-case mb-4">
@@ -99,6 +103,34 @@ export default async function Page({ params }: { params: { slug: string } }) {
           </span>
         </Link>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'BlogPosting',
+            headline: post.title,
+            description: post.excerpt,
+            datePublished: post.firstPublishedDate,
+            dateModified: post.lastPublishedDate ?? post.firstPublishedDate,
+            url: `${constants.companyWebsite}/relocation-hub/${post.slug}`,
+            image: imageObj?.url ?? undefined,
+            author: {
+              '@type': 'Organization',
+              name: constants.companyName,
+              url: constants.companyWebsite,
+            },
+            publisher: {
+              '@type': 'Organization',
+              name: constants.companyName,
+              logo: {
+                '@type': 'ImageObject',
+                url: `${constants.companyWebsite}${constants.companyLogo}`,
+              },
+            },
+          }),
+        }}
+      />
     </>
   );
 }

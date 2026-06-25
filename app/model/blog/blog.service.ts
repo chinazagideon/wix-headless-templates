@@ -91,6 +91,16 @@ export async function fetchPostBySlugAdminWithContent(slug: string) {
   } as any;
 }
 
+export async function fetchLatestPosts(limit: number = 3) {
+  const client = getWixAdminClient();
+  const res = await client.posts.listPosts({
+    sort: 'PUBLISHED_DATE_DESC' as any,
+    paging: { limit },
+  } as any);
+  const items = (res as any)?.posts ?? [];
+  return items.map(normalizePost);
+}
+
 // Fetch most-read posts (sorted by view count)
 export async function fetchMostReadPosts(limit: number = 4) {
   const client = getWixAdminClient();
