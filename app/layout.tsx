@@ -99,7 +99,7 @@ export default function RootLayout(layoutProps: any) {
   const wixSession = useServerAuthSession();
 
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <head>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_MEASUREMENT_ID}`}
