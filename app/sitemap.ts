@@ -2,6 +2,8 @@ import { MetadataRoute } from 'next';
 import { constants } from '@app/components/constants';
 import { fetchAllPostsAdmin } from '@app/model/blog/blog.service';
 
+export const revalidate = 3600;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = constants.companyWebsite;
 
