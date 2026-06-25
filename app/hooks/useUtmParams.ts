@@ -9,7 +9,8 @@ export type UtmParams = {
 
 export function useUtmParams(): UtmParams {
   return useMemo(() => {
-    if (typeof window === 'undefined') return { utm_source: null, campaign_id: null };
+    if (typeof window === 'undefined')
+      return { utm_source: null, campaign_id: null };
     const p = new URLSearchParams(window.location.search);
     return {
       utm_source: p.get('utm_source'),
